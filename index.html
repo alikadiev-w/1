@@ -17,14 +17,7 @@
   #cross .v { width:2px; height:9px; left:12px; }
   #cross .l { left:0; } #cross .r { right:0; } #cross .t { top:0; } #cross .b { bottom:0; }
   #cross .dot { width:2px; height:2px; left:12px; top:12px; border-radius:50%; background:#ff5a3c; }
-  #cross2 { position:absolute; left:75%; top:50%; width:26px; height:26px; transform:translate(-50%,-50%); display:none; }
-  #cross2 div { position:absolute; background:#ffaa66; box-shadow:0 0 4px #000; }
-  #cross2 .h { width:9px; height:2px; top:12px; }
-  #cross2 .v { width:2px; height:9px; left:12px; }
-  #cross2 .l { left:0; } #cross2 .r { right:0; } #cross2 .t { top:0; } #cross2 .b { bottom:0; }
-  #cross2 .dot { width:2px; height:2px; left:12px; top:12px; border-radius:50%; background:#ff5a3c; }
   #vitals { position:absolute; left:26px; bottom:26px; display:flex; gap:18px; align-items:flex-end; }
-  #vitals2 { position:absolute; right:26px; bottom:26px; display:none; gap:18px; align-items:flex-end; }
   .stat { background:linear-gradient(180deg, rgba(20,14,8,.75), rgba(8,6,4,.85));
     border:2px solid #7a5c26; border-radius:6px; padding:8px 14px 10px; min-width:130px;
     box-shadow:0 0 18px rgba(0,0,0,.7); }
@@ -34,29 +27,23 @@
   .bar i { display:block; height:100%; width:100%; transition:width .12s linear; }
   #hpBar i { background:linear-gradient(90deg,#8b1a1a,#e04a2a,#ffb14a); }
   #apBar i { background:linear-gradient(90deg,#1a4a8b,#2a9ae0,#7ad4ff); }
-  #hpBar2 i { background:linear-gradient(90deg,#8a4a1a,#ffaa55,#ffddaa); }
-  #apBar2 i { background:linear-gradient(90deg,#2a3a8a,#5599ff,#aaccff); }
-  #ultBox, #ultBox2 { position:absolute; bottom:150px; width:270px;
+  #ultBox { position:absolute; left:26px; bottom:150px; width:270px;
     background:linear-gradient(180deg, rgba(10,20,30,.85), rgba(4,10,20,.9));
     border:2px solid #2a6a8a; border-radius:6px; padding:8px 12px 10px; display:none;
     box-shadow:0 0 18px rgba(0,0,0,.7); }
-  #ultBox { left:26px; } #ultBox2 { right:26px; border-color:#8a5a2a; }
-  #ultBox .label, #ultBox2 .label { font-size:11px; letter-spacing:2px; color:#7ab8d8;
+  #ultBox .label { font-size:11px; letter-spacing:2px; color:#7ab8d8;
     text-transform:uppercase; display:flex; justify-content:space-between; }
-  #ultBox2 .label { color:#d8a870; } #ultBox .label b { color:#66ddff; } #ultBox2 .label b { color:#ffb060; }
+  #ultBox .label b { color:#66ddff; }
   #ultBox.ready { border-color:#66ddff; animation: up 1.2s infinite; }
-  #ultBox2.ready { border-color:#ffb060; animation: up 1.2s infinite; }
   @keyframes up { 0%,100%{box-shadow:0 0 24px rgba(100,220,255,.7);} 50%{box-shadow:0 0 40px rgba(120,240,255,.95);} }
-  #ultBar, #ultBar2 { height:8px; margin-top:6px; background:#0a1820; border-radius:4px; overflow:hidden; }
+  #ultBar { height:8px; margin-top:6px; background:#0a1820; border-radius:4px; overflow:hidden; }
   #ultBar i { display:block; height:100%; width:0%; background:linear-gradient(90deg,#2a6a8a,#66ccff,#ccf0ff); }
-  #ultBar2 i { display:block; height:100%; width:0%; background:linear-gradient(90deg,#8a4a2a,#ffaa55,#ffddaa); }
-  #weaponBox, #weaponBox2 { position:absolute; bottom:26px; text-align:center;
+  #weaponBox { position:absolute; right:26px; bottom:26px; text-align:center;
     background:linear-gradient(180deg, rgba(20,14,8,.75), rgba(8,6,4,.85));
     border:2px solid #7a5c26; border-radius:6px; padding:10px 16px 12px; min-width:220px; }
-  #weaponBox { right:26px; } #weaponBox2 { left:26px; border-color:#a86a2a; display:none; }
-  #wName { font-size:15px; color:#ffd27a; } #wName2 { font-size:15px; color:#ffb060; }
-  #wAmmo, #wAmmo2 { font-size:34px; font-weight:bold; color:#fff; line-height:1.05; }
-  #wAmmo small, #wAmmo2 small { font-size:16px; color:#a08a5a; }
+  #wName { font-size:15px; color:#ffd27a; }
+  #wAmmo { font-size:34px; font-weight:bold; color:#fff; line-height:1.05; }
+  #wAmmo small { font-size:16px; color:#a08a5a; }
   #topBar { position:absolute; top:18px; left:50%; transform:translateX(-50%); text-align:center; }
   #wave { font-size:15px; letter-spacing:4px; color:#ffd27a; text-transform:uppercase; }
   #waveSub { font-size:12px; color:#9c8a68; margin-top:2px; }
@@ -95,14 +82,14 @@
   .btn.green { background:linear-gradient(180deg,#66ff88,#2a9a4a); box-shadow:0 5px 0 #1a5a2a; color:#0a2a10; }
   #goStats { font-size:17px; color:#c9a55a; line-height:2.1; margin-top:12px; }
   #goStats b { color:#fff; font-size:26px; }
-  #netScreen input { padding:14px 18px; font-size:22px; letter-spacing:6px; text-align:center;
-    text-transform:uppercase; background:#1a1208; color:#ffd27a; border:2px solid #7a5c26;
-    border-radius:5px; font-family:inherit; width:200px; }
+  #netScreen input { padding:14px 18px; font-size:18px; letter-spacing:2px; text-align:center;
+    background:#1a1208; color:#ffd27a; border:2px solid #7a5c26;
+    border-radius:5px; font-family:inherit; width:340px; }
   #netScreen input:focus { outline:none; border-color:#ffd27a; }
   #netScreen .row { display:flex; gap:14px; align-items:center; justify-content:center; margin-top:20px; }
   #netStatus { margin-top:22px; font-size:15px; color:#e8dcc0; min-height:60px; line-height:1.6; }
-  #roomCode { font-size:38px; letter-spacing:12px; color:#ffd27a; font-weight:bold;
-    text-shadow:0 0 22px rgba(255,140,20,.9); margin-top:8px; }
+  #roomCode { font-size:28px; letter-spacing:2px; color:#ffd27a; font-weight:bold;
+    text-shadow:0 0 22px rgba(255,140,20,.9); margin-top:8px; max-width:90vw; }
   #enemyBars { position:fixed; inset:0; pointer-events:none; z-index:9; }
   .ebar { position:absolute; transform:translate(-50%,-50%); pointer-events:none;
     background:rgba(0,0,0,.72); border:1px solid rgba(0,0,0,.9); border-radius:3px; overflow:hidden; }
@@ -126,11 +113,6 @@
     <div class="v t"></div><div class="v b"></div>
     <div class="dot"></div>
   </div>
-  <div id="cross2">
-    <div class="h l"></div><div class="h r"></div>
-    <div class="v t"></div><div class="v b"></div>
-    <div class="dot"></div>
-  </div>
 
   <div id="vitals">
     <div class="stat">
@@ -145,35 +127,14 @@
     </div>
   </div>
 
-  <div id="vitals2">
-    <div class="stat" style="border-color:#a86a2a;">
-      <div class="label" style="color:#ffb060;">P2 ЗДОРОВЬЕ</div>
-      <div class="val" id="hpVal2">100</div>
-      <div class="bar" id="hpBar2"><i></i></div>
-    </div>
-    <div class="stat" style="border-color:#a86a2a;">
-      <div class="label" style="color:#ffb060;">P2 БРОНЯ</div>
-      <div class="val" id="apVal2">0</div>
-      <div class="bar" id="apBar2"><i style="width:0%"></i></div>
-    </div>
-  </div>
-
   <div id="ultBox">
-    <div class="label"><span>⚡ ГНЕВ (P1)</span><b id="ultCount">0 / 10</b></div>
+    <div class="label"><span>⚡ ГНЕВ ОЛИМПА</span><b id="ultCount">0 / 10</b></div>
     <div id="ultBar"><i></i></div>
-  </div>
-  <div id="ultBox2">
-    <div class="label"><span>⚡ ГНЕВ (P2)</span><b id="ultCount2">0 / 10</b></div>
-    <div id="ultBar2"><i></i></div>
   </div>
 
   <div id="weaponBox">
     <div id="wName">Пистолет</div>
     <div id="wAmmo">120<small> / 500</small></div>
-  </div>
-  <div id="weaponBox2">
-    <div id="wName2">Пистолет</div>
-    <div id="wAmmo2">120<small> / 500</small></div>
   </div>
 
   <div id="topBar">
@@ -189,17 +150,16 @@
   <div id="feed"></div>
 </div>
 
-<!-- MAIN MENU -->
+<!-- ГЛАВНОЕ МЕНЮ -->
 <div class="screen" id="modeScreen">
   <h1>WRATH OF OLYMPUS</h1>
   <h2>АРЕНА БОГОВ</h2>
   <p>5 уровней, 5 боссов, волны врагов. Выживи и убей всех.</p>
   <button class="btn" id="soloBtn">ОДИН ИГРОК</button>
-  <button class="btn blue" id="coopBtn">CO-OP НА ОДНОМ ЭКРАНЕ</button>
   <button class="btn pink" id="netBtn">СЕТЕВАЯ ИГРА (2 ПК)</button>
 </div>
 
-<!-- NETWORK LOBBY -->
+<!-- СЕТЕВОЕ ЛОББИ -->
 <div class="screen hidden" id="netScreen">
   <h1>СЕТЕВАЯ ИГРА</h1>
   <h2>2 ИГРОКА · РАЗНЫЕ ПК</h2>
@@ -208,16 +168,22 @@
     <button class="btn" id="hostBtn">СОЗДАТЬ КОМНАТУ</button>
     <button class="btn blue" id="joinBtn">ПОДКЛЮЧИТЬСЯ</button>
   </div>
-  <div class="row hidden" id="hostRow"><div id="roomCode">—</div></div>
-  <div class="row hidden" id="joinRow">
-    <input id="codeInput" maxlength="5" placeholder="КОД" autocomplete="off">
+  <div class="row hidden" id="hostRow" style="flex-direction:column; gap:6px;">
+    <div style="font-size:12px; color:#8a785a; letter-spacing:2px;">ТВОЙ НИК</div>
+    <div id="roomCode" style="font-size:28px; letter-spacing:2px; max-width:90vw; text-align:center;">—</div>
+    <button class="btn" id="rerollBtn" style="padding:8px 20px; font-size:12px; margin-top:6px;">🎲 ПЕРЕГЕНЕРИРОВАТЬ</button>
+    <button class="btn blue" id="copyInviteBtn" style="padding:10px 24px; font-size:13px; margin-top:8px;">📋 СКОПИРОВАТЬ ССЫЛКУ</button>
+    <div style="font-size:11px; color:#8a785a; margin-top:8px;">Отправь другу ссылку или ник</div>
+  </div>
+  <div class="row hidden" id="joinRow" style="flex-direction:column; gap:10px;">
+    <input id="codeInput" maxlength="60" placeholder="ССЫЛКА ИЛИ НИК" autocomplete="off">
     <button class="btn green" id="joinConfirmBtn">ВОЙТИ</button>
   </div>
   <button class="btn green hidden" id="startNetBtn">НАЧАТЬ ИГРУ</button>
   <button class="btn" id="netBackBtn" style="padding:10px 22px; font-size:13px; margin-top:30px;">← НАЗАД</button>
 </div>
 
-<!-- PAUSE -->
+<!-- ПАУЗА -->
 <div class="screen hidden" id="pauseScreen">
   <h1>ПАУЗА</h1>
   <p>Нажми кнопку чтобы продолжить.</p>
@@ -226,7 +192,7 @@
 
 <!-- GAME OVER -->
 <div class="screen hidden" id="overScreen">
-  <h1 style="color:#e04a2a;">ВЫ ПАЛИ</h1>
+  <h1 style="color:#e04a2a;">ТЫ ПАЛ</h1>
   <h2>ОЛИМП СКОРБИТ</h2>
   <div id="goStats"></div>
   <button class="btn" id="restartBtn">В ГЛАВНОЕ МЕНЮ</button>
@@ -239,7 +205,6 @@
 <script type="module">
 import * as THREE from 'three';
 
-// Глобальный перехватчик ошибок — чтобы видеть проблемы в консоли
 window.addEventListener('error', e => console.error('[ERR]', e.message, e.filename, e.lineno));
 window.addEventListener('unhandledrejection', e => console.error('[PROMISE]', e.reason));
 
@@ -333,7 +298,6 @@ sun.shadow.camera.left = -70; sun.shadow.camera.right = 70;
 sun.shadow.camera.top = 70; sun.shadow.camera.bottom = -70;
 sun.shadow.camera.far = 220; sun.shadow.bias = -0.001;
 scene.add(sun);
-scene.add(new THREE.DirectionalLight(0x5577ff, 0.35).translateX(50).translateY(30).translateZ(-60));
 
 /* ============== TEXTURES ============== */
 function makeTex(size, draw, repeat=1) {
@@ -436,7 +400,8 @@ addBlock(-32,-8,9,2.2,4); addBlock(32,8,9,2.2,4);
 addBlock(0,-34,12,1.6,3.5); addBlock(0,34,12,1.6,3.5);
 addBlock(-24,30,5,3.2,5); addBlock(24,-30,5,3.2,5);
 
-const ped = new THREE.Mesh(new THREE.CylinderGeometry(4.5,5.5,1.6,24), new THREE.MeshLambertMaterial({ color: 0x6b5a3a }));
+const ped = new THREE.Mesh(new THREE.CylinderGeometry(4.5,5.5,1.6,24),
+  new THREE.MeshLambertMaterial({ color: 0x6b5a3a }));
 ped.position.y = 0.8; ped.castShadow = true; ped.receiveShadow = true;
 ped.userData.isWall = true;
 scene.add(ped); worldMeshes.push(ped);
@@ -568,7 +533,6 @@ function newPlayer(x,z) {
 }
 const player  = newPlayer(0, 30);
 const player2 = newPlayer(-3, 32);
-let coopMode = false;
 
 /* ============== WEAPONS ============== */
 const WEAPON_TPL = [
@@ -635,30 +599,29 @@ function gainUlt(P) {
   if (!P || P.ultCharge >= ULT_REQ) return;
   P.ultCharge++;
   if (P === player) {
-    if (P.ultCharge === ULT_REQ) { SFX.ultReady(); showMsg('⚡ P1 ГНЕВ ГОТОВ (Q)', 1400); }
+    if (P.ultCharge === ULT_REQ) { SFX.ultReady(); showMsg('⚡ ГНЕВ ОЛИМПА ГОТОВ (Q)', 1400); addFeed('<span style="color:#66ddff">⚡ ГНЕВ ОЛИМПА ЗАРЯЖЕН (Q)</span>'); }
     updateUltHUD();
   } else {
-    if (P.ultCharge === ULT_REQ) { SFX.ultReady(); showMsg('⚡ P2 ГНЕВ ГОТОВ (U)', 1400); }
-    updateUltHUD2();
+    if (P.ultCharge === ULT_REQ) { SFX.ultReady(); addFeed('<span style="color:#ffb060">⚡ P2 ГНЕВ ГОТОВ (U)</span>'); }
   }
 }
 function activateUlt(P) {
   if (!P || P.ultCharge < ULT_REQ) { addFeed('<span style="color:#c04040">УЛЬТА НЕ ЗАРЯЖЕНА</span>'); return; }
   P.ultCharge = 0;
-  if (P === player) updateUltHUD(); else updateUltHUD2();
+  if (P === player) updateUltHUD();
   SFX.ult();
-  showMsg(P===player ? '⚡ P1 ГНЕВ ОЛИМПА' : '⚡ P2 ГНЕВ ОЛИМПА', 1400);
+  showMsg('⚡ ГНЕВ ОЛИМПА', 1400);
   const R = 26;
-  const cols = P===player ? [0xffffff,0x66ddff,0x2299dd] : [0xffffff,0xffb060,0xdd7722];
   for (let k=0;k<3;k++){
     const ring = new THREE.Mesh(new THREE.RingGeometry(0.8,1.4,40),
-      new THREE.MeshBasicMaterial({ color: cols[k], transparent:true, opacity:0.95, side: THREE.DoubleSide, depthWrite:false }));
+      new THREE.MeshBasicMaterial({ color: k===0?0xffffff:(k===1?0x66ddff:0x2299dd),
+        transparent:true, opacity:0.95, side: THREE.DoubleSide, depthWrite:false }));
     ring.rotation.x = -Math.PI/2;
     ring.position.copy(P.pos); ring.position.y = 0.4+k*0.15;
     scene.add(ring);
     ultWaves.push({ mesh: ring, life: 0.75+k*0.1, max: 0.75+k*0.1, delay: k*0.08, R });
   }
-  const light = new THREE.PointLight(P===player ? 0xaaeaff : 0xffbb66, 90, 50, 2);
+  const light = new THREE.PointLight(0xaaeaff, 90, 50, 2);
   light.position.copy(P.pos); light.position.y += 1.5;
   scene.add(light); beams.push({ m: light, life: 0.7, max: 0.7, isLight: true });
   for (const e of enemies) {
@@ -688,12 +651,6 @@ function updateUltHUD() {
   $('ultCount').textContent = player.ultCharge + ' / ' + ULT_REQ;
   box.classList.toggle('ready', player.ultCharge >= ULT_REQ);
 }
-function updateUltHUD2() {
-  const box = $('ultBox2'); if (!box) return;
-  $('ultBar2').firstElementChild.style.width = clamp(player2.ultCharge/ULT_REQ,0,1)*100 + '%';
-  $('ultCount2').textContent = player2.ultCharge + ' / ' + ULT_REQ;
-  box.classList.toggle('ready', player2.ultCharge >= ULT_REQ);
-}
 
 /* ============== LEVELS ============== */
 let currentLevel = 0;
@@ -701,23 +658,23 @@ let ngPlus = 0;
 const LEVELS = [
   { name:'ХРАМ ОЛИМПА', skyTop:0x0d1226, skyMid:0x3a2418, skyBottom:0x8a4a1a,
     fog:0x2a1f14, fogNear:45, fogFar:150, sun:0xffb060, hemiSky:0x8899cc, hemiGround:0x3a2a18, hemiInt:0.55,
-    floorTint:0xffffff, wallTint:0xffffff, colTint:0xffffff, enemyTint:0xffffff,
+    floorTint:0xffffff, wallTint:0xffffff, colTint:0xffffff,
     types:['satyr','centaur','minotaur','harpy'], boss:'titan', bossName:'ТИТАН КРОНОС' },
   { name:'ПОДЗЕМНОЕ ЦАРСТВО', skyTop:0x040208, skyMid:0x2a0a18, skyBottom:0x5a0e20,
     fog:0x150510, fogNear:22, fogFar:95, sun:0xff4020, hemiSky:0x6633aa, hemiGround:0x1a0a0a, hemiInt:0.42,
-    floorTint:0x8866aa, wallTint:0x775588, colTint:0x9977bb, enemyTint:0xd8b8ff,
+    floorTint:0x8866aa, wallTint:0x775588, colTint:0x9977bb,
     types:['skeleton','skeleton_archer','cyclops','wraith'], boss:'cerberus', bossName:'ЦЕРБЕР' },
   { name:'ВЕРШИНА ОЛИМПА', skyTop:0x4477bb, skyMid:0x99bbee, skyBottom:0xffe8cc,
     fog:0xbbddee, fogNear:55, fogFar:200, sun:0xfff0e0, hemiSky:0xddeeff, hemiGround:0xaabbcc, hemiInt:0.9,
-    floorTint:0xfff0e0, wallTint:0xfff5e0, colTint:0xffffff, enemyTint:0xfff0d0,
+    floorTint:0xfff0e0, wallTint:0xfff5e0, colTint:0xffffff,
     types:['chimera','guard_archer','minotaur','gryphon'], boss:'hydra', bossName:'ГИДРА' },
   { name:'ЛЕДЯНАЯ ЦИТАДЕЛЬ', skyTop:0x0a1a3a, skyMid:0x4a7ab0, skyBottom:0xcce8ff,
     fog:0x8ab8e0, fogNear:40, fogFar:160, sun:0xcce8ff, hemiSky:0xddeeff, hemiGround:0x88aacc, hemiInt:0.75,
-    floorTint:0xaaddff, wallTint:0xbbddff, colTint:0xddeeff, enemyTint:0x88bbff,
+    floorTint:0xaaddff, wallTint:0xbbddff, colTint:0xddeeff,
     types:['satyr','centaur','minotaur','harpy'], boss:'titan', bossName:'ИМИР' },
   { name:'ТАРТАР', skyTop:0x1a0000, skyMid:0x5a0a00, skyBottom:0xff4020,
     fog:0x3a0800, fogNear:18, fogFar:90, sun:0xff5520, hemiSky:0xff6633, hemiGround:0x2a0505, hemiInt:0.55,
-    floorTint:0xff8866, wallTint:0xaa4422, colTint:0xffaa88, enemyTint:0xff8060,
+    floorTint:0xff8866, wallTint:0xaa4422, colTint:0xffaa88,
     types:['skeleton','skeleton_archer','cyclops','wraith'], boss:'hydra', bossName:'ТИФОН' }
 ];
 function applyLevel(idx) {
@@ -781,7 +738,6 @@ function buildEnemyMesh(type) {
   g.userData.hitMeshes = [];
   const tag = m => { m.castShadow = true; g.userData.hitMeshes.push(m); return m; };
 
-  // Простой гуманоидный/звериный каркас — сфера-голова, конусные конечности
   if (type === 'skeleton' || type === 'skeleton_archer') {
     const boneMat = new THREE.MeshLambertMaterial({ color: 0xe8dcc0 });
     const spine = tag(new THREE.Mesh(new THREE.CylinderGeometry(0.1*s,0.1*s,1.3*s,8), boneMat));
@@ -994,7 +950,6 @@ function buildEnemyMesh(type) {
     g.userData.limbs = { arms, legs };
   }
   else {
-    // Сатир, Минотавр, Титан, Циклоп, Гарпия — базовый гуманоид
     const bulky = type === 'titan' ? 1.6 : (type === 'minotaur' ? 1.45 : (type === 'cyclops' ? 1.7 : 1.0));
     const torso = tag(new THREE.Mesh(new THREE.CylinderGeometry(0.55*s*bulky, 0.4*s*bulky, 1.3*s, 14), mat));
     torso.position.y = 1.62*s; torso.scale.set(1,1,0.78); g.add(torso);
@@ -1193,7 +1148,7 @@ function explode(pos, R, dmg, source='player') {
       }
     }
   } else {
-    const P = nearestPlayer(pos);
+    const P = player.alive ? player : (player2.alive ? player2 : null);
     if (P) {
       const d = P.pos.distanceTo(pos);
       if (d < R + 0.8) {
@@ -1208,7 +1163,7 @@ function updateProjectiles(dt) {
     const p = projectiles[i];
     p.life -= dt;
     if (p.homing && p.owner !== 'player') {
-      const P = nearestPlayer(p.mesh.position);
+      const P = player.alive ? player : (player2.alive ? player2 : null);
       if (P) {
         const desired = new THREE.Vector3(P.pos.x, P.pos.y-0.2, P.pos.z).sub(p.mesh.position).normalize();
         p.dir.lerp(desired, 1.6*dt).normalize();
@@ -1225,7 +1180,7 @@ function updateProjectiles(dt) {
       }
     } else {
       if (player.alive && mp.distanceTo(player.pos) < 0.95) hit = true;
-      if (!hit && coopMode && player2.alive && mp.distanceTo(player2.pos) < 0.95) hit = true;
+      if (!hit && player2.alive && net.mode === 'host' && mp.distanceTo(player2.pos) < 0.95) hit = true;
     }
     if (!hit && (mp.y < 0.15 || Math.abs(mp.x) > ARENA || Math.abs(mp.z) > ARENA)) hit = true;
     if (!hit) {
@@ -1238,8 +1193,8 @@ function updateProjectiles(dt) {
       else {
         burst(mp.clone(), 6, { mat: p.owner==='player'?'stone':'fire', speed:5, life:0.4, size:0.12 });
         if (p.owner !== 'player') {
-          const P = nearestPlayer(mp);
-          if (P && P.pos.distanceTo(mp) < 1.4) damagePlayer(P, p.damage);
+          if (player.alive && player.pos.distanceTo(mp) < 1.4) damagePlayer(player, p.damage);
+          else if (player2.alive && net.mode === 'host' && player2.pos.distanceTo(mp) < 1.4) damagePlayer(player2, p.damage);
         }
       }
       scene.remove(p.mesh);
@@ -1275,7 +1230,7 @@ function updatePickups(dt) {
     p.mesh.position.y = 1.0 + Math.sin(p.t*3)*0.22;
     let got = false;
     if (player.alive && p.mesh.position.distanceTo(player.pos) < 1.9) { applyPickup(p.type, player); got = true; }
-    if (!got && coopMode && player2.alive && p.mesh.position.distanceTo(player2.pos) < 1.9) { applyPickup(p.type, player2); got = true; }
+    if (!got && net.mode === 'host' && player2.alive && p.mesh.position.distanceTo(player2.pos) < 1.9) { applyPickup(p.type, player2); got = true; }
     if (got) {
       burst(p.mesh.position.clone(), 10, { mat:'gold', speed:5, life:0.4, size:0.12, gravity:4 });
       scene.remove(p.mesh); pickups.splice(i,1); SFX.pickup(); continue;
@@ -1296,13 +1251,6 @@ function applyPickup(type, P) {
 }
 
 /* ============== DAMAGE ============== */
-function nearestPlayer(pos) {
-  if (!coopMode) return player.alive ? player : null;
-  if (!player.alive && !player2.alive) return null;
-  if (!player.alive) return player2;
-  if (!player2.alive) return player;
-  return pos.distanceTo(player.pos) < pos.distanceTo(player2.pos) ? player : player2;
-}
 function damageEnemy(e, amount, hitPos, attacker) {
   if (e.dead) return;
   e.hp -= amount; e.hurtT = 0.12;
@@ -1332,7 +1280,7 @@ function killEnemy(e, attacker) {
   const dispName = e.cfg.boss ? LEVELS[currentLevel].bossName : e.cfg.name;
   addFeed(`☠ ${dispName} <span style="color:#a08a68">+${e.cfg.score}</span>`);
   if (net.mode === 'host') netEvent('feed', { html: `☠ ${dispName} +${e.cfg.score}` });
-  if (attacker) gainUlt(attacker);
+  if (attacker === player) gainUlt(player);
   const roll = Math.random();
   if (e.cfg.boss) {
     spawnPickup('health', p.clone().setY(1));
@@ -1382,8 +1330,14 @@ function updateEnemies(dt) {
     }
     m.scale.setScalar(1);
 
-    const target = nearestPlayer(m.position);
+    // цель — ближайший живой игрок (в сети — это хост P1 или удалённый P2)
+    let target = null;
+    if (player.alive && player2.alive) {
+      target = player.pos.distanceTo(m.position) < player2.pos.distanceTo(m.position) ? player : player2;
+    } else if (player.alive) target = player;
+    else if (player2.alive && net.mode === 'host') target = player2;
     if (!target) continue;
+
     const toPlayer = new THREE.Vector3().subVectors(target.pos, m.position);
     toPlayer.y = 0;
     const dist = toPlayer.length();
@@ -1583,7 +1537,6 @@ function buildCompanion() {
   const g = new THREE.Group();
   const skin = new THREE.MeshLambertMaterial({ color: 0xf0d8b8 });
   const top = new THREE.MeshLambertMaterial({ color: 0x18b4a8 });
-  const topDark = new THREE.MeshLambertMaterial({ color: 0x0d8a80 });
   const shorts = new THREE.MeshLambertMaterial({ color: 0x1a1f2a });
   const hair = new THREE.MeshLambertMaterial({ color: 0x3a1a08 });
   const gold = new THREE.MeshLambertMaterial({ color: 0xd9b060 });
@@ -1599,7 +1552,6 @@ function buildCompanion() {
     const f = t(new THREE.Mesh(new THREE.BoxGeometry(0.14,0.08,0.26), sandal)); f.position.set(0,-1.06,0.05); pv.add(f);
     g.add(pv); legs.push(pv);
   }
-  // Шорты
   const sh = t(new THREE.Mesh(new THREE.CylinderGeometry(0.30,0.36,0.42,20), shorts));
   sh.position.y = 1.19; sh.scale.set(1,1,0.9); g.add(sh);
   for (const sx of [-1,1]) {
@@ -1608,10 +1560,8 @@ function buildCompanion() {
     const hp = t(new THREE.Mesh(new THREE.SphereGeometry(0.13,14,12), shorts));
     hp.position.set(sx*0.175, 1.09, -0.02); hp.scale.set(0.95,1.05,0.92); g.add(hp);
   }
-  // Живот
   const mid = t(new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.26,0.24,16), skin));
   mid.position.y = 1.56; mid.scale.set(1,1,0.85); g.add(mid);
-  // Топ + грудь
   const tp = t(new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.23,0.38,20), top));
   tp.position.y = 1.87; tp.scale.set(1,1,0.8); g.add(tp);
   for (const sx of [-1,1]) {
@@ -1620,21 +1570,17 @@ function buildCompanion() {
     const m = t(new THREE.Mesh(new THREE.SphereGeometry(0.13,14,12), top));
     m.position.set(sx*0.07, 1.83, 0.13); m.scale.set(1,0.95,0.85); g.add(m);
   }
-  // Плечи
   const shs = t(new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.28,0.10,14), skin));
   shs.position.y = 2.14; shs.scale.set(1,1,0.82); g.add(shs);
   const neck = t(new THREE.Mesh(new THREE.CylinderGeometry(0.075,0.09,0.14,12), skin));
   neck.position.y = 2.24; g.add(neck);
 
-  // Голова с лицом
   const head = t(new THREE.Mesh(new THREE.SphereGeometry(0.20,20,18), skin));
   head.position.y = 2.47; head.scale.set(0.92,1.05,0.98); g.add(head);
   const chin = new THREE.Mesh(new THREE.SphereGeometry(0.09,12,10), skin);
   chin.position.set(0,2.34,0.03); chin.scale.set(1,0.7,1.05); g.add(chin);
-  // Нос
   const nb = new THREE.Mesh(new THREE.BoxGeometry(0.045,0.13,0.06), skin);
   nb.position.set(0,2.48,0.185); g.add(nb);
-  // Глаза
   for (const sx of [-1,1]) {
     const w = new THREE.Mesh(new THREE.SphereGeometry(0.048,14,12), new THREE.MeshBasicMaterial({ color: 0xf5f5f0 }));
     w.position.set(sx*0.075, 2.52, 0.175); w.scale.set(1.05,1,0.6); g.add(w);
@@ -1645,13 +1591,11 @@ function buildCompanion() {
     const br = new THREE.Mesh(new THREE.BoxGeometry(0.10,0.018,0.028), hair);
     br.position.set(sx*0.075, 2.60, 0.178); br.rotation.z = sx*-0.2; g.add(br);
   }
-  // Губы
   const ul = new THREE.Mesh(new THREE.SphereGeometry(0.052,12,8), new THREE.MeshLambertMaterial({ color: 0xd06070 }));
   ul.position.set(0,2.36,0.178); ul.scale.set(1.3,0.35,0.5); g.add(ul);
   const ll = new THREE.Mesh(new THREE.SphereGeometry(0.052,12,8), new THREE.MeshLambertMaterial({ color: 0xd06070 }));
   ll.position.set(0,2.335,0.178); ll.scale.set(1.25,0.42,0.5); g.add(ll);
 
-  // Волосы
   const hb = t(new THREE.Mesh(new THREE.SphereGeometry(0.215,16,14), hair));
   hb.position.set(0,2.47,-0.03); hb.scale.set(0.98,1.05,1.02); g.add(hb);
   const ht = t(new THREE.Mesh(new THREE.SphereGeometry(0.19,14,12), hair));
@@ -1666,7 +1610,6 @@ function buildCompanion() {
   const pin = new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8), gold);
   pin.position.set(0.16,2.56,0.05); g.add(pin);
 
-  // Руки
   const arms = [];
   for (const sx of [-1,1]) {
     const pv = new THREE.Group();
@@ -1806,12 +1749,6 @@ addEventListener('keydown', e => {
     if (e.code === 'Digit5') selectWeapon(player, 4);
     if (e.code === 'KeyQ') activateUlt(player);
   }
-  if (e.code === 'Digit6') selectWeapon(player2, 0);
-  if (e.code === 'Digit7') selectWeapon(player2, 1);
-  if (e.code === 'Digit8') selectWeapon(player2, 2);
-  if (e.code === 'Digit9') selectWeapon(player2, 3);
-  if (e.code === 'Digit0') selectWeapon(player2, 4);
-  if (e.code === 'KeyU') activateUlt(player2);
   if (e.code === 'Space') e.preventDefault();
 });
 addEventListener('keyup', e => { keys[e.code] = false; keys2[e.code] = false; });
@@ -1943,12 +1880,12 @@ function updateWaves(dt) {
     companionSay('Уф! Чуть не умерла! То есть... ну ты понял.', 2400);
     player.hp = Math.min(player.maxHp, player.hp+22);
     player.armor = Math.min(player.maxArmor, player.armor+12);
-    if (coopMode) {
+    if (net.mode === 'host') {
       player2.hp = Math.min(player2.maxHp, player2.hp+22);
       player2.armor = Math.min(player2.maxArmor, player2.armor+12);
     }
     for (const w of player.weapons) if (w.unlocked) w.ammo = Math.min(w.ammoMax, w.ammo + Math.ceil(w.ammoMax*0.18));
-    if (coopMode) for (const w of player2.weapons) if (w.unlocked) w.ammo = Math.min(w.ammoMax, w.ammo + Math.ceil(w.ammoMax*0.18));
+    if (net.mode === 'host') for (const w of player2.weapons) if (w.unlocked) w.ammo = Math.min(w.ammoMax, w.ammo + Math.ceil(w.ammoMax*0.18));
     spawnPickup('health', new THREE.Vector3(rand(-20,20), 1, rand(-20,20)));
     spawnPickup('ammo',   new THREE.Vector3(rand(-20,20), 1, rand(-20,20)));
     if (wave % 5 === 0) {
@@ -2061,15 +1998,6 @@ function updateHUD() {
   const w = P.weapons[P.curWeapon];
   $('wName').textContent = w.name;
   $('wAmmo').innerHTML = `${w.ammo}<small> / ${w.ammoMax}</small>`;
-  if (coopMode) {
-    $('hpVal2').textContent = Math.max(0, Math.ceil(player2.hp));
-    $('apVal2').textContent = Math.max(0, Math.ceil(player2.armor));
-    $('hpBar2').firstElementChild.style.width = clamp(player2.hp/player2.maxHp*100, 0, 100) + '%';
-    $('apBar2').firstElementChild.style.width = clamp(player2.armor/player2.maxArmor*100, 0, 100) + '%';
-    const w2 = player2.weapons[player2.curWeapon];
-    $('wName2').textContent = w2.name;
-    $('wAmmo2').innerHTML = `${w2.ammo}<small> / ${w2.ammoMax}</small>`;
-  }
   $('scoreVal').textContent = score;
   $('killVal').textContent = kills;
   if (waveActive) {
@@ -2104,36 +2032,56 @@ let healT = null;
 function flashHeal() {
   $('healFlash').style.opacity = '0.7';
   clearTimeout(healT);
-  healT = setTimeout(()=>{ $('healFlash').style.opacity = '0'; }, 120);
+  healT = setTimeout(()=>{ $('healFlash').style.opacity = '0'; }, 90);
 }
 
-/* ============== NETWORK (PeerJS) ============== */
+/* ============== NETWORK ============== */
 const net = {
-  mode: 'none', peer: null, conn: null, roomCode: '', connected: false,
+  mode: 'none', peer: null, conn: null, nick: '', peerId: '', connected: false,
   hostTickT: 0, TICK: 0.05, remoteInput: { forward:false, back:false, left:false, right:false,
     jump:false, sprint:false, shoot:false, yawDelta:0, pitchDelta:0 },
   events: []
 };
 function netEvent(t, d={}) { net.events.push({ t, ...d }); }
-function genCode() {
-  const ch = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let s = '';
-  for (let i=0;i<5;i++) s += ch[Math.floor(Math.random()*ch.length)];
-  return s;
+
+const NICKS_ADJ = ['Короткий','Длинный','Мокрый','Сухой','Толстый','Тонкий','Лысый','Волосатый',
+  'Бородатый','Ржавый','Косой','Пьяный','Сонный','Голодный','Злой','Весёлый','Хромой','Кривой',
+  'Пузатый','Задумчивый','Скромный','Буйный','Тихий','Тупой','Хитрый','Упрямый','Грязный',
+  'Ленивый','Быстрый','Пугливый'];
+const NICKS_NOUN = ['Писюн','Кулак','Кот','Дракон','Баран','Молот','Кабан','Хомяк','Пельмень',
+  'Чувак','Сатир','Титан','Кентавр','Гопник','Депутат','Сантехник','Барабашка','Скелет',
+  'Минотавр','Гарпия','Циклоп','Грифон','Щегол','Крот','Воробей','Огурец','Помидор',
+  'Кирпич','Валенок','Морж'];
+const TRANSLIT = {
+  'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i','й':'y',
+  'к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f',
+  'х':'h','ц':'c','ч':'ch','ш':'sh','щ':'sch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya',' ':'-'
+};
+function translit(s) {
+  return s.toLowerCase().split('').map(c => TRANSLIT[c] != null ? TRANSLIT[c] : c)
+    .join('').replace(/[^a-z0-9-]/g,'');
+}
+function genNick() {
+  return pick(NICKS_ADJ) + ' ' + pick(NICKS_NOUN);
 }
 function lobby(html) { $('netStatus').innerHTML = html; }
+
 function startHost() {
   net.mode = 'host';
-  net.roomCode = genCode();
+  net.nick = genNick();
+  net.peerId = 'wrath-olympus-v7-' + translit(net.nick);
   $('hostRow').classList.remove('hidden');
   $('joinRow').classList.add('hidden');
   $('netChoiceRow').classList.add('hidden');
-  $('roomCode').textContent = net.roomCode;
+  $('roomCode').textContent = net.nick;
   lobby('Создаём комнату...');
   try {
-    net.peer = new Peer('wrath-olympus-' + net.roomCode, { debug: 0 });
+    net.peer = new Peer(net.peerId, { debug: 0 });
   } catch(e) { lobby('Ошибка PeerJS: ' + e.message); return; }
-  net.peer.on('open', () => lobby('Комната готова. Код:<br><b style="color:#ffd27a;font-size:22px;letter-spacing:6px;">' + net.roomCode + '</b><br>Передай другу.'));
+  net.peer.on('open', () => lobby(
+    'Комната готова!<br>Ник: <b style="color:#ffd27a;font-size:20px;">' + net.nick + '</b>' +
+    '<br><span style="font-size:12px;color:#8a785a;">Отправь другу ссылку или ник</span>'
+  ));
   net.peer.on('connection', conn => {
     net.conn = conn;
     conn.on('open', () => {
@@ -2148,16 +2096,33 @@ function startHost() {
       $('startNetBtn').classList.add('hidden');
     });
   });
-  net.peer.on('error', e => lobby('Ошибка: ' + e.type));
+  net.peer.on('error', e => {
+    if (e.type === 'unavailable-id') {
+      lobby('Ник занят, генерируем другой...');
+      try { net.peer.destroy(); } catch(_) {}
+      startHost();
+    } else {
+      lobby('Ошибка: ' + e.type);
+    }
+  });
 }
-function joinRoom(code) {
+function joinRoom(input) {
+  let code = input.trim();
+  if (code.includes('join=')) {
+    try {
+      const u = new URL(code, location.href);
+      code = u.searchParams.get('join') || code;
+    } catch(_) {}
+  }
+  code = decodeURIComponent(code).replace(/^wrath-olympus-v7-/i, '').replace(/[-_]+/g, ' ').trim();
+  net.nick = code;
   net.mode = 'client';
-  net.roomCode = code.toUpperCase().trim();
-  lobby('Подключаемся к ' + net.roomCode + '...');
+  net.peerId = 'wrath-olympus-v7-' + translit(code);
+  lobby('Подключаемся к «' + code + '»...');
   try { net.peer = new Peer({ debug: 0 }); }
   catch(e) { lobby('Ошибка PeerJS: ' + e.message); return; }
   net.peer.on('open', () => {
-    const conn = net.peer.connect('wrath-olympus-' + net.roomCode);
+    const conn = net.peer.connect(net.peerId);
     net.conn = conn;
     conn.on('open', () => {
       net.connected = true;
@@ -2166,7 +2131,7 @@ function joinRoom(code) {
     conn.on('data', onHostData);
     conn.on('close', () => { net.connected = false; lobby('Соединение потеряно.'); });
   });
-  net.peer.on('error', e => lobby('Ошибка: ' + e.type));
+  net.peer.on('error', e => lobby('Не нашли такого игрока: «' + code + '»<br>Проверь ник.'));
 }
 function onClientData(data) {
   if (!data || data.t !== 'input') return;
@@ -2217,11 +2182,9 @@ function applyNetState(s) {
   wave = s.wave; waveActive = s.waveActive;
   if (s.currentLevel !== currentLevel) { currentLevel = s.currentLevel; applyLevel(currentLevel); }
   score = s.score; kills = s.kills;
-  // P1 — визуально
   player.pos.set(s.p1.x, s.p1.y, s.p1.z);
   player.yaw = s.p1.yaw; player.pitch = s.p1.pitch;
   player.hp = s.p1.hp; player.armor = s.p1.armor; player.alive = s.p1.alive;
-  // P2 — это я
   player2.pos.set(s.p2.x, s.p2.y, s.p2.z);
   player2.yaw = s.p2.yaw; player2.pitch = s.p2.pitch;
   player2.hp = s.p2.hp; player2.armor = s.p2.armor; player2.alive = s.p2.alive;
@@ -2249,7 +2212,6 @@ function applyNetState(s) {
   if (s.events) for (const ev of s.events) handleNetEvent(ev);
   updateHUD();
   updateUltHUD();
-  updateUltHUD2();
 }
 function spawnEnemyClient(type, pos) {
   const cfg = ENEMY_TYPES[type];
@@ -2282,10 +2244,10 @@ function handleNetEvent(ev) {
   } else if (ev.t === 'ult') {
     const P = ev.p === 1 ? player : player2;
     const R = 26;
-    const cols = ev.p === 1 ? [0xffffff,0x66ddff,0x2299dd] : [0xffffff,0xffb060,0xdd7722];
     for (let k=0;k<3;k++) {
       const ring = new THREE.Mesh(new THREE.RingGeometry(0.8,1.4,40),
-        new THREE.MeshBasicMaterial({ color: cols[k], transparent:true, opacity:0.95, side:THREE.DoubleSide, depthWrite:false }));
+        new THREE.MeshBasicMaterial({ color: k===0?0xffffff:(k===1?0x66ddff:0x2299dd),
+          transparent:true, opacity:0.95, side:THREE.DoubleSide, depthWrite:false }));
       ring.rotation.x = -Math.PI/2;
       ring.position.copy(P.pos); ring.position.y = 0.4+k*0.15;
       scene.add(ring);
@@ -2365,14 +2327,12 @@ function resetGame() {
   player.alive = true; player.invuln = 0; player.recoil = 0; player.kick = 0;
   player.weapons = makeWeapons(); player.curWeapon = 0; player.weaponCd = 0; player.ultCharge = 0;
 
-  if (coopMode) {
-    player2.pos.set(-3, 1.7, 32); player2.vel.set(0,0,0);
-    player2.yaw = Math.PI; player2.pitch = 0;
-    player2.hp = player2.maxHp; player2.armor = 0;
-    player2.alive = true; player2.invuln = 0; player2.recoil = 0; player2.kick = 0;
-    player2.weapons = makeWeapons(); player2.curWeapon = 0; player2.weaponCd = 0; player2.ultCharge = 0;
-    player2.avatar.position.copy(player2.pos); player2.avatar.position.y = 0;
-  }
+  player2.pos.set(-3, 1.7, 32); player2.vel.set(0,0,0);
+  player2.yaw = Math.PI; player2.pitch = 0;
+  player2.hp = player2.maxHp; player2.armor = 0;
+  player2.alive = true; player2.invuln = 0; player2.recoil = 0; player2.kick = 0;
+  player2.weapons = makeWeapons(); player2.curWeapon = 0; player2.weaponCd = 0; player2.ultCharge = 0;
+  player2.avatar.position.copy(player2.pos); player2.avatar.position.y = 0;
 
   wave = 0; score = 0; kills = 0;
   spawnQueue = []; waveActive = false; waveBreakTimer = 1.2;
@@ -2386,7 +2346,6 @@ function resetGame() {
   $('feed').innerHTML = '';
   updateHUD();
   updateUltHUD();
-  updateUltHUD2();
 }
 
 function gameOver() {
@@ -2401,78 +2360,44 @@ function gameOver() {
   if (net.mode === 'host' && net.connected) sendToPeer({ t:'end', stats: $('goStats').innerHTML });
 }
 
-function setupSolo() {
-  coopMode = false;
-  player2.avatar.visible = false;
-  $('ultBox').style.display = 'none';
-  $('ultBox2').style.display = 'none';
-  $('weaponBox2').style.display = 'none';
-  $('vitals2').style.display = 'none';
-  $('cross2').style.display = 'none';
-}
-function setupCoop() {
-  coopMode = true;
-  player2.alive = true;
-  player2.hp = player2.maxHp;
-  player2.armor = 0;
-  player2.pos.set(-3, 1.7, 32);
-  player2.vel.set(0,0,0);
-  player2.yaw = Math.PI;
-  player2.weapons = makeWeapons();
-  player2.curWeapon = 0;
-  player2.ultCharge = 0;
-  player2.avatar.visible = true;
-  player2.avatar.position.copy(player2.pos); player2.avatar.position.y = 0;
-  $('ultBox').style.display = 'block';
-  $('ultBox2').style.display = 'block';
-  $('weaponBox2').style.display = 'block';
-  $('vitals2').style.display = 'flex';
-  $('cross2').style.display = 'block';
-}
-
 function startSolo() {
   initAudio();
   if (actx && actx.state === 'suspended') actx.resume();
-  setupSolo();
+  player2.avatar.visible = false;
+  $('ultBox').style.display = 'block';
   $('modeScreen').classList.add('hidden');
+  net.mode = 'none';
   resetGame();
   gameState = 'playing';
   safeLock();
   clock.getDelta();
   setTimeout(()=>companionSay('Ну наконец-то!', 2400), 800);
 }
-function startCoop() {
-  initAudio();
-  if (actx && actx.state === 'suspended') actx.resume();
-  setupCoop();
-  $('modeScreen').classList.add('hidden');
-  resetGame();
-  gameState = 'playing';
-  safeLock();
-  clock.getDelta();
-  setTimeout(()=>companionSay('Вас двое! Веселее!', 2400), 800);
-}
 function startNetHost() {
   initAudio();
   if (actx && actx.state === 'suspended') actx.resume();
-  setupCoop();
+  player2.alive = true;
+  player2.hp = player2.maxHp;
+  player2.armor = 0;
+  player2.pos.set(-3, 1.7, 32);
+  player2.vel.set(0, 0, 0);
+  player2.yaw = Math.PI;
+  player2.weapons = makeWeapons();
+  player2.curWeapon = 0;
+  player2.ultCharge = 0;
+  player2.avatar.visible = true;
+  player2.avatar.position.copy(player2.pos);
+  player2.avatar.position.y = 0;
+  $('ultBox').style.display = 'block';
   $('netScreen').classList.add('hidden');
   resetGame();
   gameState = 'playing';
   safeLock();
   clock.getDelta();
-  sendToPeer({ t:'start' });
+  sendToPeer({ t: 'start' });
 }
 function startNetClientGame() {
-  coopMode = true;
-  $('ultBox').style.display = 'none';
-  $('ultBox2').style.display = 'block';
-  $('weaponBox').style.display = 'none';
-  $('weaponBox2').style.display = 'block';
-  $('vitals').style.display = 'none';
-  $('vitals2').style.display = 'flex';
-  $('cross').style.display = 'none';
-  $('cross2').style.display = 'block';
+  $('ultBox').style.display = 'block';
   player2.alive = true;
   player2.hp = player2.maxHp;
   player2.weapons = makeWeapons();
@@ -2487,7 +2412,6 @@ function startNetClientGame() {
 
 /* ============== BUTTONS ============== */
 $('soloBtn').onclick = startSolo;
-$('coopBtn').onclick = startCoop;
 $('netBtn').onclick = () => {
   initAudio();
   $('modeScreen').classList.add('hidden');
@@ -2502,6 +2426,7 @@ $('netBackBtn').onclick = () => {
   $('joinRow').classList.add('hidden');
   $('netChoiceRow').classList.remove('hidden');
   $('startNetBtn').classList.add('hidden');
+  $('codeInput').value = '';
   lobby('Выбери: создать комнату или подключиться.');
 };
 $('hostBtn').onclick = startHost;
@@ -2512,13 +2437,36 @@ $('joinBtn').onclick = () => {
 };
 $('joinConfirmBtn').onclick = () => {
   const c = $('codeInput').value.trim();
-  if (c.length < 3) { lobby('Введи код из 5 символов.'); return; }
+  if (c.length < 2) { lobby('Введи ссылку или ник.'); return; }
   joinRoom(c);
 };
 $('codeInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') $('joinConfirmBtn').click();
 });
 $('startNetBtn').onclick = startNetHost;
+$('rerollBtn').onclick = () => {
+  if (net.peer) { try { net.peer.destroy(); } catch(_) {} net.peer = null; }
+  net.conn = null; net.connected = false;
+  $('startNetBtn').classList.add('hidden');
+  startHost();
+};
+$('copyInviteBtn').onclick = () => {
+  const link = location.origin + location.pathname + '?join=' + encodeURIComponent(net.nick);
+  const done = () => {
+    $('copyInviteBtn').textContent = '✓ СКОПИРОВАНО!';
+    setTimeout(() => { $('copyInviteBtn').textContent = '📋 СКОПИРОВАТЬ ССЫЛКУ'; }, 1800);
+  };
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = link; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(_){}
+    document.body.removeChild(ta); done();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(link).then(done).catch(fallback);
+  } else fallback();
+};
 $('resumeBtn').onclick = () => {
   $('pauseScreen').classList.add('hidden');
   gameState = 'playing';
@@ -2529,7 +2477,7 @@ $('restartBtn').onclick = () => {
   $('overScreen').classList.add('hidden');
   if (net.peer) { try { net.peer.destroy(); } catch(e){} net.peer = null; }
   net.conn = null; net.connected = false; net.mode = 'none';
-  setupSolo();
+  player2.avatar.visible = false;
   $('modeScreen').classList.remove('hidden');
   gameState = 'menu';
   resetGame();
@@ -2552,7 +2500,7 @@ function animate() {
       updateWorld(dt);
       updateCompanionBubble();
       updateHUD();
-      updateUltHUD2();
+      updateUltHUD();
       renderer.render(scene, camera);
       return;
     }
@@ -2563,17 +2511,7 @@ function animate() {
       shoot: mouseDown
     }, dt);
 
-    if (net.mode === 'host') {
-      applyRemoteInput(dt);
-    } else if (coopMode && player2.alive) {
-      updatePlayerEntity(player2, camera2, {
-        forward: keys2['KeyI'], back: keys2['KeyK'], left: keys2['KeyJ'], right: keys2['KeyL'],
-        jump: keys2['Comma'], sprint: keys2['Period'],
-        shoot: keys2['Slash'],
-        turnLeft: keys2['ArrowLeft'], turnRight: keys2['ArrowRight'],
-        lookUp: keys2['ArrowUp'], lookDown: keys2['ArrowDown']
-      }, dt);
-    }
+    if (net.mode === 'host') applyRemoteInput(dt);
 
     updateEnemies(dt);
     updateProjectiles(dt);
@@ -2599,41 +2537,14 @@ function animate() {
       }
     }
 
-    if (net.mode === 'host') {
-      const W = innerWidth, H = innerHeight;
-      renderer.setScissorTest(true);
-      player.avatar.visible = false;
-      camera.aspect = (W/2)/H; camera.updateProjectionMatrix();
-      renderer.setViewport(0, 0, W/2, H); renderer.setScissor(0, 0, W/2, H);
-      renderer.render(scene, camera);
-      player.avatar.visible = true;
-
-      player2.avatar.visible = false;
-      camera2.aspect = (W/2)/H; camera2.updateProjectionMatrix();
-      camera2.position.set(player2.pos.x, player2.pos.y, player2.pos.z);
-      camera2.rotation.set(player2.pitch, player2.yaw, 0, 'YXZ');
-      renderer.setViewport(W/2, 0, W/2, H); renderer.setScissor(W/2, 0, W/2, H);
-      renderer.render(scene, camera2);
-      player2.avatar.visible = true;
-      renderer.setScissorTest(false);
-    } else if (coopMode && player2.alive) {
-      const W = innerWidth, H = innerHeight;
-      renderer.setScissorTest(true);
-      player.avatar.visible = false;
-      camera.aspect = (W/2)/H; camera.updateProjectionMatrix();
-      renderer.setViewport(0, 0, W/2, H); renderer.setScissor(0, 0, W/2, H);
-      renderer.render(scene, camera);
-      player.avatar.visible = true;
-      player2.avatar.visible = false;
-      camera2.aspect = (W/2)/H; camera2.updateProjectionMatrix();
-      renderer.setViewport(W/2, 0, W/2, H); renderer.setScissor(W/2, 0, W/2, H);
-      renderer.render(scene, camera2);
-      player2.avatar.visible = true;
-      renderer.setScissorTest(false);
-    } else {
-      player.avatar.visible = false;
-      renderer.render(scene, camera);
-    }
+    // Всегда свой POV на весь экран
+    player.avatar.visible = false;
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setScissorTest(false);
+    renderer.setViewport(0, 0, innerWidth, innerHeight);
+    renderer.render(scene, camera);
+    player.avatar.visible = true;
   } else {
     updateParticles(dt*0.3);
     updateWorld(dt*0.3);
@@ -2649,16 +2560,32 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight);
 });
 
+// Авто-подключение по ссылке ?join=Ник
+(function checkInvite() {
+  try {
+    const params = new URLSearchParams(location.search);
+    const join = params.get('join');
+    if (join) {
+      $('modeScreen').classList.add('hidden');
+      $('netScreen').classList.remove('hidden');
+      $('netChoiceRow').classList.add('hidden');
+      $('joinRow').classList.remove('hidden');
+      $('codeInput').value = join;
+      $('joinConfirmBtn').textContent = 'ПРИСОЕДИНИТЬСЯ';
+      lobby('Тебя пригласили в игру к <b style="color:#ffd27a">' + join + '</b>.<br>Жми кнопку ниже.');
+    }
+  } catch(e) { console.warn('URL parse failed', e); }
+})();
+
 // INIT
 updateHUD();
 updateUltHUD();
-updateUltHUD2();
 applyLevel(0);
 camera.position.copy(player.pos);
 camera.rotation.set(0, player.yaw, 0, 'YXZ');
 animate();
 
-console.log('%c⚔ WRATH OF OLYMPUS v7', 'color:#ffd27a;font-size:16px;font-weight:bold');
+console.log('%c⚔ WRATH OF OLYMPUS v8', 'color:#ffd27a;font-size:16px;font-weight:bold');
 </script>
 </body>
 </html>
