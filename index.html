@@ -84,12 +84,9 @@
   #goStats b { color:#fff; font-size:26px; }
   #netScreen input { padding:14px 18px; font-size:18px; letter-spacing:2px; text-align:center;
     background:#1a1208; color:#ffd27a; border:2px solid #7a5c26;
-    border-radius:5px; font-family:inherit; width:340px; }
-  #netScreen input:focus { outline:none; border-color:#ffd27a; }
-  #netScreen .row { display:flex; gap:14px; align-items:center; justify-content:center; margin-top:20px; }
-  #netStatus { margin-top:22px; font-size:15px; color:#e8dcc0; min-height:60px; line-height:1.6; }
-  #roomCode { font-size:28px; letter-spacing:2px; color:#ffd27a; font-weight:bold;
-    text-shadow:0 0 22px rgba(255,140,20,.9); margin-top:8px; max-width:90vw; }
+    border-radius:5px; font-family:inherit; width:360px; outline:none; }
+  #netScreen input:focus { border-color:#ffd27a; box-shadow:0 0 14px rgba(255,180,60,.4); }
+  #netScreen .row { display:flex; gap:14px; align-items:center; justify-content:center; margin-top:20px; flex-wrap:wrap; }
   #enemyBars { position:fixed; inset:0; pointer-events:none; z-index:9; }
   .ebar { position:absolute; transform:translate(-50%,-50%); pointer-events:none;
     background:rgba(0,0,0,.72); border:1px solid rgba(0,0,0,.9); border-radius:3px; overflow:hidden; }
@@ -97,6 +94,32 @@
   .ebar.boss { border-color:#a01010; }
   .ebar .nm { position:absolute; top:-14px; left:50%; transform:translateX(-50%);
     font-size:10px; color:#ffd27a; white-space:nowrap; text-shadow:0 0 4px #000; }
+  /* Статус соединения */
+  #connStatus { margin-top:26px; min-height:80px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:8px; }
+  #connDot { font-size:22px; line-height:1; }
+  #connText { font-size:17px; letter-spacing:2px; }
+  #connSub { font-size:13px; color:#8a785a; max-width:520px; line-height:1.5; }
+  @keyframes pulseWait { 0%,100%{opacity:.4;} 50%{opacity:1;} }
+  @keyframes pulseOk { 0%,100%{transform:scale(1); opacity:1;} 50%{transform:scale(1.15); opacity:.85;} }
+  .state-wait #connDot { color:#ffcc44; animation: pulseWait 1.2s infinite; }
+  .state-wait #connText { color:#ffcc44; }
+  .state-ok #connDot { color:#66ff88; animation: pulseOk 1s infinite; }
+  .state-ok #connText { color:#66ff88; font-weight:bold; }
+  .state-err #connDot { color:#ff4444; }
+  .state-err #connText { color:#ff4444; }
+  .state-info #connDot { color:#a8895a; }
+  .state-info #connText { color:#a8895a; }
+  .nickBox { background:rgba(255,210,120,.12); border:2px dashed #7a5c26;
+    border-radius:8px; padding:14px 26px; font-size:32px; letter-spacing:3px;
+    color:#ffd27a; cursor:pointer; text-shadow:0 0 18px rgba(255,140,20,.8);
+    transition:all .15s; user-select:text; }
+  .nickBox:hover { background:rgba(255,210,120,.2); border-color:#ffd27a; }
+  .nickBox:active { transform:scale(0.98); }
+  .inviteHelp { font-size:13px; color:#8a785a; letter-spacing:1px; line-height:1.8;
+    text-align:left; background:rgba(0,0,0,.3); padding:14px 20px; border-radius:6px;
+    border-left:3px solid #ffd27a; margin-top:20px; max-width:520px; }
+  .inviteHelp b { color:#ffd27a; }
 </style>
 </head>
 <body>
@@ -154,7 +177,7 @@
 <div class="screen" id="modeScreen">
   <h1>WRATH OF OLYMPUS</h1>
   <h2>АРЕНА БОГОВ</h2>
-  <p>5 уровней, 5 боссов, волны врагов. Выживи и убей всех.</p>
+  <p>5 уровней, 5 боссов, бесконечные волны. Выживи и убей всех.</p>
   <button class="btn" id="soloBtn">ОДИН ИГРОК</button>
   <button class="btn pink" id="netBtn">СЕТЕВАЯ ИГРА (2 ПК)</button>
 </div>
@@ -163,23 +186,55 @@
 <div class="screen hidden" id="netScreen">
   <h1>СЕТЕВАЯ ИГРА</h1>
   <h2>2 ИГРОКА · РАЗНЫЕ ПК</h2>
-  <div id="netStatus">Выбери: создать комнату или подключиться.</div>
-  <div class="row" id="netChoiceRow">
+
+  <!-- Выбор режима -->
+  <div id="netChoice" class="row">
     <button class="btn" id="hostBtn">СОЗДАТЬ КОМНАТУ</button>
     <button class="btn blue" id="joinBtn">ПОДКЛЮЧИТЬСЯ</button>
   </div>
-  <div class="row hidden" id="hostRow" style="flex-direction:column; gap:6px;">
-    <div style="font-size:12px; color:#8a785a; letter-spacing:2px;">ТВОЙ НИК</div>
-    <div id="roomCode" style="font-size:28px; letter-spacing:2px; max-width:90vw; text-align:center;">—</div>
-    <button class="btn" id="rerollBtn" style="padding:8px 20px; font-size:12px; margin-top:6px;">🎲 ПЕРЕГЕНЕРИРОВАТЬ</button>
-    <button class="btn blue" id="copyInviteBtn" style="padding:10px 24px; font-size:13px; margin-top:8px;">📋 СКОПИРОВАТЬ ССЫЛКУ</button>
-    <div style="font-size:11px; color:#8a785a; margin-top:8px;">Отправь другу ссылку или ник</div>
+
+  <!-- Хост: панель -->
+  <div id="hostPanel" class="hidden" style="display:flex; flex-direction:column; align-items:center;">
+    <div style="font-size:12px; color:#8a785a; letter-spacing:3px; margin-bottom:12px;">ТВОЙ НИК · НАЖМИ ЧТОБЫ СКОПИРОВАТЬ</div>
+    <div class="nickBox" id="nickBox">—</div>
+    <div class="row">
+      <button class="btn" id="rerollBtn" style="padding:10px 22px; font-size:13px;">🎲 ДРУГОЙ НИК</button>
+      <button class="btn blue" id="copyInviteBtn" style="padding:10px 22px; font-size:13px;">📋 СКОПИРОВАТЬ ССЫЛКУ</button>
+    </div>
+    <div id="connStatus" class="state-info">
+      <div id="connDot">●</div>
+      <div id="connText">—</div>
+      <div id="connSub"></div>
+    </div>
+    <button class="btn green hidden" id="startNetBtn">НАЧАТЬ ИГРУ</button>
+    <div class="inviteHelp">
+      <b>Как пригласить друга:</b><br>
+      1. Нажми <b>📋 СКОПИРОВАТЬ ССЫЛКУ</b> — ссылка уйдёт в буфер обмена<br>
+      2. Отправь другу (телега, ватсап, дискорд)<br>
+      3. Друг открывает ссылку — у него сразу появится твой ник<br>
+      4. Когда он жмёт «ПРИСОЕДИНИТЬСЯ» — у тебя загорится <b style="color:#66ff88">✓ ИГРОК ПОДКЛЮЧЁН</b><br>
+      5. Жми <b>НАЧАТЬ ИГРУ</b>
+    </div>
   </div>
-  <div class="row hidden" id="joinRow" style="flex-direction:column; gap:10px;">
-    <input id="codeInput" maxlength="60" placeholder="ССЫЛКА ИЛИ НИК" autocomplete="off">
-    <button class="btn green" id="joinConfirmBtn">ВОЙТИ</button>
+
+  <!-- Гость: панель -->
+  <div id="joinPanel" class="hidden" style="display:flex; flex-direction:column; align-items:center;">
+    <div style="font-size:12px; color:#8a785a; letter-spacing:3px; margin-bottom:12px;">ВВЕДИ НИК ИЛИ ВСТАВЬ ССЫЛКУ (Ctrl+V)</div>
+    <input id="codeInput" maxlength="100" placeholder="Короткий Писюн" autocomplete="off" spellcheck="false">
+    <button class="btn green" id="joinConfirmBtn" style="margin-top:14px;">ПРИСОЕДИНИТЬСЯ</button>
+    <div id="connStatus2" class="state-info" style="margin-top:26px;">
+      <div id="connDot2">●</div>
+      <div id="connText2">—</div>
+      <div id="connSub2"></div>
+    </div>
+    <div class="inviteHelp">
+      <b>Важно:</b><br>
+      • Ник чувствителен к буквам, но не важен регистр: «Короткий Писюн» = «короткий писюн»<br>
+      • Ссылку можно вставить целиком — ник подхватится автоматически<br>
+      • Если не подключается — попроси хоста ещё раз скинуть ссылку
+    </div>
   </div>
-  <button class="btn green hidden" id="startNetBtn">НАЧАТЬ ИГРУ</button>
+
   <button class="btn" id="netBackBtn" style="padding:10px 22px; font-size:13px; margin-top:30px;">← НАЗАД</button>
 </div>
 
@@ -266,7 +321,8 @@ const SFX = {
   ult:()=>{tone(60,1.2,'sawtooth',0.34,800);noise(1.0,800,0.34);},
   ultReady:()=>{tone(880,0.18,'sine',0.14);},
   squeal:()=>{tone(900,0.14,'sawtooth',0.14,1400);},
-  levelUp:()=>{tone(330,0.4,'sine',0.18);tone(440,0.5,'sine',0.16);tone(660,0.7,'sine',0.14);}
+  levelUp:()=>{tone(330,0.4,'sine',0.18);tone(440,0.5,'sine',0.16);tone(660,0.7,'sine',0.14);},
+  connect:()=>{tone(660,0.12,'sine',0.2);setTimeout(()=>tone(880,0.12,'sine',0.2),100);setTimeout(()=>tone(1100,0.2,'sine',0.18),200);}
 };
 
 /* ============== SCENE ============== */
@@ -277,10 +333,10 @@ renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x2a1f14, 45, 150);
+scene.fog = new THREE.Fog(0x2a1f14, 55, 185);
 
-const camera  = new THREE.PerspectiveCamera(78, innerWidth/innerHeight, 0.08, 600);
-const camera2 = new THREE.PerspectiveCamera(78, innerWidth/innerHeight, 0.08, 600);
+const camera  = new THREE.PerspectiveCamera(78, innerWidth/innerHeight, 0.08, 700);
+const camera2 = new THREE.PerspectiveCamera(78, innerWidth/innerHeight, 0.08, 700);
 
 const skyMat = new THREE.ShaderMaterial({
   side: THREE.BackSide, depthWrite: false,
@@ -288,15 +344,15 @@ const skyMat = new THREE.ShaderMaterial({
   vertexShader: 'varying vec3 vP; void main(){ vP=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
   fragmentShader: 'uniform vec3 top; uniform vec3 mid; uniform vec3 bottom; varying vec3 vP; void main(){ float h=normalize(vP).y*0.5+0.5; vec3 c = h<0.5 ? mix(bottom,mid,h*2.0) : mix(mid,top,(h-0.5)*2.0); gl_FragColor=vec4(c,1.0);}'
 });
-scene.add(new THREE.Mesh(new THREE.SphereGeometry(400,32,20), skyMat));
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(500,32,20), skyMat));
 
 const hemi = new THREE.HemisphereLight(0x8899cc, 0x3a2a18, 0.55); scene.add(hemi);
 const sun = new THREE.DirectionalLight(0xffb060, 1.3);
-sun.position.set(-60,75,45); sun.castShadow = true;
+sun.position.set(-70,85,50); sun.castShadow = true;
 sun.shadow.mapSize.set(2048,2048);
-sun.shadow.camera.left = -70; sun.shadow.camera.right = 70;
-sun.shadow.camera.top = 70; sun.shadow.camera.bottom = -70;
-sun.shadow.camera.far = 220; sun.shadow.bias = -0.001;
+sun.shadow.camera.left = -85; sun.shadow.camera.right = 85;
+sun.shadow.camera.top = 85; sun.shadow.camera.bottom = -85;
+sun.shadow.camera.far = 260; sun.shadow.bias = -0.001;
 scene.add(sun);
 
 /* ============== TEXTURES ============== */
@@ -315,7 +371,7 @@ const floorTex = makeTex(256, (g,s)=>{
     g.fillStyle=`rgb(${v|0},${(v*.94)|0},${(v*.8)|0})`;
     g.fillRect(i*cs+3,j*cs+3,cs-6,cs-6);
   }
-},10);
+},12);
 const wallTex = makeTex(256, (g,s)=>{
   g.fillStyle='#3a3020'; g.fillRect(0,0,s,s);
   const rows=6, rh=s/rows;
@@ -327,7 +383,7 @@ const wallTex = makeTex(256, (g,s)=>{
       g.fillRect(c*cw+off+2,r*rh+2,cw-4,rh-4);
     }
   }
-},5);
+},6);
 const colTex = makeTex(128, (g,s)=>{
   g.fillStyle='#b8a888'; g.fillRect(0,0,s,s);
   for(let i=0;i<8;i++){
@@ -340,8 +396,8 @@ const colTex = makeTex(128, (g,s)=>{
   }
 });
 
-/* ============== ARENA ============== */
-const ARENA = 44;
+/* ============== ARENA (увеличена на 20%) ============== */
+const ARENA = 53;                       // было 44
 const circleColliders = [];
 const boxColliders = [];
 const worldMeshes = [];
@@ -380,12 +436,13 @@ function addColumn(x,z,scale=1){
   g.position.set(x,0,z); scene.add(g);
   circleColliders.push({ x, z, r: 1.85*scale });
 }
+// Колонны: было 26 и 14, теперь 31 и 17
 for(let i=0;i<4;i++){
   const a = i*Math.PI/2 + Math.PI/4;
-  addColumn(Math.cos(a)*26, Math.sin(a)*26, 1);
+  addColumn(Math.cos(a)*31, Math.sin(a)*31, 1);
 }
-addColumn(-14,-14,1.35); addColumn(14,14,1.35);
-addColumn(-14,14,1.35); addColumn(14,-14,1.35);
+addColumn(-17,-17,1.35); addColumn(17,17,1.35);
+addColumn(-17,17,1.35); addColumn(17,-17,1.35);
 
 const blockMat = new THREE.MeshLambertMaterial({ map: wallTex });
 function addBlock(x,z,w,h,d){
@@ -396,9 +453,10 @@ function addBlock(x,z,w,h,d){
   scene.add(m); worldMeshes.push(m);
   boxColliders.push({ minX:x-w/2, maxX:x+w/2, minZ:z-d/2, maxZ:z+d/2 });
 }
-addBlock(-32,-8,9,2.2,4); addBlock(32,8,9,2.2,4);
-addBlock(0,-34,12,1.6,3.5); addBlock(0,34,12,1.6,3.5);
-addBlock(-24,30,5,3.2,5); addBlock(24,-30,5,3.2,5);
+// Блоки: было ±32, ±34, ±24, ±30 → умножаем на 1.2
+addBlock(-38,-10,10,2.2,5); addBlock(38,10,10,2.2,5);
+addBlock(0,-41,14,1.6,4); addBlock(0,41,14,1.6,4);
+addBlock(-29,36,6,3.2,6); addBlock(29,-36,6,3.2,6);
 
 const ped = new THREE.Mesh(new THREE.CylinderGeometry(4.5,5.5,1.6,24),
   new THREE.MeshLambertMaterial({ color: 0x6b5a3a }));
@@ -531,8 +589,8 @@ function newPlayer(x,z) {
     avatar: null, _semiLatch: false
   };
 }
-const player  = newPlayer(0, 30);
-const player2 = newPlayer(-3, 32);
+const player  = newPlayer(0, 38);
+const player2 = newPlayer(-3, 40);
 
 /* ============== WEAPONS ============== */
 const WEAPON_TPL = [
@@ -601,8 +659,6 @@ function gainUlt(P) {
   if (P === player) {
     if (P.ultCharge === ULT_REQ) { SFX.ultReady(); showMsg('⚡ ГНЕВ ОЛИМПА ГОТОВ (Q)', 1400); addFeed('<span style="color:#66ddff">⚡ ГНЕВ ОЛИМПА ЗАРЯЖЕН (Q)</span>'); }
     updateUltHUD();
-  } else {
-    if (P.ultCharge === ULT_REQ) { SFX.ultReady(); addFeed('<span style="color:#ffb060">⚡ P2 ГНЕВ ГОТОВ (U)</span>'); }
   }
 }
 function activateUlt(P) {
@@ -611,7 +667,7 @@ function activateUlt(P) {
   if (P === player) updateUltHUD();
   SFX.ult();
   showMsg('⚡ ГНЕВ ОЛИМПА', 1400);
-  const R = 26;
+  const R = 30;
   for (let k=0;k<3;k++){
     const ring = new THREE.Mesh(new THREE.RingGeometry(0.8,1.4,40),
       new THREE.MeshBasicMaterial({ color: k===0?0xffffff:(k===1?0x66ddff:0x2299dd),
@@ -621,7 +677,7 @@ function activateUlt(P) {
     scene.add(ring);
     ultWaves.push({ mesh: ring, life: 0.75+k*0.1, max: 0.75+k*0.1, delay: k*0.08, R });
   }
-  const light = new THREE.PointLight(0xaaeaff, 90, 50, 2);
+  const light = new THREE.PointLight(0xaaeaff, 90, 60, 2);
   light.position.copy(P.pos); light.position.y += 1.5;
   scene.add(light); beams.push({ m: light, life: 0.7, max: 0.7, isLight: true });
   for (const e of enemies) {
@@ -657,23 +713,23 @@ let currentLevel = 0;
 let ngPlus = 0;
 const LEVELS = [
   { name:'ХРАМ ОЛИМПА', skyTop:0x0d1226, skyMid:0x3a2418, skyBottom:0x8a4a1a,
-    fog:0x2a1f14, fogNear:45, fogFar:150, sun:0xffb060, hemiSky:0x8899cc, hemiGround:0x3a2a18, hemiInt:0.55,
+    fog:0x2a1f14, fogNear:55, fogFar:185, sun:0xffb060, hemiSky:0x8899cc, hemiGround:0x3a2a18, hemiInt:0.55,
     floorTint:0xffffff, wallTint:0xffffff, colTint:0xffffff,
     types:['satyr','centaur','minotaur','harpy'], boss:'titan', bossName:'ТИТАН КРОНОС' },
   { name:'ПОДЗЕМНОЕ ЦАРСТВО', skyTop:0x040208, skyMid:0x2a0a18, skyBottom:0x5a0e20,
-    fog:0x150510, fogNear:22, fogFar:95, sun:0xff4020, hemiSky:0x6633aa, hemiGround:0x1a0a0a, hemiInt:0.42,
+    fog:0x150510, fogNear:28, fogFar:120, sun:0xff4020, hemiSky:0x6633aa, hemiGround:0x1a0a0a, hemiInt:0.42,
     floorTint:0x8866aa, wallTint:0x775588, colTint:0x9977bb,
     types:['skeleton','skeleton_archer','cyclops','wraith'], boss:'cerberus', bossName:'ЦЕРБЕР' },
   { name:'ВЕРШИНА ОЛИМПА', skyTop:0x4477bb, skyMid:0x99bbee, skyBottom:0xffe8cc,
-    fog:0xbbddee, fogNear:55, fogFar:200, sun:0xfff0e0, hemiSky:0xddeeff, hemiGround:0xaabbcc, hemiInt:0.9,
+    fog:0xbbddee, fogNear:65, fogFar:230, sun:0xfff0e0, hemiSky:0xddeeff, hemiGround:0xaabbcc, hemiInt:0.9,
     floorTint:0xfff0e0, wallTint:0xfff5e0, colTint:0xffffff,
     types:['chimera','guard_archer','minotaur','gryphon'], boss:'hydra', bossName:'ГИДРА' },
   { name:'ЛЕДЯНАЯ ЦИТАДЕЛЬ', skyTop:0x0a1a3a, skyMid:0x4a7ab0, skyBottom:0xcce8ff,
-    fog:0x8ab8e0, fogNear:40, fogFar:160, sun:0xcce8ff, hemiSky:0xddeeff, hemiGround:0x88aacc, hemiInt:0.75,
+    fog:0x8ab8e0, fogNear:50, fogFar:195, sun:0xcce8ff, hemiSky:0xddeeff, hemiGround:0x88aacc, hemiInt:0.75,
     floorTint:0xaaddff, wallTint:0xbbddff, colTint:0xddeeff,
     types:['satyr','centaur','minotaur','harpy'], boss:'titan', bossName:'ИМИР' },
   { name:'ТАРТАР', skyTop:0x1a0000, skyMid:0x5a0a00, skyBottom:0xff4020,
-    fog:0x3a0800, fogNear:18, fogFar:90, sun:0xff5520, hemiSky:0xff6633, hemiGround:0x2a0505, hemiInt:0.55,
+    fog:0x3a0800, fogNear:22, fogFar:110, sun:0xff5520, hemiSky:0xff6633, hemiGround:0x2a0505, hemiInt:0.55,
     floorTint:0xff8866, wallTint:0xaa4422, colTint:0xffaa88,
     types:['skeleton','skeleton_archer','cyclops','wraith'], boss:'hydra', bossName:'ТИФОН' }
 ];
@@ -692,33 +748,33 @@ function applyLevel(idx) {
   $('levelName').textContent = L.name;
 }
 
-/* ============== ENEMIES ============== */
+/* ============== ENEMIES (HP увеличены на 20% у простых) ============== */
 const ENEMY_TYPES = {
-  satyr:    { name:'Сатир', hp:65, speed:5.0, damage:10, range:2.6, cooldown:1.05, scale:1.0,
+  satyr:    { name:'Сатир', hp:78, speed:5.0, damage:10, range:2.6, cooldown:1.05, scale:1.0,
               color:0x8b5a2b, score:100, hitR:0.9, melee:true, mass:1, family:'greek' },
-  centaur:  { name:'Кентавр-лучник', hp:95, speed:5.8, damage:14, range:34, cooldown:1.9, scale:1.2,
+  centaur:  { name:'Кентавр-лучник', hp:114, speed:5.8, damage:14, range:34, cooldown:1.9, scale:1.2,
               color:0x9a6a3a, score:200, hitR:1.05, ranged:true, archer:true, mass:1.4, family:'greek', projSpeed:38 },
-  minotaur: { name:'Минотавр', hp:340, speed:3.6, damage:26, range:3.8, cooldown:1.4, scale:1.8,
+  minotaur: { name:'Минотавр', hp:408, speed:3.6, damage:26, range:3.8, cooldown:1.4, scale:1.8,
               color:0x4a2f1a, score:550, hitR:1.7, melee:true, mass:3, family:'greek' },
-  harpy:    { name:'Гарпия', hp:55, speed:6.4, damage:11, range:3.0, cooldown:1.1, scale:1.0,
+  harpy:    { name:'Гарпия', hp:66, speed:6.4, damage:11, range:3.0, cooldown:1.1, scale:1.0,
               color:0xb04a28, score:150, hitR:0.9, melee:true, fly:true, flyH:3.2, mass:0.85, family:'greek' },
   titan:    { name:'ТИТАН', hp:3800, speed:2.5, damage:42, range:5.2, cooldown:1.8, scale:4.0,
               color:0x5a3a20, score:6000, hitR:3.4, melee:true, ranged:true, boss:true, mass:12, projSpeed:30, family:'greek' },
-  skeleton: { name:'Скелет', hp:80, speed:6.2, damage:14, range:2.8, cooldown:0.85, scale:1.05,
+  skeleton: { name:'Скелет', hp:96, speed:6.2, damage:14, range:2.8, cooldown:0.85, scale:1.05,
               color:0xe8dcc0, score:130, hitR:0.85, melee:true, mass:0.9, family:'undead' },
-  skeleton_archer: { name:'Скелет-лучник', hp:70, speed:5.6, damage:13, range:36, cooldown:2.1, scale:1.05,
+  skeleton_archer: { name:'Скелет-лучник', hp:84, speed:5.6, damage:13, range:36, cooldown:2.1, scale:1.05,
               color:0xe8dcc0, score:170, hitR:0.85, ranged:true, archer:true, mass:0.9, family:'undead', projSpeed:34 },
-  cyclops:  { name:'Циклоп', hp:300, speed:2.9, damage:24, range:3.6, cooldown:1.7, scale:1.95,
+  cyclops:  { name:'Циклоп', hp:360, speed:2.9, damage:24, range:3.6, cooldown:1.7, scale:1.95,
               color:0x9a7b4f, score:400, hitR:1.85, melee:true, mass:3.5, family:'undead' },
-  wraith:   { name:'Призрак', hp:75, speed:6.0, damage:15, range:3.0, cooldown:1.2, scale:1.1,
+  wraith:   { name:'Призрак', hp:90, speed:6.0, damage:15, range:3.0, cooldown:1.2, scale:1.1,
               color:0x9955cc, score:200, hitR:0.95, melee:true, fly:true, flyH:2.6, mass:0.7, family:'undead' },
   cerberus: { name:'ЦЕРБЕР', hp:3600, speed:4.2, damage:38, range:4.6, cooldown:1.15, scale:2.8,
               color:0x2a1010, score:7000, hitR:2.6, melee:true, ranged:true, boss:true, mass:10, projSpeed:26, family:'undead' },
-  chimera:  { name:'Химера', hp:240, speed:4.6, damage:22, range:3.6, cooldown:1.4, scale:1.65,
+  chimera:  { name:'Химера', hp:288, speed:4.6, damage:22, range:3.6, cooldown:1.4, scale:1.65,
               color:0xd0662a, score:450, hitR:1.55, melee:true, mass:2.5, family:'olympian' },
-  guard_archer: { name:'Страж Аполлона', hp:140, speed:5.4, damage:18, range:40, cooldown:1.7, scale:1.25,
+  guard_archer: { name:'Страж Аполлона', hp:168, speed:5.4, damage:18, range:40, cooldown:1.7, scale:1.25,
               color:0xffcc88, score:300, hitR:1.1, ranged:true, archer:true, mass:1.5, family:'olympian', projSpeed:42 },
-  gryphon:  { name:'Грифон', hp:180, speed:6.8, damage:20, range:3.2, cooldown:1.0, scale:1.5,
+  gryphon:  { name:'Грифон', hp:216, speed:6.8, damage:20, range:3.2, cooldown:1.0, scale:1.5,
               color:0xc9a55a, score:350, hitR:1.3, melee:true, fly:true, flyH:4.0, mass:1.4, family:'olympian' },
   hydra:    { name:'ГИДРА', hp:5000, speed:2.8, damage:44, range:5.5, cooldown:1.7, scale:3.3,
               color:0x2a6a30, score:9000, hitR:2.9, melee:true, ranged:true, boss:true, mass:14, projSpeed:28, family:'olympian' }
@@ -1073,7 +1129,7 @@ function updateEnemyBars() {
     else if (pct > 0.5) e.bar._fill.style.background = 'linear-gradient(90deg,#1a6a20,#3ac050)';
     else if (pct > 0.25) e.bar._fill.style.background = 'linear-gradient(90deg,#8a6a10,#e0c030)';
     else e.bar._fill.style.background = 'linear-gradient(90deg,#8a1010,#e04020)';
-    e.bar.style.opacity = camPos.distanceTo(e.mesh.position) > 60 ? 0.35 : 1;
+    e.bar.style.opacity = camPos.distanceTo(e.mesh.position) > 70 ? 0.35 : 1;
   }
 }
 
@@ -1330,7 +1386,6 @@ function updateEnemies(dt) {
     }
     m.scale.setScalar(1);
 
-    // цель — ближайший живой игрок (в сети — это хост P1 или удалённый P2)
     let target = null;
     if (player.alive && player2.alive) {
       target = player.pos.distanceTo(m.position) < player2.pos.distanceTo(m.position) ? player : player2;
@@ -1524,13 +1579,13 @@ function tryFire(P, cam) {
   updateHUD();
 }
 
-/* ============== COMPANION (Ксантиппа) ============== */
+/* ============== COMPANION ============== */
 const COMPANION_PANIC = ['АААА!','Помоги!','НЕТ-НЕТ-НЕТ!','Убей его!','Спаси меня!','Ой-ой-ой!'];
 const COMPANION_IDLE  = ['Скучно...','Красиво тут.','Убей кого-нибудь.','Я тут просто гуляю.','Ноги устали.'];
 const COMPANION_KILL  = ['Молодец!','Убил!','Один готов!','Красиво!','Ещё есть?'];
 const companion = {
-  pos: new THREE.Vector3(8,0,22), vel: new THREE.Vector3(),
-  yaw: 0, state: 'wander', stateT: 2, target: new THREE.Vector3(8,0,22),
+  pos: new THREE.Vector3(8,0,28), vel: new THREE.Vector3(),
+  yaw: 0, state: 'wander', stateT: 2, target: new THREE.Vector3(8,0,28),
   mesh: null, animT: 0, sayCd: 4, speed: 5.4, radius: 0.4, panic: false
 };
 function buildCompanion() {
@@ -1542,7 +1597,6 @@ function buildCompanion() {
   const gold = new THREE.MeshLambertMaterial({ color: 0xd9b060 });
   const sandal = new THREE.MeshLambertMaterial({ color: 0x4a2c18 });
   const t = m => { m.castShadow = true; return m; };
-
   const legs = [];
   for (const sx of [-1,1]) {
     const pv = new THREE.Group();
@@ -1574,7 +1628,6 @@ function buildCompanion() {
   shs.position.y = 2.14; shs.scale.set(1,1,0.82); g.add(shs);
   const neck = t(new THREE.Mesh(new THREE.CylinderGeometry(0.075,0.09,0.14,12), skin));
   neck.position.y = 2.24; g.add(neck);
-
   const head = t(new THREE.Mesh(new THREE.SphereGeometry(0.20,20,18), skin));
   head.position.y = 2.47; head.scale.set(0.92,1.05,0.98); g.add(head);
   const chin = new THREE.Mesh(new THREE.SphereGeometry(0.09,12,10), skin);
@@ -1595,7 +1648,6 @@ function buildCompanion() {
   ul.position.set(0,2.36,0.178); ul.scale.set(1.3,0.35,0.5); g.add(ul);
   const ll = new THREE.Mesh(new THREE.SphereGeometry(0.052,12,8), new THREE.MeshLambertMaterial({ color: 0xd06070 }));
   ll.position.set(0,2.335,0.178); ll.scale.set(1.25,0.42,0.5); g.add(ll);
-
   const hb = t(new THREE.Mesh(new THREE.SphereGeometry(0.215,16,14), hair));
   hb.position.set(0,2.47,-0.03); hb.scale.set(0.98,1.05,1.02); g.add(hb);
   const ht = t(new THREE.Mesh(new THREE.SphereGeometry(0.19,14,12), hair));
@@ -1609,7 +1661,6 @@ function buildCompanion() {
   }
   const pin = new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8), gold);
   pin.position.set(0.16,2.56,0.05); g.add(pin);
-
   const arms = [];
   for (const sx of [-1,1]) {
     const pv = new THREE.Group();
@@ -1622,7 +1673,6 @@ function buildCompanion() {
   }
   const brace = new THREE.Mesh(new THREE.TorusGeometry(0.075,0.016,6,12), gold);
   brace.position.y = -0.66; brace.rotation.x = Math.PI/2; arms[0].add(brace);
-
   g.userData.limbs = { arms, legs, strands };
   return g;
 }
@@ -1658,14 +1708,14 @@ function updateCompanionBubble() {
 function pickCompTarget() {
   let tries = 0;
   while (tries++ < 10) {
-    const a = Math.random()*TAU, r = rand(10, ARENA-8);
+    const a = Math.random()*TAU, r = rand(12, ARENA-10);
     const x = Math.cos(a)*r, z = Math.sin(a)*r;
     let ok = true;
     for (const cc of circleColliders) if (Math.hypot(x-cc.x, z-cc.z) < cc.r+1.5) { ok = false; break; }
     if (!ok) continue;
     companion.target.set(x, 0, z); return;
   }
-  companion.target.set(rand(-20,20), 0, rand(-20,20));
+  companion.target.set(rand(-25,25), 0, rand(-25,25));
 }
 function updateCompanion(dt) {
   const c = companion;
@@ -1738,6 +1788,10 @@ const keys = {}, keys2 = {};
 let mouseDown = false, pointerLocked = false;
 
 addEventListener('keydown', e => {
+  // Если фокус в поле ввода — не перехватываем ничего, чтобы пробел работал
+  const el = document.activeElement;
+  if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) return;
+
   if (['KeyW','KeyA','KeyS','KeyD','Space','ShiftLeft','ShiftRight'].includes(e.code)) keys[e.code] = true;
   if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','KeyI','KeyJ','KeyK','KeyL',
        'Slash','Comma','Period','Semicolon'].includes(e.code)) keys2[e.code] = true;
@@ -1844,7 +1898,7 @@ function startWave(n) {
 }
 function spawnPoint() {
   for (let i=0;i<14;i++){
-    const a = Math.random()*TAU, r = rand(26, ARENA-5);
+    const a = Math.random()*TAU, r = rand(30, ARENA-5);
     const x = Math.cos(a)*r, z = Math.sin(a)*r;
     let ok = true;
     for (const c of circleColliders) if (Math.hypot(x-c.x, z-c.z) < c.r+2.5) { ok = false; break; }
@@ -1854,7 +1908,7 @@ function spawnPoint() {
     return new THREE.Vector3(x, 0, z);
   }
   const a = Math.random()*TAU;
-  return new THREE.Vector3(Math.cos(a)*34, 0, Math.sin(a)*34);
+  return new THREE.Vector3(Math.cos(a)*44, 0, Math.sin(a)*44);
 }
 function updateWaves(dt) {
   if (!waveActive) {
@@ -1886,8 +1940,8 @@ function updateWaves(dt) {
     }
     for (const w of player.weapons) if (w.unlocked) w.ammo = Math.min(w.ammoMax, w.ammo + Math.ceil(w.ammoMax*0.18));
     if (net.mode === 'host') for (const w of player2.weapons) if (w.unlocked) w.ammo = Math.min(w.ammoMax, w.ammo + Math.ceil(w.ammoMax*0.18));
-    spawnPickup('health', new THREE.Vector3(rand(-20,20), 1, rand(-20,20)));
-    spawnPickup('ammo',   new THREE.Vector3(rand(-20,20), 1, rand(-20,20)));
+    spawnPickup('health', new THREE.Vector3(rand(-25,25), 1, rand(-25,25)));
+    spawnPickup('ammo',   new THREE.Vector3(rand(-25,25), 1, rand(-25,25)));
     if (wave % 5 === 0) {
       if (currentLevel < LEVELS.length - 1) {
         currentLevel++;
@@ -2036,6 +2090,16 @@ function flashHeal() {
 }
 
 /* ============== NETWORK ============== */
+const PEER_CONFIG = {
+  debug: 0,
+  config: {
+    iceServers: [
+      { urls: 'stun:stun.l.google.com:19302' },
+      { urls: 'stun:stun1.l.google.com:19302' },
+      { urls: 'stun:stun2.l.google.com:19302' }
+    ]
+  }
+};
 const net = {
   mode: 'none', peer: null, conn: null, nick: '', peerId: '', connected: false,
   hostTickT: 0, TICK: 0.05, remoteInput: { forward:false, back:false, left:false, right:false,
@@ -2059,79 +2123,120 @@ const TRANSLIT = {
 };
 function translit(s) {
   return s.toLowerCase().split('').map(c => TRANSLIT[c] != null ? TRANSLIT[c] : c)
-    .join('').replace(/[^a-z0-9-]/g,'');
+    .join('').replace(/[^a-z0-9-]/g,'').replace(/-+/g,'-').replace(/^-|-$/g,'');
 }
 function genNick() {
   return pick(NICKS_ADJ) + ' ' + pick(NICKS_NOUN);
 }
-function lobby(html) { $('netStatus').innerHTML = html; }
+
+/* --- Статусные сообщения --- */
+function setConnState(side, state, text, sub) {
+  const prefix = side === 1 ? '' : '2';
+  const box = $('connStatus' + prefix);
+  const textEl = $('connText' + prefix);
+  const subEl = $('connSub' + prefix);
+  if (!box) return;
+  box.className = 'state-' + state;
+  if (textEl) textEl.textContent = text;
+  if (subEl) subEl.textContent = sub || '';
+}
 
 function startHost() {
   net.mode = 'host';
   net.nick = genNick();
-  net.peerId = 'wrath-olympus-v7-' + translit(net.nick);
-  $('hostRow').classList.remove('hidden');
-  $('joinRow').classList.add('hidden');
-  $('netChoiceRow').classList.add('hidden');
-  $('roomCode').textContent = net.nick;
-  lobby('Создаём комнату...');
+  net.peerId = 'wrath-olympus-v9-' + translit(net.nick);
+  $('netChoice').classList.add('hidden');
+  $('hostPanel').classList.remove('hidden');
+  $('joinPanel').classList.add('hidden');
+  $('nickBox').textContent = net.nick;
+  $('startNetBtn').classList.add('hidden');
+  setConnState(1, 'info', 'ПОДКЛЮЧЕНИЕ К СЕРВЕРУ...', 'Создаём комнату...');
   try {
-    net.peer = new Peer(net.peerId, { debug: 0 });
-  } catch(e) { lobby('Ошибка PeerJS: ' + e.message); return; }
-  net.peer.on('open', () => lobby(
-    'Комната готова!<br>Ник: <b style="color:#ffd27a;font-size:20px;">' + net.nick + '</b>' +
-    '<br><span style="font-size:12px;color:#8a785a;">Отправь другу ссылку или ник</span>'
-  ));
+    net.peer = new Peer(net.peerId, PEER_CONFIG);
+  } catch(e) { setConnState(1, 'err', 'ОШИБКА', e.message); return; }
+  net.peer.on('open', () => {
+    setConnState(1, 'wait', 'ОЖИДАНИЕ ИГРОКА...', 'Отправь другу ссылку или ник «' + net.nick + '»');
+  });
   net.peer.on('connection', conn => {
     net.conn = conn;
     conn.on('open', () => {
       net.connected = true;
-      lobby('<b style="color:#66ff88">Игрок подключён!</b><br>Жми «НАЧАТЬ ИГРУ».');
+      SFX.connect();
+      setConnState(1, 'ok', '✓ ИГРОК ПОДКЛЮЧЁН!', 'Жми «НАЧАТЬ ИГРУ» внизу');
       $('startNetBtn').classList.remove('hidden');
     });
     conn.on('data', onClientData);
     conn.on('close', () => {
       net.connected = false;
-      lobby('Игрок отключился.');
+      setConnState(1, 'wait', 'ИГРОК ОТКЛЮЧИЛСЯ', 'Ожидаем нового подключения...');
       $('startNetBtn').classList.add('hidden');
     });
   });
   net.peer.on('error', e => {
     if (e.type === 'unavailable-id') {
-      lobby('Ник занят, генерируем другой...');
+      setConnState(1, 'wait', 'НИК ЗАНЯТ, ГЕНЕРИРУЕМ ДРУГОЙ...', '');
       try { net.peer.destroy(); } catch(_) {}
-      startHost();
+      setTimeout(() => startHost(), 300);
     } else {
-      lobby('Ошибка: ' + e.type);
+      setConnState(1, 'err', 'ОШИБКА: ' + e.type.toUpperCase(), 'Попробуй обновить страницу');
     }
+  });
+  net.peer.on('disconnected', () => {
+    setConnState(1, 'wait', 'ПОТЕРЯ СВЯЗИ С СЕРВЕРОМ', 'Пробуем переподключиться...');
+    try { net.peer.reconnect(); } catch(_) {}
   });
 }
 function joinRoom(input) {
   let code = input.trim();
+  // Если вставили ссылку — вытащим ?join=
   if (code.includes('join=')) {
     try {
       const u = new URL(code, location.href);
       code = u.searchParams.get('join') || code;
     } catch(_) {}
   }
-  code = decodeURIComponent(code).replace(/^wrath-olympus-v7-/i, '').replace(/[-_]+/g, ' ').trim();
+  code = decodeURIComponent(code).replace(/^wrath-olympus-v9-/i, '').trim();
+  if (!code) { setConnState(2, 'err', 'ВВЕДИ НИК ИЛИ ССЫЛКУ', ''); return; }
   net.nick = code;
   net.mode = 'client';
-  net.peerId = 'wrath-olympus-v7-' + translit(code);
-  lobby('Подключаемся к «' + code + '»...');
-  try { net.peer = new Peer({ debug: 0 }); }
-  catch(e) { lobby('Ошибка PeerJS: ' + e.message); return; }
+  net.peerId = 'wrath-olympus-v9-' + translit(code);
+  setConnState(2, 'info', 'ПОДКЛЮЧАЕМСЯ К «' + code + '»...', 'Это может занять 5-10 секунд');
+  try { net.peer = new Peer(PEER_CONFIG); }
+  catch(e) { setConnState(2, 'err', 'ОШИБКА', e.message); return; }
+
+  let gotOpen = false;
+  const timeout = setTimeout(() => {
+    if (!gotOpen) setConnState(2, 'err', 'НЕ УДАЛОСЬ ПОДКЛЮЧИТЬСЯ', 'Проверь ник, попроси ссылку');
+  }, 12000);
+
   net.peer.on('open', () => {
-    const conn = net.peer.connect(net.peerId);
+    const conn = net.peer.connect(net.peerId, { reliable: true });
     net.conn = conn;
     conn.on('open', () => {
+      gotOpen = true;
+      clearTimeout(timeout);
       net.connected = true;
-      lobby('<b style="color:#66ff88">Подключено!</b><br>Ждём старта от хоста.');
+      SFX.connect();
+      setConnState(2, 'ok', '✓ ПОДКЛЮЧЕНО!', 'Ждём, пока хост нажмёт «НАЧАТЬ ИГРУ»');
     });
     conn.on('data', onHostData);
-    conn.on('close', () => { net.connected = false; lobby('Соединение потеряно.'); });
+    conn.on('close', () => {
+      net.connected = false;
+      setConnState(2, 'err', 'ХОСТ ОТКЛЮЧИЛСЯ', 'Попроси ссылку заново');
+    });
+    conn.on('error', (e) => {
+      clearTimeout(timeout);
+      setConnState(2, 'err', 'ОШИБКА СОЕДИНЕНИЯ', String(e));
+    });
   });
-  net.peer.on('error', e => lobby('Не нашли такого игрока: «' + code + '»<br>Проверь ник.'));
+  net.peer.on('error', e => {
+    clearTimeout(timeout);
+    if (e.type === 'peer-unavailable') {
+      setConnState(2, 'err', 'ИГРОК НЕ НАЙДЕН', 'Проверь ник: «' + code + '»');
+    } else {
+      setConnState(2, 'err', 'ОШИБКА: ' + e.type.toUpperCase(), '');
+    }
+  });
 }
 function onClientData(data) {
   if (!data || data.t !== 'input') return;
@@ -2243,7 +2348,7 @@ function handleNetEvent(ev) {
     spawnBeam(new THREE.Vector3(ev.fx,ev.fy,ev.fz), new THREE.Vector3(ev.tx,ev.ty,ev.tz), ev.c, ev.rad, ev.life);
   } else if (ev.t === 'ult') {
     const P = ev.p === 1 ? player : player2;
-    const R = 26;
+    const R = 30;
     for (let k=0;k<3;k++) {
       const ring = new THREE.Mesh(new THREE.RingGeometry(0.8,1.4,40),
         new THREE.MeshBasicMaterial({ color: k===0?0xffffff:(k===1?0x66ddff:0x2299dd),
@@ -2321,13 +2426,13 @@ function resetGame() {
   for (const p of particles) scene.remove(p.m);
   particles.length = 0;
 
-  player.pos.set(0, 1.7, 30); player.vel.set(0,0,0);
+  player.pos.set(0, 1.7, 38); player.vel.set(0,0,0);
   player.yaw = Math.PI; player.pitch = 0;
   player.hp = player.maxHp; player.armor = 0;
   player.alive = true; player.invuln = 0; player.recoil = 0; player.kick = 0;
   player.weapons = makeWeapons(); player.curWeapon = 0; player.weaponCd = 0; player.ultCharge = 0;
 
-  player2.pos.set(-3, 1.7, 32); player2.vel.set(0,0,0);
+  player2.pos.set(-3, 1.7, 40); player2.vel.set(0,0,0);
   player2.yaw = Math.PI; player2.pitch = 0;
   player2.hp = player2.maxHp; player2.armor = 0;
   player2.alive = true; player2.invuln = 0; player2.recoil = 0; player2.kick = 0;
@@ -2339,7 +2444,7 @@ function resetGame() {
   currentLevel = 0; ngPlus = 0;
   applyLevel(0);
 
-  companion.pos.set(8, 0, 22); companion.vel.set(0,0,0);
+  companion.pos.set(8, 0, 28); companion.vel.set(0,0,0);
   companion.state = 'wander'; companion.stateT = 2; companion.panic = false;
   companion.mesh.position.copy(companion.pos);
 
@@ -2379,7 +2484,7 @@ function startNetHost() {
   player2.alive = true;
   player2.hp = player2.maxHp;
   player2.armor = 0;
-  player2.pos.set(-3, 1.7, 32);
+  player2.pos.set(-3, 1.7, 40);
   player2.vel.set(0, 0, 0);
   player2.yaw = Math.PI;
   player2.weapons = makeWeapons();
@@ -2416,28 +2521,29 @@ $('netBtn').onclick = () => {
   initAudio();
   $('modeScreen').classList.add('hidden');
   $('netScreen').classList.remove('hidden');
+  $('netChoice').classList.remove('hidden');
+  $('hostPanel').classList.add('hidden');
+  $('joinPanel').classList.add('hidden');
 };
 $('netBackBtn').onclick = () => {
   if (net.peer) { try { net.peer.destroy(); } catch(e){} net.peer = null; }
   net.conn = null; net.connected = false; net.mode = 'none';
   $('netScreen').classList.add('hidden');
   $('modeScreen').classList.remove('hidden');
-  $('hostRow').classList.add('hidden');
-  $('joinRow').classList.add('hidden');
-  $('netChoiceRow').classList.remove('hidden');
-  $('startNetBtn').classList.add('hidden');
+  $('hostPanel').classList.add('hidden');
+  $('joinPanel').classList.add('hidden');
+  $('netChoice').classList.remove('hidden');
   $('codeInput').value = '';
-  lobby('Выбери: создать комнату или подключиться.');
 };
 $('hostBtn').onclick = startHost;
 $('joinBtn').onclick = () => {
-  $('netChoiceRow').classList.add('hidden');
-  $('joinRow').classList.remove('hidden');
+  $('netChoice').classList.add('hidden');
+  $('joinPanel').classList.remove('hidden');
   $('codeInput').focus();
 };
 $('joinConfirmBtn').onclick = () => {
   const c = $('codeInput').value.trim();
-  if (c.length < 2) { lobby('Введи ссылку или ник.'); return; }
+  if (c.length < 2) { setConnState(2, 'err', 'ВВЕДИ НИК ИЛИ ССЫЛКУ', ''); return; }
   joinRoom(c);
 };
 $('codeInput').addEventListener('keydown', e => {
@@ -2450,15 +2556,32 @@ $('rerollBtn').onclick = () => {
   $('startNetBtn').classList.add('hidden');
   startHost();
 };
+$('nickBox').onclick = () => {
+  const t = net.nick;
+  const done = () => {
+    $('nickBox').textContent = '✓ СКОПИРОВАНО: ' + t;
+    setTimeout(() => { $('nickBox').textContent = t; }, 1500);
+  };
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = t; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(_){}
+    document.body.removeChild(ta); done();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(t).then(done).catch(fallback);
+  } else fallback();
+};
 $('copyInviteBtn').onclick = () => {
   const link = location.origin + location.pathname + '?join=' + encodeURIComponent(net.nick);
   const done = () => {
-    $('copyInviteBtn').textContent = '✓ СКОПИРОВАНО!';
+    $('copyInviteBtn').textContent = '✓ ССЫЛКА СКОПИРОВАНА!';
     setTimeout(() => { $('copyInviteBtn').textContent = '📋 СКОПИРОВАТЬ ССЫЛКУ'; }, 1800);
   };
   const fallback = () => {
     const ta = document.createElement('textarea');
-    ta.value = link; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    ta.value = link; ta.style.position='fixed'; ta.style.opacity='0';
     document.body.appendChild(ta); ta.select();
     try { document.execCommand('copy'); } catch(_){}
     document.body.removeChild(ta); done();
@@ -2537,7 +2660,6 @@ function animate() {
       }
     }
 
-    // Всегда свой POV на весь экран
     player.avatar.visible = false;
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
@@ -2568,11 +2690,11 @@ addEventListener('resize', () => {
     if (join) {
       $('modeScreen').classList.add('hidden');
       $('netScreen').classList.remove('hidden');
-      $('netChoiceRow').classList.add('hidden');
-      $('joinRow').classList.remove('hidden');
+      $('netChoice').classList.add('hidden');
+      $('hostPanel').classList.add('hidden');
+      $('joinPanel').classList.remove('hidden');
       $('codeInput').value = join;
-      $('joinConfirmBtn').textContent = 'ПРИСОЕДИНИТЬСЯ';
-      lobby('Тебя пригласили в игру к <b style="color:#ffd27a">' + join + '</b>.<br>Жми кнопку ниже.');
+      setConnState(2, 'info', 'ТЕБЯ ПРИГЛАСИЛИ К «' + join + '»', 'Нажми ПРИСОЕДИНИТЬСЯ ниже');
     }
   } catch(e) { console.warn('URL parse failed', e); }
 })();
@@ -2585,7 +2707,7 @@ camera.position.copy(player.pos);
 camera.rotation.set(0, player.yaw, 0, 'YXZ');
 animate();
 
-console.log('%c⚔ WRATH OF OLYMPUS v8', 'color:#ffd27a;font-size:16px;font-weight:bold');
+console.log('%c⚔ WRATH OF OLYMPUS v9', 'color:#ffd27a;font-size:16px;font-weight:bold');
 </script>
 </body>
 </html>
