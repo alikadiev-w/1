@@ -27,7 +27,7 @@
   .bar i { display:block; height:100%; width:100%; transition:width .12s linear; }
   #hpBar i { background:linear-gradient(90deg,#8b1a1a,#e04a2a,#ffb14a); }
   #apBar i { background:linear-gradient(90deg,#1a4a8b,#2a9ae0,#7ad4ff); }
-  #ultBox { position:absolute; left:26px; bottom:150px; width:270px;
+  #ultBox { position:absolute; left:26px; bottom:150px; width:280px;
     background:linear-gradient(180deg, rgba(10,20,30,.85), rgba(4,10,20,.9));
     border:2px solid #2a6a8a; border-radius:6px; padding:8px 12px 10px; display:none;
     box-shadow:0 0 18px rgba(0,0,0,.7); }
@@ -37,7 +37,7 @@
   #ultBox.ready { border-color:#66ddff; animation: up 1.2s infinite; }
   @keyframes up { 0%,100%{box-shadow:0 0 24px rgba(100,220,255,.7);} 50%{box-shadow:0 0 40px rgba(120,240,255,.95);} }
   #ultBar { height:8px; margin-top:6px; background:#0a1820; border-radius:4px; overflow:hidden; }
-  #ultBar i { display:block; height:100%; width:0%; background:linear-gradient(90deg,#2a6a8a,#66ccff,#ccf0ff); }
+  #ultBar i { display:block; height:100%; width:0%; transition:width .15s; background:linear-gradient(90deg,#2a6a8a,#66ccff,#ccf0ff); }
   #weaponBox { position:absolute; right:26px; bottom:26px; text-align:center;
     background:linear-gradient(180deg, rgba(20,14,8,.75), rgba(8,6,4,.85));
     border:2px solid #7a5c26; border-radius:6px; padding:10px 16px 12px; min-width:220px; }
@@ -202,7 +202,7 @@
   </div>
 
   <div id="ultBox">
-    <div class="label"><span>⚡ ГНЕВ ОЛИМПА</span><b id="ultCount">0 / 10</b></div>
+    <div class="label"><span>⚡ ГНЕВ ОЛИМПА</span><b id="ultCount">ДУШ: 0</b></div>
     <div id="ultBar"><i></i></div>
   </div>
 
@@ -231,7 +231,6 @@
   <div id="feed"></div>
 </div>
 
-<!-- ИНТРО -->
 <div class="screen" id="introScreen">
   <h1 style="font-size:52px; letter-spacing:10px;">ПРОРОЧЕСТВО</h1>
   <h2 style="color:#ff6644; letter-spacing:6px;">ОЛИМП ПАЛ</h2>
@@ -247,24 +246,21 @@
   <button class="btn green" id="introBtn" style="margin-top:40px;">НАЧАТЬ ВОСХОЖДЕНИЕ</button>
 </div>
 
-<!-- ГЛАВНОЕ МЕНЮ -->
 <div class="screen hidden" id="modeScreen">
   <h1>WRATH OF OLYMPUS</h1>
   <h2>АРЕНА БОГОВ</h2>
-  <p>5 уровней, 5 боссов, бесконечные волны.</p>
+  <p>5 уровней, 5 боссов, бесконечные волны. Каждая 4-я волна — всплеск.</p>
   <button class="btn" id="soloBtn">ОДИН ИГРОК</button>
   <button class="btn" id="metaBtn" style="background:linear-gradient(180deg,#c9a55a,#8a6a2a); box-shadow:0 5px 0 #4a3a1a; color:#1a1008;">⚙ ХРАМ АПГРЕЙДОВ</button>
   <button class="btn pink" id="netBtn">СЕТЕВАЯ ИГРА (2 ПК)</button>
 </div>
 
-<!-- ВЫБОР УЛУЧШЕНИЙ -->
 <div class="screen hidden" id="upgradeScreen">
   <h1>ВЫБЕРИ УЛУЧШЕНИЕ</h1>
   <h2>ПОСЛЕ ВОЛНЫ</h2>
   <div id="upgradeCards"></div>
 </div>
 
-<!-- ХРАМ АПГРЕЙДОВ -->
 <div class="screen hidden" id="metaScreen">
   <h1>ХРАМ АПГРЕЙДОВ</h1>
   <h2>МЕТА-ПРОГРЕССИЯ</h2>
@@ -273,7 +269,6 @@
   <button class="btn" id="metaBackBtn" style="margin-top:24px;">← НАЗАД</button>
 </div>
 
-<!-- СЕТЕВАЯ ИГРА -->
 <div class="screen hidden" id="netScreen">
   <h1>СЕТЕВАЯ ИГРА</h1>
   <h2>2 ИГРОКА · РАЗНЫЕ ПК</h2>
@@ -298,7 +293,7 @@
     <div class="inviteHelp">
       <b>Как пригласить друга:</b><br>
       1. <b>📋 СКОПИРОВАТЬ ССЫЛКУ</b> — ссылка уйдёт в буфер<br>
-      2. Отправь другу (телега, ватсап, дискорд)<br>
+      2. Отправь другу<br>
       3. Друг открывает ссылку → ник подставлен<br>
       4. Когда он жмёт «ПРИСОЕДИНИТЬСЯ» — у тебя загорится <b style="color:#66ff88">✓ ИГРОК ПОДКЛЮЧЁН</b><br>
       5. Жми <b>НАЧАТЬ ИГРУ</b>
@@ -317,7 +312,6 @@
   <button class="btn" id="netBackBtn" style="padding:10px 22px; font-size:13px; margin-top:30px;">← НАЗАД</button>
 </div>
 
-<!-- ПАУЗА -->
 <div class="screen hidden" id="pauseScreen">
   <h1>ПАУЗА</h1>
   <p>ESC — вернуться в бой. Или выйди в меню.</p>
@@ -325,7 +319,6 @@
   <button class="btn pink" id="pauseExitBtn">В ГЛАВНОЕ МЕНЮ</button>
 </div>
 
-<!-- ПОРАЖЕНИЕ -->
 <div class="screen hidden" id="overScreen">
   <h1 style="color:#e04a2a;">ТЫ ПАЛ</h1>
   <h2>ОЛИМП СКОРБИТ</h2>
@@ -333,7 +326,6 @@
   <button class="btn" id="restartBtn">В ГЛАВНОЕ МЕНЮ</button>
 </div>
 
-<!-- ПОБЕДА -->
 <div class="screen hidden" id="victoryScreen">
   <h1 style="color:#ffd27a; font-size:64px;">ПОБЕДА</h1>
   <h2 style="color:#ffb060;">ОЛИМП ВОЗРОЖДЁН</h2>
@@ -496,6 +488,7 @@ const SFX = {
   die:()=>{tone(240,0.4,'sawtooth',0.18,50);noise(0.3,900,0.2);},
   hurt:()=>{tone(180,0.28,'square',0.2,70);},
   pickup:()=>{tone(660,0.09,'sine',0.18);tone(990,0.14,'sine',0.14);},
+  soulPickup:()=>{tone(880,0.08,'sine',0.14);tone(1320,0.1,'sine',0.11);},
   waveStart:()=>{tone(220,0.6,'sawtooth',0.16,440);tone(330,0.7,'square',0.1,660);},
   reload:()=>{noise(0.07,1800,0.16);},
   spawn:()=>{tone(90,0.5,'sawtooth',0.12,220);},
@@ -537,7 +530,6 @@ sun.shadow.camera.top = 120; sun.shadow.camera.bottom = -120;
 sun.shadow.camera.far = 350; sun.shadow.bias = -0.001;
 scene.add(sun);
 
-/* ============== TEXTURES ============== */
 function makeTex(size, draw, repeat=1) {
   const c = document.createElement('canvas'); c.width = c.height = size;
   draw(c.getContext('2d'), size);
@@ -578,7 +570,7 @@ const colTex = makeTex(128, (g,s)=>{
   }
 });
 
-/* ============== НОВАЯ КАРТА: "ВРАТА ОЛИМПА" ============== */
+/* ============== MAP ============== */
 const ARENA = 65;
 const MANSION_X_MIN = ARENA + 15;
 const MANSION_X_MAX = ARENA + 95;
@@ -718,7 +710,6 @@ function addBanner(x, y, z, rotY, color) {
   scene.add(gold); worldMeshes.push(gold);
 }
 
-// --- Пол ---
 const floor = new THREE.Mesh(new THREE.PlaneGeometry(ARENA*2+20, ARENA*2+20), floorMat);
 floor.rotation.x = -Math.PI/2; floor.receiveShadow = true;
 floor.userData.isWall = true;
@@ -734,7 +725,6 @@ mansionFloor.receiveShadow = true;
 mansionFloor.userData.isWall = true;
 scene.add(mansionFloor); worldMeshes.push(mansionFloor);
 
-// --- Стены ---
 addBox(ARENA*2+4, 16, 2, 0, -ARENA-1, wallMat);
 addBox(ARENA*2+4, 16, 2, 0,  ARENA+1, wallMat);
 addBox(2, 16, ARENA*2+4, -ARENA-1, 0, wallMat);
@@ -756,7 +746,6 @@ addBox(2, 14, MANSION_Z_HALF*2 + 4, MANSION_X_MAX + 1, 0, stoneMat);
 addBox(MANSION_X_MAX - MANSION_X_MIN + 20, 14, 2, (MANSION_X_MIN + MANSION_X_MAX)/2, -MANSION_Z_HALF - 1, stoneMat);
 addBox(MANSION_X_MAX - MANSION_X_MIN + 20, 14, 2, (MANSION_X_MIN + MANSION_X_MAX)/2,  MANSION_Z_HALF + 1, stoneMat);
 
-// --- Внешний двор (север) ---
 for (let i = 0; i < 5; i++) {
   const x = -40 + i*20;
   addCyl(1.4, 12, x, 45, marbleMat);
@@ -785,33 +774,10 @@ addTorch( 8, 30);
 addTorch(-8, 62);
 addTorch( 8, 62);
 
-// --- Храм (центр) ---
-const podium = new THREE.Mesh(new THREE.BoxGeometry(50, 1.2, 50), marbleMat);
-podium.position.set(0, 0.6, 2.5);
-podium.castShadow = true; podium.receiveShadow = true;
-podium.userData.isWall = true;
+const podium = new THREE.Mesh(new THREE.BoxGeometry(50, 0.1, 50), marbleMat);
+podium.position.set(0, 0.05, 2.5);
+podium.receiveShadow = true;
 scene.add(podium); worldMeshes.push(podium);
-
-function makeStairs(cx, cz, dirX, dirZ) {
-  for (let i = 0; i < 4; i++) {
-    const step = new THREE.Mesh(new THREE.BoxGeometry(
-      Math.abs(dirX) > 0 ? 2 : 8,
-      0.3,
-      Math.abs(dirZ) > 0 ? 2 : 8
-    ), marbleMat);
-    step.position.set(
-      cx + dirX * (i*0.5 + 0.25),
-      0.15 + i*0.3,
-      cz + dirZ * (i*0.5 + 0.25)
-    );
-    step.castShadow = true; step.receiveShadow = true;
-    scene.add(step); worldMeshes.push(step);
-  }
-}
-makeStairs(0, -22.5, 0, -1);
-makeStairs(0,  27.5, 0,  1);
-makeStairs(-25,  2.5, -1, 0);
-makeStairs( 25,  2.5,  1, 0);
 
 const templeCols = [
   [-20, -17], [0, -17], [20, -17],
@@ -824,23 +790,23 @@ for (const [x, z] of templeCols) {
   cap.position.set(x, 15.4, z); cap.castShadow = true;
   scene.add(cap); worldMeshes.push(cap);
   const base = new THREE.Mesh(new THREE.BoxGeometry(4, 0.6, 4), darkMarbleMat);
-  base.position.set(x, 1.5, z); base.castShadow = true;
+  base.position.set(x, 0.3, z); base.castShadow = true;
   scene.add(base); worldMeshes.push(base);
 }
 
 const altarBase = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 2.8, 1.6, 16), marbleMat);
-altarBase.position.set(0, 2.0, 2.5);
+altarBase.position.set(0, 0.8, 2.5);
 altarBase.castShadow = true; altarBase.receiveShadow = true;
 scene.add(altarBase); worldMeshes.push(altarBase);
 const altarTop = new THREE.Mesh(new THREE.CylinderGeometry(2.0, 2.4, 0.3, 16), goldMat);
-altarTop.position.set(0, 2.95, 2.5);
+altarTop.position.set(0, 1.75, 2.5);
 altarTop.castShadow = true;
 scene.add(altarTop); worldMeshes.push(altarTop);
 const altarFire = new THREE.Mesh(new THREE.SphereGeometry(0.9, 12, 10),
   new THREE.MeshBasicMaterial({ color: 0xffaa44, transparent: true, opacity: 0.85 }));
-altarFire.position.set(0, 3.8, 2.5);
+altarFire.position.set(0, 2.6, 2.5);
 scene.add(altarFire);
-altarFire.userData = { life: 1, light: null, baseY: 3.8 };
+altarFire.userData = { life: 1, light: null, baseY: 2.6 };
 torchParts.push(altarFire);
 circleColliders.push({ x: 0, z: 2.5, r: 3 });
 
@@ -848,16 +814,15 @@ const runeMat = new THREE.MeshBasicMaterial({ color: 0x66ddff, transparent: true
 for (let r = 4; r <= 16; r += 4) {
   const ring = new THREE.Mesh(new THREE.RingGeometry(r - 0.15, r + 0.15, 48), runeMat);
   ring.rotation.x = -Math.PI/2;
-  ring.position.set(0, 1.22, 2.5);
+  ring.position.set(0, 0.12, 2.5);
   scene.add(ring); worldMeshes.push(ring);
 }
 
-addTorch(-10, 15, 1.2);
-addTorch( 10, 15, 1.2);
-addTorch(-10, -8, 1.2);
-addTorch( 10, -8, 1.2);
+addTorch(-10, 15, 0);
+addTorch( 10, 15, 0);
+addTorch(-10, -8, 0);
+addTorch( 10, -8, 0);
 
-// --- Святилище (юг) ---
 const throneBase = new THREE.Mesh(new THREE.BoxGeometry(6, 1.2, 5), darkMarbleMat);
 throneBase.position.set(0, 0.6, -58);
 throneBase.castShadow = true; throneBase.receiveShadow = true;
@@ -888,7 +853,6 @@ addCyl(1.5, 12,  22, -40, darkMarbleMat);
 addCyl(1.5, 12, -22, -55, darkMarbleMat);
 addCyl(1.5, 12,  22, -55, darkMarbleMat);
 
-// --- Маншин ---
 addRuinBuilding(MANSION_X_MIN + 15, -35, 14, 8, 12);
 addRuinBuilding(MANSION_X_MIN + 15,  35, 14, 8, 12);
 addRuinBuilding(MANSION_X_MIN + 38, -30, 16, 10, 14);
@@ -1029,22 +993,34 @@ function updateParticles(dt) {
   }
 }
 
-/* ============== BEAMS ============== */
+/* ============== BEAMS (pool) ============== */
 const beamGeo = new THREE.CylinderGeometry(1,1,1,6,1,true);
 const beams = [];
+const beamPool = [];
+const BEAM_POOL_MAX = 80;
 const UP = new THREE.Vector3(0,1,0);
 function spawnBeam(from, to, color=0x66ccff, radius=0.07, life=0.14) {
   const dir = new THREE.Vector3().subVectors(to,from);
   const len = dir.length();
   if (len < 0.01) return;
-  const m = new THREE.Mesh(beamGeo, new THREE.MeshBasicMaterial({
-    color, transparent:true, opacity:0.95, depthWrite:false
-  }));
-  m.position.copy(from).addScaledVector(dir, 0.5);
-  m.quaternion.setFromUnitVectors(UP, dir.clone().normalize());
-  m.scale.set(radius, len, radius);
-  scene.add(m);
-  beams.push({ m, life, max: life, isLight: false });
+  let b = beamPool.pop();
+  if (b) {
+    b.m.visible = true;
+    b.m.material.color.setHex(color);
+    b.m.material.opacity = 0.95;
+  } else {
+    const mat = new THREE.MeshBasicMaterial({ transparent:true, opacity:0.95, depthWrite:false, color });
+    const mesh = new THREE.Mesh(beamGeo, mat);
+    scene.add(mesh);
+    b = { m: mesh, life: 0, max: 0, isLight: false };
+  }
+  b.m.position.copy(from).addScaledVector(dir, 0.5);
+  b.m.quaternion.setFromUnitVectors(UP, dir.clone().normalize());
+  b.m.scale.set(radius, len, radius);
+  b.life = life;
+  b.max = life;
+  b.isLight = false;
+  beams.push(b);
 }
 function updateBeams(dt) {
   for(let i=beams.length-1;i>=0;i--){
@@ -1052,8 +1028,9 @@ function updateBeams(dt) {
     if (b.isLight) continue;
     b.life -= dt;
     if (b.life <= 0) {
-      scene.remove(b.m);
-      if (b.m.material && b.m.material.dispose) b.m.material.dispose();
+      b.m.visible = false;
+      if (beamPool.length < BEAM_POOL_MAX) beamPool.push(b);
+      else scene.remove(b.m);
       beams.splice(i,1); continue;
     }
     b.m.material.opacity = (b.life/b.max) * 0.95;
@@ -1069,20 +1046,20 @@ function newPlayer(x,z) {
     yaw: Math.PI, pitch: 0,
     hp: 100, maxHp: 100, armor: 0, maxArmor: 100,
     radius: 0.55, height: 1.7,
-    onGround: true, speed: 8.4, sprintMul: 1.6, jumpPower: 8.6,
+    onGround: true, speed: 8.4, sprintMul: 2.15, jumpPower: 8.6,
     bobT: 0, bobAmp: 0, recoil: 0, kick: 0,
-    alive: true, invuln: 0,
-    weapons: null, curWeapon: 0, weaponCd: 0, ultCharge: 0,
+    alive: true, invuln: 0, souls: 0,
+    weapons: null, curWeapon: 0, weaponCd: 0,
     avatar: null, _semiLatch: false, grenades: 3,
     upgrades: { damage: 1, fireRate: 1, pierce: 0, regen: 0, lifesteal: 0,
-                ultKills: 10, ultDmg: 1, explosive: false, bloodFeast: false,
+                ultDmg: 1, explosive: false, bloodFeast: false,
                 _bulletCount: 0, _regenT: 0 }
   };
 }
 const player  = newPlayer(0, 45);
 const player2 = newPlayer(-3, 47);
 
-/* ============== WEAPONS (ребаланс) ============== */
+/* ============== WEAPONS ============== */
 const WEAPON_TPL = [
   { id:'pistol', name:'Пистолет', auto:true, damage:32, rate:0.11, spread:0.010, pellets:1,
     range:150, ammoMax:600, unlockedDefault:true, slot:'1', sfx:'pistol', kick:0.022 },
@@ -1143,71 +1120,183 @@ player2.avatar = buildAvatar(0xff8844);
 player2.avatar.position.copy(player2.pos); player2.avatar.position.y = 0;
 scene.add(player2.avatar);
 
-/* ============== ULT ============== */
-const ULT_REQ = 10;
+/* ============== SOULS / ULT ============== */
 const ultWaves = [];
-function gainUlt(P) {
+const soulOrbs = [];
+const SOUL_COLORS = { greek: 0x66ddff, undead: 0xaa66ff, olympian: 0xffcc44 };
+
+function addSoul(P) {
   if (!P) return;
-  const req = P.upgrades ? P.upgrades.ultKills : ULT_REQ;
-  if (P.ultCharge >= req) return;
-  P.ultCharge++;
+  P.souls = (P.souls || 0) + 1;
   if (P === player) {
-    if (P.ultCharge === req) { SFX.ultReady(); showMsg('⚡ ГНЕВ ОЛИМПА ГОТОВ (Q)', 1400); addFeed('<span style="color:#66ddff">⚡ ГНЕВ ОЛИМПА ЗАРЯЖЕН (Q)</span>'); }
+    const s = P.souls;
+    if (s === 1) addFeed('<span style="color:#66ddff">⚡ Первая душа! Жми Q чтобы выпустить Гнев</span>');
+    else if (s === 10) addFeed('<span style="color:#66ddff">⚡ 10 душ — ульта заметно сильнее</span>');
+    else if (s === 25) addFeed('<span style="color:#ffd27a">⚡ 25 душ — огромная сфера!</span>');
+    else if (s === 50) addFeed('<span style="color:#ff8844">⚡ 50 душ — ЯРОСТЬ ОЛИМПА!</span>');
+    else if (s === 100) addFeed('<span style="color:#ff4422">⚡ 100 ДУШ — БОГ ГНЕВА!</span>');
     updateUltHUD();
   }
 }
+
+function spawnSoulOrb(from, target, family) {
+  if (!target) return;
+  const color = SOUL_COLORS[family] || 0x66ddff;
+  const mesh = new THREE.Mesh(
+    new THREE.SphereGeometry(0.24, 10, 8),
+    new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.9 })
+  );
+  mesh.position.copy(from);
+  scene.add(mesh);
+  const light = new THREE.PointLight(color, 2.2, 6, 2);
+  mesh.add(light);
+  soulOrbs.push({ mesh, target, life: 3.5, t: 0, color });
+}
+
+function updateSoulOrbs(dt) {
+  for (let i = soulOrbs.length - 1; i >= 0; i--) {
+    const o = soulOrbs[i];
+    o.life -= dt;
+    o.t += dt;
+    if (o.t > 0.2) {
+      const toT = new THREE.Vector3().subVectors(o.target.pos, o.mesh.position);
+      toT.y += 1.2;
+      const dist = toT.length();
+      if (dist < 1.0) {
+        burst(o.mesh.position.clone(), 6, { mat:'magic', speed: 5, life: 0.35, size: 0.11, gravity: 2 });
+        scene.remove(o.mesh);
+        soulOrbs.splice(i, 1);
+        SFX.soulPickup();
+        continue;
+      }
+      toT.normalize().multiplyScalar(Math.min(34, 6 + o.t * 26) * dt);
+      o.mesh.position.add(toT);
+      if (Math.random() < 0.6) {
+        spawnParticle(o.mesh.position.clone(), {
+          mat: 'magic', size: 0.12,
+          vel: new THREE.Vector3(rand(-0.5,0.5), rand(0.5,1.5), rand(-0.5,0.5)),
+          life: 0.4, gravity: -1, spin: false
+        });
+      }
+    } else {
+      o.mesh.position.y += dt * 3.5;
+    }
+    o.mesh.rotation.y += dt * 10;
+    o.mesh.rotation.x += dt * 8;
+    if (o.life <= 0) {
+      scene.remove(o.mesh);
+      soulOrbs.splice(i, 1);
+    }
+  }
+}
+
 function activateUlt(P) {
   if (!P) return;
-  const req = P.upgrades ? P.upgrades.ultKills : ULT_REQ;
-  if (P.ultCharge < req) { addFeed('<span style="color:#c04040">УЛЬТА НЕ ЗАРЯЖЕНА</span>'); return; }
-  P.ultCharge = 0;
+  const souls = P.souls || 0;
+  if (souls < 1) { addFeed('<span style="color:#c04040">НЕТ ДУШ — НЕЧЕГО ОТПУСКАТЬ</span>'); return; }
+  P.souls = 0;
   if (P === player) updateUltHUD();
   SFX.ult();
-  showMsg('⚡ ГНЕВ ОЛИМПА', 1400);
-  const R = 24;
-  for (let k=0;k<3;k++){
-    const ring = new THREE.Mesh(new THREE.RingGeometry(0.8,1.4,40),
-      new THREE.MeshBasicMaterial({ color: k===0?0xffffff:(k===1?0x66ddff:0x2299dd),
-        transparent:true, opacity:0.95, side: THREE.DoubleSide, depthWrite:false }));
-    ring.rotation.x = -Math.PI/2;
-    ring.position.copy(P.pos); ring.position.y = 0.4+k*0.15;
+
+  const dmg = (80 + souls * 55) * (P.upgrades ? P.upgrades.ultDmg : 1);
+  const R = Math.min(65, 5 + souls * 1.15);
+  const isRage = souls >= 50;
+  const isBig = souls >= 25;
+
+  showMsg(isRage ? '⚡ ЯРОСТЬ ОЛИМПА! ⚡' : (isBig ? '⚡ ГНЕВ ОЛИМПА ⚡' : '⚡ ГНЕВ ОЛИМПА'), 1500);
+  addFeed(`<span style="color:#66ddff">⚡ ${souls} душ → ${Math.round(dmg)} урона · радиус ${Math.round(R)}</span>`);
+
+  const sphereColor = isRage ? 0xffaa22 : (isBig ? 0x66ddff : 0x88ccff);
+
+  const sphere = new THREE.Mesh(
+    new THREE.SphereGeometry(1, 24, 16),
+    new THREE.MeshBasicMaterial({
+      color: sphereColor,
+      transparent: true, opacity: 0.42, depthWrite: false, side: THREE.DoubleSide
+    })
+  );
+  sphere.position.copy(P.pos); sphere.position.y += 0.6;
+  scene.add(sphere);
+  ultWaves.push({ mesh: sphere, life: 0.85, max: 0.85, delay: 0, R, isSphere: true });
+
+  const cols = isRage ? [0xfff5cc, 0xffcc44, 0xff7722] : (isBig ? [0xffffff, 0x88ddff, 0x2299dd] : [0xffffff, 0x88ccff, 0x4488aa]);
+  for (let k = 0; k < 3; k++) {
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(0.8, 1.4, 48),
+      new THREE.MeshBasicMaterial({ color: cols[k], transparent: true, opacity: 0.95, side: THREE.DoubleSide, depthWrite: false })
+    );
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.copy(P.pos);
+    ring.position.y = 0.4 + k * 0.15;
     scene.add(ring);
-    ultWaves.push({ mesh: ring, life: 0.75+k*0.1, max: 0.75+k*0.1, delay: k*0.08, R });
+    ultWaves.push({ mesh: ring, life: 0.85 + k * 0.12, max: 0.85 + k * 0.12, delay: k * 0.08, R, isSphere: false });
   }
-  const light = new THREE.PointLight(0xaaeaff, 90, 60, 2);
+
+  const light = new THREE.PointLight(isRage ? 0xffbb66 : 0xaaeaff, 60 + Math.min(120, souls * 2.5), R * 3, 2);
   light.position.copy(P.pos); light.position.y += 1.5;
-  scene.add(light); beams.push({ m: light, life: 0.7, max: 0.7, isLight: true });
-  const ultMul = (P.upgrades ? P.upgrades.ultDmg : 1);
+  scene.add(light);
+  beams.push({ m: light, life: 0.9, max: 0.9, isLight: true });
+
+  const pc = P.pos.clone(); pc.y += 0.6;
   for (const e of enemies) {
     if (e.dead) continue;
-    const d = e.mesh.position.distanceTo(P.pos);
-    if (d < R) damageEnemy(e, 420 * ultMul * (1 - (d/R)*0.55), e.mesh.position.clone().setY(e.mesh.position.y+1), P);
+    const eCenter = e.mesh.position.clone();
+    eCenter.y += e.cfg.scale * 1.3;
+    const d = eCenter.distanceTo(pc);
+    if (d < R) {
+      const falloff = 1 - (d / R) * 0.45;
+      damageEnemy(e, dmg * falloff, eCenter, P);
+    }
   }
-  burst(P.pos.clone().setY(0.6), 50, { mat:'magic', speed:22, life:0.9, size:0.22, gravity:8 });
-  burst(P.pos.clone().setY(1.2), 30, { mat:'gold', speed:16, life:1.1, size:0.16, gravity:4 });
+
+  const pcount = Math.min(60, 20 + souls * 2);
+  burst(P.pos.clone().setY(0.6), pcount, { mat: 'magic', speed: 22, life: 0.9, size: 0.22, gravity: 6 });
+  burst(P.pos.clone().setY(1.2), Math.floor(pcount * 0.6), { mat: 'gold', speed: 16, life: 1.0, size: 0.16, gravity: 3 });
   $('ultFlash').style.opacity = '1';
-  setTimeout(()=>{ $('ultFlash').style.opacity = '0'; }, 180);
-  if (net.mode === 'host') sendToPeer({ t:'event', e:{ t:'ult', p: P===player ? 1 : 2 } });
+  setTimeout(() => { $('ultFlash').style.opacity = '0'; }, 180);
+  if (net.mode === 'host') sendToPeer({ t: 'event', e: { t: 'ult', p: P === player ? 1 : 2, R, rage: isRage } });
 }
+
 function updateUltWaves(dt) {
-  for(let i=ultWaves.length-1;i>=0;i--){
+  for (let i = ultWaves.length - 1; i >= 0; i--) {
     const w = ultWaves[i];
     if (w.delay > 0) { w.delay -= dt; w.mesh.scale.setScalar(0.01); continue; }
     w.life -= dt;
-    if (w.life <= 0) { scene.remove(w.mesh); ultWaves.splice(i,1); continue; }
-    w.mesh.scale.setScalar((1 - w.life/w.max) * w.R);
-    w.mesh.material.opacity = (w.life/w.max) * 0.9;
+    if (w.life <= 0) {
+      scene.remove(w.mesh);
+      if (w.mesh.material && w.mesh.material.dispose) w.mesh.material.dispose();
+      ultWaves.splice(i, 1);
+      continue;
+    }
+    const t = 1 - w.life / w.max;
+    if (w.isSphere) {
+      w.mesh.scale.setScalar(0.5 + t * w.R);
+      w.mesh.material.opacity = (1 - t) * 0.5;
+    } else {
+      w.mesh.scale.setScalar(t * w.R);
+      w.mesh.material.opacity = (w.life / w.max) * 0.9;
+    }
   }
 }
+
 function updateUltHUD() {
   const box = $('ultBox'); if (!box) return;
-  const req = player.upgrades ? player.upgrades.ultKills : ULT_REQ;
-  $('ultBar').firstElementChild.style.width = clamp(player.ultCharge/req,0,1)*100 + '%';
-  $('ultCount').textContent = player.ultCharge + ' / ' + req;
-  box.classList.toggle('ready', player.ultCharge >= req);
+  const souls = player.souls || 0;
+  const ref = 50;
+  const pct = clamp(souls / ref, 0, 1);
+  $('ultBar').firstElementChild.style.width = (pct * 100) + '%';
+  $('ultCount').textContent = 'ДУШ: ' + souls;
+  box.classList.toggle('ready', souls > 0);
+  if (souls >= 50) {
+    $('ultBar').firstElementChild.style.background = 'linear-gradient(90deg,#ff7722,#ffcc44,#fff5cc)';
+  } else if (souls >= 25) {
+    $('ultBar').firstElementChild.style.background = 'linear-gradient(90deg,#aa6622,#ffaa44,#ffddaa)';
+  } else {
+    $('ultBar').firstElementChild.style.background = 'linear-gradient(90deg,#2a6a8a,#66ccff,#ccf0ff)';
+  }
 }
 
-/* ============== LEVELS (с сюжетом) ============== */
+/* ============== LEVELS ============== */
 let currentLevel = 0;
 let ngPlus = 0;
 const LEVELS = [
@@ -1257,7 +1346,7 @@ function applyLevel(idx) {
   $('levelName').textContent = L.name;
 }
 
-/* ============== ENEMIES (ребаланс) ============== */
+/* ============== ENEMIES ============== */
 const ENEMY_TYPES = {
   satyr: { name:'Сатир', hp:70, speed:5.0, damage:12, range:2.6, cooldown:1.05, scale:1.0,
     color:0x8b5a2b, score:100, hitR:0.9, melee:true, mass:1, family:'greek' },
@@ -1291,6 +1380,7 @@ const ENEMY_TYPES = {
 const enemies = [];
 const enemyHitMeshes = [];
 let nextNetId = 1;
+const HURT_MAT = new THREE.MeshBasicMaterial({ color: 0xff4444 });
 
 function buildEnemyMesh(type) {
   const cfg = ENEMY_TYPES[type];
@@ -1678,7 +1768,7 @@ function spawnEnemy(type, pos) {
   e.bar = getBar(cfg.boss);
   e.bar._nm.textContent = cfg.boss ? LEVELS[currentLevel].bossName : cfg.name;
   enemies.push(e);
-  burst(mesh.position.clone().setY(mesh.position.y*0.5+0.5), 12, { mat:'magic', speed:7, life:0.6, size:0.14, gravity:4 });
+  burst(mesh.position.clone().setY(mesh.position.y*0.5+0.5), 6, { mat:'magic', speed:6, life:0.5, size:0.13, gravity:4 });
   SFX.spawn();
   return e;
 }
@@ -1710,9 +1800,9 @@ function spawnProjectile(from, dir, speed, owner, opts={}) {
 function explode(pos, R, dmg, source='player') {
   if (net.mode === 'host') netEvent('explode', { x: pos.x, y: pos.y, z: pos.z, r: R });
   SFX.explode();
-  burst(pos, 25, { mat:'fire', speed:15, life:0.6, size:0.32, gravity:12 });
-  burst(pos, 15, { mat:'smoke', speed:7, life:1.2, size:0.6, gravity:-2, spin:false });
-  burst(pos, 12, { mat:'stone', speed:11, life:0.85, size:0.18, gravity:24 });
+  burst(pos, 14, { mat:'fire', speed:14, life:0.55, size:0.3, gravity:12 });
+  burst(pos, 8, { mat:'smoke', speed:6, life:1.0, size:0.55, gravity:-2, spin:false });
+  burst(pos, 6, { mat:'stone', speed:10, life:0.8, size:0.16, gravity:24 });
   const flash = new THREE.PointLight(0xffaa44, 30, R*3, 2);
   flash.position.copy(pos); scene.add(flash);
   beams.push({ m: flash, life: 0.28, max: 0.28, isLight: true });
@@ -1825,8 +1915,8 @@ function updateGrenades(dt) {
         }
       }
       SFX.explode();
-      burst(pos, 30, { mat:'fire', speed:16, life:0.7, size:0.34, gravity:12 });
-      burst(pos, 12, { mat:'smoke', speed:8, life:1.3, size:0.6, gravity:-2, spin:false });
+      burst(pos, 16, { mat:'fire', speed:15, life:0.6, size:0.32, gravity:12 });
+      burst(pos, 8, { mat:'smoke', speed:7, life:1.1, size:0.55, gravity:-2, spin:false });
       const flash = new THREE.PointLight(0xffaa44, 40, 30, 2);
       flash.position.copy(pos); scene.add(flash);
       beams.push({ m: flash, life: 0.35, max: 0.35, isLight: true });
@@ -1884,17 +1974,16 @@ function applyPickup(type, P) {
   updateHUD();
 }
 
-/* ============== DAMAGE ============== */
+/* ============== DAMAGE / KILL ============== */
 let combo = 0, comboTimer = 0;
 const COMBO_WINDOW = 3.0;
 function damageEnemy(e, amount, hitPos, attacker) {
   if (e.dead) return;
   e.hp -= amount; e.hurtT = 0.12;
-  if (hitPos) burst(hitPos.clone(), 4, { mat: e.cfg.family==='undead'?'ghost':'blood', speed:6, life:0.4, size:0.1 });
+  if (hitPos && Math.random() < 0.4) burst(hitPos.clone(), 2, { mat: e.cfg.family==='undead'?'ghost':'blood', speed:5, life:0.3, size:0.08 });
   for (const hm of e.mesh.userData.hitMeshes) {
-    if (!hm.userData._origColor) hm.userData._origColor = hm.material.color.clone();
-    hm.material = hm.material.clone();
-    hm.material.color.setHex(0xff4444);
+    if (!hm.userData._origMat) hm.userData._origMat = hm.material;
+    hm.material = HURT_MAT;
   }
   SFX.hitFlesh();
   if (e.hp <= 0) killEnemy(e, attacker);
@@ -1903,7 +1992,8 @@ function killEnemy(e, attacker) {
   if (e.dead) return;
   e.dead = true;
   const p = e.mesh.position.clone(); p.y += e.cfg.scale*1.4;
-  burst(p, e.cfg.boss?50:18, { mat: e.cfg.family==='undead'?'ghost':'blood', speed: e.cfg.boss?14:10, life:0.85, size:0.18, gravity:20 });
+  burst(p, e.cfg.boss?26:12, { mat: e.cfg.family==='undead'?'ghost':'blood', speed: e.cfg.boss?12:9, life:0.7, size:0.16, gravity:20 });
+  burst(p, 8, { mat: 'blood2', speed: 7, life: 0.6, size: 0.14, gravity: 22 });
   releaseBar(e.bar); e.bar = null;
   scene.remove(e.mesh);
   const idx = enemies.indexOf(e);
@@ -1921,11 +2011,17 @@ function killEnemy(e, attacker) {
   const dispName = e.cfg.boss ? LEVELS[currentLevel].bossName : e.cfg.name;
   addFeed(`☠ ${dispName} <span style="color:#a08a68">+${Math.floor(e.cfg.score * multiplier)}</span>`);
   if (net.mode === 'host') netEvent('feed', { html: `☠ ${dispName} +${Math.floor(e.cfg.score * multiplier)}` });
-  if (attacker && attacker.upgrades) {
-    if (attacker.upgrades.lifesteal) attacker.hp = Math.min(attacker.maxHp, attacker.hp + attacker.upgrades.lifesteal);
-    if (attacker.upgrades.bloodFeast) attacker.hp = Math.min(attacker.maxHp, attacker.hp + 2);
-    gainUlt(attacker);
+
+  // Душа летит к игроку
+  if (attacker) {
+    if (attacker.upgrades) {
+      if (attacker.upgrades.lifesteal) attacker.hp = Math.min(attacker.maxHp, attacker.hp + attacker.upgrades.lifesteal);
+      if (attacker.upgrades.bloodFeast) attacker.hp = Math.min(attacker.maxHp, attacker.hp + 2);
+    }
+    addSoul(attacker);
+    spawnSoulOrb(p.clone(), attacker, e.cfg.family);
   }
+
   const roll = Math.random();
   if (e.cfg.boss) {
     spawnPickup('health', p.clone().setY(1));
@@ -1968,7 +2064,7 @@ function updateEnemies(dt) {
       e.hurtT -= dt;
       if (e.hurtT <= 0) {
         for (const hm of m.userData.hitMeshes) {
-          if (hm.userData._origColor) hm.material.color.copy(hm.userData._origColor);
+          if (hm.userData._origMat) hm.material = hm.userData._origMat;
         }
       }
     }
@@ -2112,7 +2208,6 @@ function getAimDir(cam, spread) {
 function fireHitscan(P, w, dir, cam) {
   const origin = cam.getWorldPosition(tmpV1).clone();
   if (w.flamer) {
-    const endPoint = origin.clone().addScaledVector(dir, w.range);
     for (let k = 0; k < 3; k++) {
       spawnParticle(origin.clone().addScaledVector(dir, rand(1, w.range * 0.8)),
         { mat:'fire', vel: dir.clone().multiplyScalar(rand(2, 6)),
@@ -2550,24 +2645,29 @@ function selectWeapon(P, i) {
 let wave = 0, score = 0, kills = 0;
 let spawnQueue = [], spawnTimer = 0;
 let waveActive = false, waveBreakTimer = 0;
-const MAX_ALIVE = 26;
+const MAX_ALIVE_BASE = 26;
+const MAX_ALIVE_RUSH = 65;
+let isRushWave = false;
+function isRush(n) { return n >= 4 && n % 5 === 4; }
 
 function waveComposition(n) {
   const L = LEVELS[currentLevel];
   const list = [];
   if (n % 5 === 0) {
     list.push(L.boss);
-    const adds = 4 + Math.floor(n/5)*2;
-    for (let i=0;i<adds;i++) list.push(L.types[0]);
+    const adds = 4 + Math.floor(n / 5) * 2;
+    for (let i = 0; i < adds; i++) list.push(L.types[0]);
     return list;
   }
-  const total = 6 + Math.floor(n*1.8);
-  for (let i=0;i<total;i++) {
+  const rush = isRush(n);
+  const total = Math.floor((6 + n * 1.8) * (rush ? 1.9 : 1.0));
+  for (let i = 0; i < total; i++) {
     const r = Math.random();
     let tp;
     if (n === 1) tp = L.types[0];
     else if (n === 2) tp = r < 0.6 ? L.types[0] : L.types[1];
     else if (n === 3) tp = r < 0.45 ? L.types[0] : (r < 0.75 ? L.types[1] : L.types[2]);
+    else if (rush) tp = r < 0.5 ? L.types[0] : (r < 0.75 ? L.types[1] : (r < 0.9 ? L.types[3] : L.types[2]));
     else if (n === 4) tp = r < 0.3 ? L.types[0] : (r < 0.55 ? L.types[1] : (r < 0.8 ? L.types[3] : L.types[2]));
     else tp = r < 0.25 ? L.types[0] : (r < 0.5 ? L.types[1] : (r < 0.75 ? L.types[3] : L.types[2]));
     list.push(tp);
@@ -2576,11 +2676,20 @@ function waveComposition(n) {
 }
 function startWave(n) {
   wave = n; waveActive = true;
+  isRushWave = isRush(n);
   spawnQueue = waveComposition(n);
   spawnTimer = 0;
   SFX.waveStart();
 
-  // Сюжетный показ локации при первой волне уровня
+  if (isRushWave) {
+    showMsg('☠ ВСПЛЕСК ☠', 2400);
+    addFeed('<span style="color:#ff4444; font-weight:bold">⚠ ПРОРЫВ! ДЕРЖИСЬ! Врагов в 2 раза больше!</span>');
+    if (companion) companionSay(pick([
+      'ИХ СЛИШКОМ МНОГО! БЕЖИМ!','О БОГИ, ОНИ ВЕЗДЕ!','Я В УКРЫТИЕ! ДЕРЖИСЬ САМ!','ЭТО КОНЕЦ! Ну то есть для тебя, я-то бессмертная.'
+    ]), 2400);
+    Music.setMode('boss');
+  }
+
   if (n === 1 || (n - 1) % 5 === 0) {
     const L = LEVELS[currentLevel];
     setTimeout(() => {
@@ -2609,13 +2718,12 @@ function startWave(n) {
       ]), 2800);
     }, 800);
     Music.setMode('boss');
-  } else {
+  } else if (!isRushWave) {
     showMsg(`ВОЛНА ${n}`, 1500);
     Music.setMode('combat');
   }
 
-  // Модификатор
-  if (n >= 3 && n % 3 === 0 && n % 5 !== 0) {
+  if (n >= 3 && n % 3 === 0 && n % 5 !== 0 && !isRushWave) {
     activeModifier = pick(MODIFIERS);
     setTimeout(()=>{
       showMsg('МОДИФИКАТОР: ' + activeModifier.name, 2600);
@@ -2669,12 +2777,14 @@ function updateWaves(dt) {
     if (waveBreakTimer <= 0) startWave(wave + 1);
     return;
   }
+  const maxAlive = isRushWave ? MAX_ALIVE_RUSH : MAX_ALIVE_BASE;
   if (spawnQueue.length > 0) {
     spawnTimer -= dt;
-    if (spawnTimer <= 0 && enemies.length < MAX_ALIVE) {
+    if (spawnTimer <= 0 && enemies.length < maxAlive) {
       const type = spawnQueue.shift();
       spawnEnemy(type, spawnPoint());
       let base = ENEMY_TYPES[type].boss ? 1.5 : rand(0.22, 0.7);
+      if (isRushWave) base *= 0.28;
       if (activeModifier && activeModifier.id === 'swarm') base *= 0.66;
       spawnTimer = base;
     }
@@ -2682,6 +2792,12 @@ function updateWaves(dt) {
   if (spawnQueue.length === 0 && enemies.length === 0) {
     if (activeModifier && activeModifier.id === 'dark') applyLevel(currentLevel);
     activeModifier = null;
+    if (isRushWave) {
+      const rushBonus = 500 * wave;
+      score += rushBonus;
+      addFeed(`<span style="color:#ffd27a; font-weight:bold">✦ ПРОРЫВ ОТБИТ! +${rushBonus}</span>`);
+    }
+    isRushWave = false;
     waveActive = false;
     waveBreakTimer = 4.5;
     const bonus = 250 * wave;
@@ -2772,7 +2888,7 @@ function updatePlayerEntity(P, cam, inp, dt) {
   collide(p2, P.radius);
   P.pos.x = p2.x; P.pos.z = p2.z;
   const hs = Math.hypot(P.vel.x, P.vel.z);
-  if (P.onGround && hs > 1) { P.bobT += dt*hs*1.05; P.bobAmp = lerp(P.bobAmp, sprinting ? 0.075 : 0.045, dt*8); }
+  if (P.onGround && hs > 1) { P.bobT += dt*hs*1.05; P.bobAmp = lerp(P.bobAmp, sprinting ? 0.10 : 0.045, dt*8); }
   else P.bobAmp = lerp(P.bobAmp, 0, dt*9);
   P.recoil = lerp(P.recoil, 0, dt*11);
   P.kick = lerp(P.kick, 0, dt*13);
@@ -2780,6 +2896,12 @@ function updatePlayerEntity(P, cam, inp, dt) {
   cam.position.set(P.pos.x + bx*0.5, P.pos.y + by - P.kick*0.25, P.pos.z);
   cam.rotation.set(P.pitch + P.recoil*0.012, P.yaw, 0, 'YXZ');
   cam.rotation.z += Math.cos(P.bobT)*0.008;
+  // FOV sprint
+  if (cam && cam.fov !== undefined) {
+    const targetFov = sprinting && hs > 4 ? 86 : 78;
+    cam.fov = lerp(cam.fov, targetFov, dt * 6);
+    cam.updateProjectionMatrix();
+  }
   if (P.weaponCd > 0) P.weaponCd -= dt;
   const w = P.weapons[P.curWeapon];
   if (inp.shoot) {
@@ -2927,8 +3049,8 @@ const UPGRADE_POOL = [
     apply:(P)=>{ P.upgrades.fireRate = (P.upgrades.fireRate||1) * 0.8; } },
   { id:'armor',   icon:'🛡', name:'Броня +40',   desc:'Максимум брони +40. Восстанавливается полностью.', rarity:'common',
     apply:(P)=>{ P.maxArmor += 40; P.armor = P.maxArmor; } },
-  { id:'ultfast', icon:'🌩', name:'Ульта быстрее', desc:'Ульта требует 7 убийств вместо 10.', rarity:'rare',
-    apply:(P)=>{ P.upgrades.ultKills = 7; } },
+  { id:'soulMag', icon:'💠', name:'Пожиратель душ', desc:'+20% урона от ульты.', rarity:'rare',
+    apply:(P)=>{ P.upgrades.ultDmg = (P.upgrades.ultDmg||1) * 1.2; } },
   { id:'lifesteal', icon:'🩸', name:'Вампиризм',  desc:'Каждое убийство даёт +3 HP.', rarity:'rare',
     apply:(P)=>{ P.upgrades.lifesteal = (P.upgrades.lifesteal||0) + 3; } },
   { id:'regen',   icon:'✚', name:'Регенерация',  desc:'+2 HP каждые 3 секунды.', rarity:'rare',
@@ -2939,7 +3061,7 @@ const UPGRADE_POOL = [
     apply:(P)=>{ P.maxHp += 50; P.hp = P.maxHp; P.maxArmor += 25; P.armor = P.maxArmor; P.speed *= 0.9; } },
   { id:'bloodFeast', icon:'👑', name:'Кровавый пир', desc:'Каждое убийство даёт +2 HP (постоянно).', rarity:'epic',
     apply:(P)=>{ P.upgrades.bloodFeast = true; } },
-  { id:'fastult', icon:'🌪', name:'Смерч',   desc:'Ульта наносит на 50% больше урона.', rarity:'epic',
+  { id:'ultRage', icon:'🌪', name:'Смерч',   desc:'Ульта наносит на 50% больше урона.', rarity:'epic',
     apply:(P)=>{ P.upgrades.ultDmg = (P.upgrades.ultDmg||1) * 1.5; } }
 ];
 function pickUpgrades(count) {
@@ -2981,7 +3103,7 @@ function showUpgradeScreen() {
 }
 
 /* ============== META ============== */
-const META_KEY = 'wrath_meta_v1';
+const META_KEY = 'wrath_meta_v2';
 function loadMeta() {
   try { const raw = localStorage.getItem(META_KEY); if (raw) return JSON.parse(raw); } catch(_) {}
   return { credits: 0, totalKills: 0, bestScore: 0, upgrades: {} };
@@ -3001,9 +3123,9 @@ const META_UPGRADES = [
   { id:'armorStart', name:'Кузнец', desc:'Стартовая броня +20 за уровень',
     maxLvl:3, baseCost:70, costMul:1.8,
     apply:(lvl)=>{ player.armor = lvl * 20; player.maxArmor = 100 + lvl*20; } },
-  { id:'ultStart', name:'Гнев богов', desc:'Ульта требует на 1 убийство меньше за уровень',
+  { id:'soulDmg', name:'Пожиратель душ', desc:'+15% урона от ульты за уровень',
     maxLvl:3, baseCost:150, costMul:2.1,
-    apply:(lvl)=>{ player.upgrades.ultKills = 10 - lvl; } }
+    apply:(lvl)=>{ player.upgrades.ultDmg = (player.upgrades.ultDmg||1) * (1 + lvl * 0.15); } }
 ];
 function metaCost(up, lvl) { return Math.floor(up.baseCost * Math.pow(up.costMul, lvl)); }
 function renderMetaScreen() {
@@ -3047,7 +3169,7 @@ function applyMetaBonuses() {
   player.maxArmor = 100; player.armor = 0;
   player.grenades = 3;
   player.upgrades = { damage: 1, fireRate: 1, pierce: 0, regen: 0, lifesteal: 0,
-                      ultKills: 10, ultDmg: 1, explosive: false, bloodFeast: false,
+                      ultDmg: 1, explosive: false, bloodFeast: false,
                       _bulletCount: 0, _regenT: 0 };
   for (const up of META_UPGRADES) {
     const lvl = meta.upgrades[up.id] || 0;
@@ -3058,10 +3180,7 @@ function applyMetaBonuses() {
 /* ============== NETWORK ============== */
 const PEER_CONFIG = {
   debug: 1,
-  host: '0.peerjs.com',
-  port: 443,
-  path: '/',
-  secure: true,
+  host: '0.peerjs.com', port: 443, path: '/', secure: true,
   config: { iceServers: [
     { urls: 'stun:stun.l.google.com:19302' },
     { urls: 'stun:stun1.l.google.com:19302' },
@@ -3129,7 +3248,7 @@ function humanizePeerError(e) {
 function startHost() {
   net.mode = 'host';
   net.nick = genNick();
-  net.peerId = 'wrath-olympus-v13-' + translit(net.nick);
+  net.peerId = 'wrath-olympus-v14-' + translit(net.nick);
   $('netChoice').classList.add('hidden');
   $('hostPanel').classList.remove('hidden');
   $('joinPanel').classList.add('hidden');
@@ -3165,7 +3284,7 @@ function startHost() {
           setConnState(1, 'wait', 'НИК ЗАНЯТ, ГЕНЕРИРУЕМ ДРУГОЙ...', '');
           try { net.peer.destroy(); } catch(_) {}
           net.nick = genNick();
-          net.peerId = 'wrath-olympus-v13-' + translit(net.nick);
+          net.peerId = 'wrath-olympus-v14-' + translit(net.nick);
           $('nickBox').textContent = net.nick;
           setTimeout(tryConnect, 400);
           return;
@@ -3188,11 +3307,11 @@ function joinRoom(input) {
   if (code.includes('join=')) {
     try { const u = new URL(code, location.href); code = u.searchParams.get('join') || code; } catch(_) {}
   }
-  code = decodeURIComponent(code).replace(/^wrath-olympus-v13-/i, '').trim();
+  code = decodeURIComponent(code).replace(/^wrath-olympus-v14-/i, '').trim();
   if (!code) { setConnState(2, 'err', 'ВВЕДИ НИК ИЛИ ССЫЛКУ', ''); return; }
   net.nick = code;
   net.mode = 'client';
-  net.peerId = 'wrath-olympus-v13-' + translit(code);
+  net.peerId = 'wrath-olympus-v14-' + translit(code);
   setConnState(2, 'info', 'ПОДКЛЮЧАЕМСЯ К «' + code + '»...', '');
   let attempts = 0;
   function tryJoin() {
@@ -3272,9 +3391,9 @@ function serializeState() {
   return {
     t: 'state', wave, waveActive, currentLevel, ngPlus, score, kills,
     p1: { x: player.pos.x, y: player.pos.y, z: player.pos.z, yaw: player.yaw, pitch: player.pitch,
-          hp: player.hp, armor: player.armor, alive: player.alive, w: player.curWeapon, ult: player.ultCharge },
+          hp: player.hp, armor: player.armor, alive: player.alive, w: player.curWeapon, souls: player.souls },
     p2: { x: player2.pos.x, y: player2.pos.y, z: player2.pos.z, yaw: player2.yaw, pitch: player2.pitch,
-          hp: player2.hp, armor: player2.armor, alive: player2.alive, w: player2.curWeapon, ult: player2.ultCharge },
+          hp: player2.hp, armor: player2.armor, alive: player2.alive, w: player2.curWeapon, souls: player2.souls },
     enemies: enemies.map(e => ({
       id: e.netId, type: e.type, x: e.mesh.position.x, y: e.mesh.position.y, z: e.mesh.position.z,
       yaw: e.mesh.rotation.y, hp: e.hp, maxHp: e.maxHp, spawnT: e.spawnT
@@ -3290,10 +3409,11 @@ function applyNetState(s) {
   player.pos.set(s.p1.x, s.p1.y, s.p1.z);
   player.yaw = s.p1.yaw; player.pitch = s.p1.pitch;
   player.hp = s.p1.hp; player.armor = s.p1.armor; player.alive = s.p1.alive;
+  player.souls = s.p1.souls;
   player2.pos.set(s.p2.x, s.p2.y, s.p2.z);
   player2.yaw = s.p2.yaw; player2.pitch = s.p2.pitch;
   player2.hp = s.p2.hp; player2.armor = s.p2.armor; player2.alive = s.p2.alive;
-  player2.curWeapon = s.p2.w; player2.ultCharge = s.p2.ult;
+  player2.curWeapon = s.p2.w; player2.souls = s.p2.souls;
   if (player.avatar) { player.avatar.position.set(s.p1.x, 0, s.p1.z); player.avatar.rotation.y = s.p1.yaw + Math.PI; }
   companion.pos.set(s.companion.x, s.companion.y, s.companion.z);
   companion.yaw = s.companion.yaw;
@@ -3340,8 +3460,8 @@ function handleNetEvent(ev) {
   if (ev.t === 'explode') {
     const p = new THREE.Vector3(ev.x, ev.y, ev.z);
     SFX.explode();
-    burst(p, 25, { mat:'fire', speed:15, life:0.6, size:0.3, gravity:12 });
-    burst(p, 12, { mat:'smoke', speed:7, life:1.2, size:0.6, gravity:-2, spin:false });
+    burst(p, 14, { mat:'fire', speed:14, life:0.55, size:0.3, gravity:12 });
+    burst(p, 8, { mat:'smoke', speed:6, life:1.0, size:0.55, gravity:-2, spin:false });
     const flash = new THREE.PointLight(0xffaa44, 30, (ev.r||6)*3, 2);
     flash.position.copy(p); scene.add(flash);
     beams.push({ m: flash, life: 0.28, max: 0.28, isLight: true });
@@ -3349,15 +3469,25 @@ function handleNetEvent(ev) {
     spawnBeam(new THREE.Vector3(ev.fx,ev.fy,ev.fz), new THREE.Vector3(ev.tx,ev.ty,ev.tz), ev.c, ev.rad, ev.life);
   } else if (ev.t === 'ult') {
     const P = ev.p === 1 ? player : player2;
-    const R = 24;
+    const R = ev.R || 24;
+    const isRage = !!ev.rage;
+    const col = isRage ? 0xffaa22 : 0x66ddff;
+    const sphere = new THREE.Mesh(
+      new THREE.SphereGeometry(1, 24, 16),
+      new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.42, depthWrite: false, side: THREE.DoubleSide })
+    );
+    sphere.position.copy(P.pos); sphere.position.y += 0.6;
+    scene.add(sphere);
+    ultWaves.push({ mesh: sphere, life: 0.85, max: 0.85, delay: 0, R, isSphere: true });
+    const cols = isRage ? [0xfff5cc, 0xffcc44, 0xff7722] : [0xffffff, 0x88ccff, 0x2299dd];
     for (let k=0;k<3;k++) {
-      const ring = new THREE.Mesh(new THREE.RingGeometry(0.8,1.4,40),
-        new THREE.MeshBasicMaterial({ color: k===0?0xffffff:(k===1?0x66ddff:0x2299dd),
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.8,1.4,48),
+        new THREE.MeshBasicMaterial({ color: cols[k],
           transparent:true, opacity:0.95, side:THREE.DoubleSide, depthWrite:false }));
       ring.rotation.x = -Math.PI/2;
       ring.position.copy(P.pos); ring.position.y = 0.4+k*0.15;
       scene.add(ring);
-      ultWaves.push({ mesh: ring, life: 0.75+k*0.1, max: 0.75+k*0.1, delay: k*0.08, R });
+      ultWaves.push({ mesh: ring, life: 0.85+k*0.12, max: 0.85+k*0.12, delay: k*0.08, R, isSphere: false });
     }
     SFX.ult();
   } else if (ev.t === 'feed') {
@@ -3428,24 +3558,26 @@ function resetGame() {
   ultWaves.length = 0;
   for (const p of particles) scene.remove(p.m);
   particles.length = 0;
+  for (const s of soulOrbs) scene.remove(s.mesh);
+  soulOrbs.length = 0;
 
   applyMetaBonuses();
   player.pos.set(0, 1.7, 45); player.vel.set(0,0,0);
   player.yaw = Math.PI; player.pitch = 0;
   player.alive = true; player.invuln = 0; player.recoil = 0; player.kick = 0;
-  player.weapons = makeWeapons(); player.curWeapon = 0; player.weaponCd = 0; player.ultCharge = 0;
+  player.weapons = makeWeapons(); player.curWeapon = 0; player.weaponCd = 0; player.souls = 0;
 
   player2.pos.set(-3, 1.7, 47); player2.vel.set(0,0,0);
   player2.yaw = Math.PI; player2.pitch = 0;
   player2.hp = player2.maxHp; player2.armor = 0;
   player2.alive = true; player2.invuln = 0; player2.recoil = 0; player2.kick = 0;
-  player2.weapons = makeWeapons(); player2.curWeapon = 0; player2.weaponCd = 0; player2.ultCharge = 0;
+  player2.weapons = makeWeapons(); player2.curWeapon = 0; player2.weaponCd = 0; player2.souls = 0;
   player2.avatar.position.copy(player2.pos); player2.avatar.position.y = 0;
 
   wave = 0; score = 0; kills = 0;
   combo = 0; comboTimer = 0; hideComboBox();
   spawnQueue = []; waveActive = false; waveBreakTimer = 1.2;
-  activeModifier = null;
+  activeModifier = null; isRushWave = false;
   currentLevel = 0; ngPlus = 0;
   applyLevel(0);
 
@@ -3502,7 +3634,7 @@ function startNetHost() {
   player2.yaw = Math.PI;
   player2.weapons = makeWeapons();
   player2.curWeapon = 0;
-  player2.ultCharge = 0;
+  player2.souls = 0;
   player2.avatar.visible = true;
   player2.avatar.position.copy(player2.pos);
   player2.avatar.position.y = 0;
@@ -3522,7 +3654,7 @@ function startNetClientGame() {
   player2.hp = player2.maxHp;
   player2.weapons = makeWeapons();
   player2.curWeapon = 0;
-  player2.ultCharge = 0;
+  player2.souls = 0;
   player2.avatar.visible = false;
   player.avatar.visible = true;
   $('netScreen').classList.add('hidden');
@@ -3655,6 +3787,7 @@ function animate() {
       updateBeams(dt);
       updateUltWaves(dt);
       updateGrenades(dt);
+      updateSoulOrbs(dt);
       updateWorld(dt);
       updateCompanionBubble();
       updateHUD();
@@ -3677,6 +3810,7 @@ function animate() {
     updateGrenades(dt);
     updatePickups(dt);
     updateCompanion(dt);
+    updateSoulOrbs(dt);
     updateParticles(dt);
     updateBeams(dt);
     updateUltWaves(dt);
@@ -3713,6 +3847,7 @@ function animate() {
     updateParticles(dt*0.3);
     updateWorld(dt*0.3);
     updateUltWaves(dt*0.3);
+    updateSoulOrbs(dt*0.3);
     updateCompanionBubble();
     renderer.render(scene, camera);
   }
@@ -3724,7 +3859,6 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight);
 });
 
-/* ============== INIT ============== */
 (function checkInvite() {
   try {
     const params = new URLSearchParams(location.search);
@@ -3749,7 +3883,7 @@ camera.position.copy(player.pos);
 camera.rotation.set(0, player.yaw, 0, 'YXZ');
 animate();
 
-console.log('%c⚔ WRATH OF OLYMPUS v13 — новая карта + сюжет + ребаланс', 'color:#ffd27a;font-size:16px;font-weight:bold');
+console.log('%c⚔ WRATH OF OLYMPUS v14 — души + сюжет + карта', 'color:#ffd27a;font-size:16px;font-weight:bold');
 </script>
 </body>
 </html>
