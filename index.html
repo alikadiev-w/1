@@ -61,7 +61,7 @@
   #msg { position:absolute; top:22%; left:50%; transform:translateX(-50%); text-align:center;
     font-size:34px; letter-spacing:6px; color:#ffd27a; text-transform:uppercase; opacity:0;
     text-shadow:0 0 24px rgba(255,140,20,.9); transition:opacity .4s; width:100%; pointer-events:none; }
-  #feed { position:absolute; right:26px; top:80px; text-align:right; font-size:13px; max-width:340px; }
+  #feed { position:absolute; right:26px; top:80px; text-align:right; font-size:13px; max-width:420px; }
   #feed div { color:#ffcf8a; text-shadow:0 0 6px #000; margin-bottom:3px; }
   #comboBox { position:absolute; top:120px; left:50%; transform:translateX(-50%);
     text-align:center; opacity:0; transition:opacity .3s; pointer-events:none; }
@@ -73,7 +73,7 @@
     border-radius:2px; overflow:hidden; }
   #comboBox .timer i { display:block; height:100%; width:100%;
     background:linear-gradient(90deg,#ff5a3c,#ffd27a); transition:width .05s linear; }
-  #minimap { position:absolute; top:80px; left:26px; width:170px; height:170px;
+  #minimap { position:absolute; top:80px; left:26px; width:190px; height:190px;
     border:2px solid #7a5c26; border-radius:50%; background:rgba(10,6,2,.7);
     box-shadow:0 0 18px rgba(0,0,0,.8), inset 0 0 30px rgba(255,180,60,.06); }
   .screen { position:fixed; inset:0; z-index:50; display:flex; flex-direction:column;
@@ -84,7 +84,7 @@
   .screen h1 { font-size:60px; letter-spacing:14px; color:#ffd27a; margin-bottom:6px;
     text-shadow:0 0 40px rgba(255,140,20,.8), 0 6px 0 #5a3a0a; }
   .screen h2 { font-size:20px; letter-spacing:8px; color:#a8895a; font-weight:normal; margin-bottom:30px; }
-  .screen p { color:#a08a68; font-size:14px; line-height:1.9; max-width:640px; margin-bottom:8px; }
+  .screen p { color:#a08a68; font-size:14px; line-height:1.9; max-width:680px; margin-bottom:8px; }
   .btn { margin-top:18px; padding:14px 52px; font-size:18px; letter-spacing:5px; cursor:pointer;
     color:#1a1008; background:linear-gradient(180deg,#ffd27a,#c9963a); border:none; border-radius:5px;
     font-weight:bold; text-transform:uppercase; box-shadow:0 5px 0 #7a5c1e; transition:all .1s; font-family:inherit; }
@@ -208,13 +208,13 @@
 
   <div id="weaponBox">
     <div id="wName">Пистолет</div>
-    <div id="wAmmo">120<small> / 500</small></div>
+    <div id="wAmmo">600<small> / 600</small></div>
   </div>
 
   <div id="topBar">
     <div id="wave">Волна 1</div>
     <div id="waveSub">Врагов: 0</div>
-    <div id="levelName">Храм Олимпа</div>
+    <div id="levelName">Врата Олимпа</div>
   </div>
 
   <div id="scoreBox">ОЧКИ<br><b id="scoreVal">0</b></div>
@@ -231,21 +231,40 @@
   <div id="feed"></div>
 </div>
 
-<div class="screen" id="modeScreen">
+<!-- ИНТРО -->
+<div class="screen" id="introScreen">
+  <h1 style="font-size:52px; letter-spacing:10px;">ПРОРОЧЕСТВО</h1>
+  <h2 style="color:#ff6644; letter-spacing:6px;">ОЛИМП ПАЛ</h2>
+  <p style="max-width:720px; font-size:16px; line-height:2; color:#d0b888; margin-top:20px;">
+    Боги покинули свои троны, а из глубин Тартара хлынули легионы чудовищ.<br>
+    Мир смертных на грани гибели.<br><br>
+    Ты — последний страж Олимпа. Твой путь лежит через пять кругов ада:<br>
+    от <b style="color:#ffd27a">Врат Олимпа</b> до <b style="color:#ffd27a">Вершины Богов</b>.<br><br>
+    <b style="color:#66ff88">Ксантиппа</b> — бессмертная нимфа — пойдёт с тобой.<br>
+    Она болтлива, труслива и постоянно спотыкается.<br>
+    Но она неуязвима. И иногда это спасает.
+  </p>
+  <button class="btn green" id="introBtn" style="margin-top:40px;">НАЧАТЬ ВОСХОЖДЕНИЕ</button>
+</div>
+
+<!-- ГЛАВНОЕ МЕНЮ -->
+<div class="screen hidden" id="modeScreen">
   <h1>WRATH OF OLYMPUS</h1>
   <h2>АРЕНА БОГОВ</h2>
-  <p>5 уровней, 5 боссов, бесконечные волны. Выживи и убей всех.</p>
+  <p>5 уровней, 5 боссов, бесконечные волны.</p>
   <button class="btn" id="soloBtn">ОДИН ИГРОК</button>
   <button class="btn" id="metaBtn" style="background:linear-gradient(180deg,#c9a55a,#8a6a2a); box-shadow:0 5px 0 #4a3a1a; color:#1a1008;">⚙ ХРАМ АПГРЕЙДОВ</button>
   <button class="btn pink" id="netBtn">СЕТЕВАЯ ИГРА (2 ПК)</button>
 </div>
 
+<!-- ВЫБОР УЛУЧШЕНИЙ -->
 <div class="screen hidden" id="upgradeScreen">
   <h1>ВЫБЕРИ УЛУЧШЕНИЕ</h1>
   <h2>ПОСЛЕ ВОЛНЫ</h2>
   <div id="upgradeCards"></div>
 </div>
 
+<!-- ХРАМ АПГРЕЙДОВ -->
 <div class="screen hidden" id="metaScreen">
   <h1>ХРАМ АПГРЕЙДОВ</h1>
   <h2>МЕТА-ПРОГРЕССИЯ</h2>
@@ -254,6 +273,7 @@
   <button class="btn" id="metaBackBtn" style="margin-top:24px;">← НАЗАД</button>
 </div>
 
+<!-- СЕТЕВАЯ ИГРА -->
 <div class="screen hidden" id="netScreen">
   <h1>СЕТЕВАЯ ИГРА</h1>
   <h2>2 ИГРОКА · РАЗНЫЕ ПК</h2>
@@ -279,7 +299,7 @@
       <b>Как пригласить друга:</b><br>
       1. <b>📋 СКОПИРОВАТЬ ССЫЛКУ</b> — ссылка уйдёт в буфер<br>
       2. Отправь другу (телега, ватсап, дискорд)<br>
-      3. Друг открывает ссылку → ник уже подставлен<br>
+      3. Друг открывает ссылку → ник подставлен<br>
       4. Когда он жмёт «ПРИСОЕДИНИТЬСЯ» — у тебя загорится <b style="color:#66ff88">✓ ИГРОК ПОДКЛЮЧЁН</b><br>
       5. Жми <b>НАЧАТЬ ИГРУ</b>
     </div>
@@ -293,16 +313,11 @@
       <div id="connText2">—</div>
       <div id="connSub2"></div>
     </div>
-    <div class="inviteHelp">
-      <b>Важно:</b><br>
-      • Регистр не важен: «Короткий Писюн» = «короткий писюн»<br>
-      • Ссылку можно вставить целиком — ник подхватится сам<br>
-      • Если не подключается — попроси хоста скинуть ссылку заново
-    </div>
   </div>
   <button class="btn" id="netBackBtn" style="padding:10px 22px; font-size:13px; margin-top:30px;">← НАЗАД</button>
 </div>
 
+<!-- ПАУЗА -->
 <div class="screen hidden" id="pauseScreen">
   <h1>ПАУЗА</h1>
   <p>ESC — вернуться в бой. Или выйди в меню.</p>
@@ -310,11 +325,26 @@
   <button class="btn pink" id="pauseExitBtn">В ГЛАВНОЕ МЕНЮ</button>
 </div>
 
+<!-- ПОРАЖЕНИЕ -->
 <div class="screen hidden" id="overScreen">
   <h1 style="color:#e04a2a;">ТЫ ПАЛ</h1>
   <h2>ОЛИМП СКОРБИТ</h2>
   <div id="goStats"></div>
   <button class="btn" id="restartBtn">В ГЛАВНОЕ МЕНЮ</button>
+</div>
+
+<!-- ПОБЕДА -->
+<div class="screen hidden" id="victoryScreen">
+  <h1 style="color:#ffd27a; font-size:64px;">ПОБЕДА</h1>
+  <h2 style="color:#ffb060;">ОЛИМП ВОЗРОЖДЁН</h2>
+  <p style="max-width:640px; font-size:15px; line-height:2; color:#d0b888;">
+    Ты прошёл все круги ада. Титан пал, Цербер развеян, Гидра обезглавлена.<br>
+    Трон Олимпа занят новым богом — <b style="color:#ffd27a">тобой</b>.<br><br>
+    Ксантиппа рядом. Она улыбается и говорит, что всегда знала, что ты справишься.<br>
+    Ты ей не веришь. Она тоже не верит.<br><br>
+    Но это не важно. Олимп стоит. Мир жив. Ты — легенда.
+  </p>
+  <button class="btn green" id="victoryBtn" style="margin-top:36px;">НОВОЕ ВОСХОЖДЕНИЕ</button>
 </div>
 
 <script type="importmap">
@@ -485,10 +515,10 @@ renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x2a1f14, 55, 185);
+scene.fog = new THREE.Fog(0x2a1f14, 65, 200);
 
-const camera  = new THREE.PerspectiveCamera(78, innerWidth/innerHeight, 0.08, 700);
-const camera2 = new THREE.PerspectiveCamera(78, innerWidth/innerHeight, 0.08, 700);
+const camera  = new THREE.PerspectiveCamera(78, innerWidth/innerHeight, 0.08, 800);
+const camera2 = new THREE.PerspectiveCamera(78, innerWidth/innerHeight, 0.08, 800);
 
 const skyMat = new THREE.ShaderMaterial({
   side: THREE.BackSide, depthWrite: false,
@@ -496,17 +526,18 @@ const skyMat = new THREE.ShaderMaterial({
   vertexShader: 'varying vec3 vP; void main(){ vP=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
   fragmentShader: 'uniform vec3 top; uniform vec3 mid; uniform vec3 bottom; varying vec3 vP; void main(){ float h=normalize(vP).y*0.5+0.5; vec3 c = h<0.5 ? mix(bottom,mid,h*2.0) : mix(mid,top,(h-0.5)*2.0); gl_FragColor=vec4(c,1.0);}'
 });
-scene.add(new THREE.Mesh(new THREE.SphereGeometry(500,32,20), skyMat));
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(600,32,20), skyMat));
 
 const hemi = new THREE.HemisphereLight(0x8899cc, 0x3a2a18, 0.55); scene.add(hemi);
 const sun = new THREE.DirectionalLight(0xffb060, 1.3);
-sun.position.set(-70,85,50); sun.castShadow = true;
+sun.position.set(-80,100,60); sun.castShadow = true;
 sun.shadow.mapSize.set(2048,2048);
-sun.shadow.camera.left = -95; sun.shadow.camera.right = 95;
-sun.shadow.camera.top = 85; sun.shadow.camera.bottom = -85;
-sun.shadow.camera.far = 300; sun.shadow.bias = -0.001;
+sun.shadow.camera.left = -120; sun.shadow.camera.right = 120;
+sun.shadow.camera.top = 120; sun.shadow.camera.bottom = -120;
+sun.shadow.camera.far = 350; sun.shadow.bias = -0.001;
 scene.add(sun);
 
+/* ============== TEXTURES ============== */
 function makeTex(size, draw, repeat=1) {
   const c = document.createElement('canvas'); c.width = c.height = size;
   draw(c.getContext('2d'), size);
@@ -522,7 +553,7 @@ const floorTex = makeTex(256, (g,s)=>{
     g.fillStyle=`rgb(${v|0},${(v*.94)|0},${(v*.8)|0})`;
     g.fillRect(i*cs+3,j*cs+3,cs-6,cs-6);
   }
-},12);
+},14);
 const wallTex = makeTex(256, (g,s)=>{
   g.fillStyle='#3a3020'; g.fillRect(0,0,s,s);
   const rows=6, rh=s/rows;
@@ -547,154 +578,387 @@ const colTex = makeTex(128, (g,s)=>{
   }
 });
 
-/* ============== ARENA ============== */
-const ARENA = 53;
-const ZONE2_X_MIN = ARENA + 5;
-const ZONE2_X_MAX = ARENA + 77;
-const GATE_X_MIN = ARENA + 1;
-const GATE_X_MAX = ARENA + 5;
-const GATE_Z_HALF = 8;
+/* ============== НОВАЯ КАРТА: "ВРАТА ОЛИМПА" ============== */
+const ARENA = 65;
+const MANSION_X_MIN = ARENA + 15;
+const MANSION_X_MAX = ARENA + 95;
+const MANSION_Z_HALF = 55;
+const GATE_Z_HALF = 10;
 const circleColliders = [];
 const boxColliders = [];
 const worldMeshes = [];
+const torchParts = [];
 
 const floorMat = new THREE.MeshLambertMaterial({ map: floorTex });
+const wallMat = new THREE.MeshLambertMaterial({ map: wallTex });
+const colMat = new THREE.MeshLambertMaterial({ map: colTex });
+const blockMat = new THREE.MeshLambertMaterial({ map: wallTex });
+const marbleMat = new THREE.MeshLambertMaterial({ color: 0xd0c4a4 });
+const darkMarbleMat = new THREE.MeshLambertMaterial({ color: 0x8a7a5a });
+const stoneMat = new THREE.MeshLambertMaterial({ color: 0x5a5048 });
+const darkStoneMat = new THREE.MeshLambertMaterial({ color: 0x2a2520 });
+const goldMat = new THREE.MeshLambertMaterial({ color: 0xc9a55a, emissive: 0x3a2000, emissiveIntensity: 0.4 });
+const bronzeMat = new THREE.MeshLambertMaterial({ color: 0x8a6030 });
+const ruinMat = new THREE.MeshLambertMaterial({ color: 0x4a4038 });
+const ruinDarkMat = new THREE.MeshLambertMaterial({ color: 0x2a2520 });
+
+function addBox(w, h, d, x, z, mat, y) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  m.position.set(x, (y != null ? y : h/2), z);
+  m.castShadow = true; m.receiveShadow = true;
+  m.userData.isWall = true;
+  scene.add(m); worldMeshes.push(m);
+  if (y == null) boxColliders.push({ minX: x-w/2, maxX: x+w/2, minZ: z-d/2, maxZ: z+d/2 });
+  return m;
+}
+function addCyl(radius, height, x, z, mat, collide) {
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, height, 16), mat);
+  m.position.set(x, height/2, z);
+  m.castShadow = true; m.receiveShadow = true;
+  m.userData.isWall = true;
+  scene.add(m); worldMeshes.push(m);
+  if (collide !== false) circleColliders.push({ x, z, r: radius + 0.15 });
+  return m;
+}
+function addStatue(x, z, scale) {
+  scale = scale || 1;
+  const g = new THREE.Group();
+  const ped = new THREE.Mesh(new THREE.BoxGeometry(2.4*scale, 1.6*scale, 2.4*scale), marbleMat);
+  ped.position.y = 0.8*scale; ped.castShadow = true; ped.receiveShadow = true;
+  g.add(ped);
+  const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.5*scale, 0.4*scale, 2.4*scale, 10), marbleMat);
+  torso.position.y = 3.0*scale; torso.castShadow = true; g.add(torso);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.5*scale, 12, 10), marbleMat);
+  head.position.y = 4.6*scale; head.castShadow = true; g.add(head);
+  for (const sx of [-1, 1]) {
+    const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.18*scale, 0.15*scale, 2.0*scale, 8), marbleMat);
+    arm.position.set(sx*0.65*scale, 3.0*scale, 0); arm.castShadow = true;
+    g.add(arm);
+  }
+  const laurel = new THREE.Mesh(new THREE.TorusGeometry(0.55*scale, 0.08*scale, 5, 12), goldMat);
+  laurel.position.y = 4.6*scale; laurel.rotation.x = Math.PI/2;
+  g.add(laurel);
+  g.position.set(x, 0, z);
+  scene.add(g);
+  worldMeshes.push(torso, head);
+  circleColliders.push({ x, z, r: 1.7*scale });
+}
+function addTorch(x, z, y) {
+  y = y || 0;
+  const post = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.18, 4.5, 8), bronzeMat);
+  post.position.set(x, y + 2.25, z); post.castShadow = true;
+  scene.add(post); worldMeshes.push(post);
+  const bowl = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.35, 0.45, 10), bronzeMat);
+  bowl.position.set(x, y + 4.6, z); bowl.castShadow = true;
+  scene.add(bowl);
+  const fire = new THREE.Mesh(new THREE.ConeGeometry(0.45, 1.1, 6),
+    new THREE.MeshBasicMaterial({ color: 0xffaa44, transparent: true, opacity: 0.92 }));
+  fire.position.set(x, y + 5.4, z);
+  scene.add(fire);
+  const light = new THREE.PointLight(0xff9944, 2.2, 22, 2);
+  light.position.set(x, y + 5.6, z);
+  scene.add(light);
+  fire.userData = { life: Math.random()*1.5, light, baseY: y + 5.4 };
+  torchParts.push(fire);
+  circleColliders.push({ x, z, r: 0.35 });
+}
+function addCrate(x, z, size, stack) {
+  size = size || 1.8;
+  stack = stack || 1;
+  for (let i = 0; i < stack; i++) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(size, size, size), blockMat);
+    m.position.set(x + rand(-0.1, 0.1), size/2 + i*size, z + rand(-0.1, 0.1));
+    m.rotation.y = rand(-0.3, 0.3);
+    m.castShadow = true; m.receiveShadow = true;
+    m.userData.isWall = true;
+    scene.add(m); worldMeshes.push(m);
+    boxColliders.push({ minX: x-size/2, maxX: x+size/2, minZ: z-size/2, maxZ: z+size/2 });
+  }
+}
+function addRuinBuilding(x, z, w, h, d) {
+  const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), ruinMat);
+  body.position.set(x, h/2, z);
+  body.castShadow = true; body.receiveShadow = true;
+  body.userData.isWall = true;
+  scene.add(body); worldMeshes.push(body);
+  boxColliders.push({ minX: x-w/2, maxX: x+w/2, minZ: z-d/2, maxZ: z+d/2 });
+  const roof = new THREE.Mesh(new THREE.BoxGeometry(w*1.05, 0.4, d*0.5), ruinDarkMat);
+  roof.position.set(x + rand(-1,1), h + 0.5, z + rand(-1,1));
+  roof.rotation.z = rand(-0.3, 0.3);
+  roof.rotation.x = rand(-0.2, 0.2);
+  roof.castShadow = true;
+  scene.add(roof); worldMeshes.push(roof);
+  const crack = new THREE.Mesh(new THREE.BoxGeometry(w*0.7, h*0.7, d*0.05), ruinDarkMat);
+  crack.position.set(x, h*0.5, z + d/2 + 0.05);
+  crack.castShadow = true;
+  scene.add(crack);
+}
+function addRubble(x, z, count, size) {
+  count = count || 4; size = size || 0.7;
+  for (let i = 0; i < count; i++) {
+    const s = size * rand(0.6, 1.4);
+    const m = new THREE.Mesh(new THREE.SphereGeometry(s, 6, 5), ruinMat);
+    m.position.set(x + rand(-1.5, 1.5), s*0.6, z + rand(-1.5, 1.5));
+    m.scale.set(1, 0.6, 1);
+    m.castShadow = true;
+    scene.add(m); worldMeshes.push(m);
+  }
+  circleColliders.push({ x, z, r: 1.6 });
+}
+function addBanner(x, y, z, rotY, color) {
+  const clothMat = new THREE.MeshLambertMaterial({ color, side: THREE.DoubleSide });
+  const banner = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 3.2), clothMat);
+  banner.position.set(x, y, z);
+  banner.rotation.y = rotY;
+  banner.userData.isWall = true;
+  scene.add(banner); worldMeshes.push(banner);
+  const gold = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.18, 0.12), goldMat);
+  gold.position.set(x, y + 1.7, z);
+  gold.rotation.y = rotY;
+  scene.add(gold); worldMeshes.push(gold);
+}
+
+// --- Пол ---
 const floor = new THREE.Mesh(new THREE.PlaneGeometry(ARENA*2+20, ARENA*2+20), floorMat);
 floor.rotation.x = -Math.PI/2; floor.receiveShadow = true;
 floor.userData.isWall = true;
 scene.add(floor); worldMeshes.push(floor);
 
-const wallMat = new THREE.MeshLambertMaterial({ map: wallTex });
-function addWall(w,h,d,x,y,z) {
-  const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), wallMat);
-  m.position.set(x,y,z); m.castShadow = true; m.receiveShadow = true;
-  m.userData.isWall = true;
-  scene.add(m); worldMeshes.push(m);
-}
-addWall(ZONE2_X_MAX*2 + 20, 12, 2, (ZONE2_X_MAX - ARENA)/2, 6, -ARENA-1);
-addWall(ZONE2_X_MAX*2 + 20, 12, 2, (ZONE2_X_MAX - ARENA)/2, 6,  ARENA+1);
-addWall(2, 12, ARENA*2+4, -ARENA-1, 6, 0);
-addWall(2, 12, ARENA*2+4, ZONE2_X_MAX+1, 6, 0);
-
-const colMat = new THREE.MeshLambertMaterial({ map: colTex });
-const colGeo = new THREE.CylinderGeometry(1.5,1.7,14,16);
-const capGeo = new THREE.BoxGeometry(4.4,1,4.4);
-const capMat = new THREE.MeshLambertMaterial({ color: 0xc9b48c });
-function addColumn(x,z,scale=1){
-  const g = new THREE.Group();
-  const c = new THREE.Mesh(colGeo, colMat);
-  c.position.y = 7*scale; c.scale.setScalar(scale);
-  c.castShadow = true; c.userData.isWall = true;
-  g.add(c); worldMeshes.push(c);
-  const top = new THREE.Mesh(capGeo, capMat);
-  top.position.y = 14.2*scale; top.scale.setScalar(scale);
-  g.add(top);
-  g.position.set(x,0,z); scene.add(g);
-  circleColliders.push({ x, z, r: 1.85*scale });
-}
-for(let i=0;i<4;i++){
-  const a = i*Math.PI/2 + Math.PI/4;
-  addColumn(Math.cos(a)*31, Math.sin(a)*31, 1);
-}
-addColumn(-17,-17,1.35); addColumn(17,17,1.35);
-addColumn(-17,17,1.35); addColumn(17,-17,1.35);
-
-const blockMat = new THREE.MeshLambertMaterial({ map: wallTex });
-function addBlock(x,z,w,h,d){
-  const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), blockMat);
-  m.position.set(x,h/2,z);
-  m.castShadow = true; m.receiveShadow = true;
-  m.userData.isWall = true;
-  scene.add(m); worldMeshes.push(m);
-  boxColliders.push({ minX:x-w/2, maxX:x+w/2, minZ:z-d/2, maxZ:z+d/2 });
-}
-addBlock(-38,-10,10,2.2,5); addBlock(38,10,10,2.2,5);
-addBlock(0,-41,14,1.6,4); addBlock(0,41,14,1.6,4);
-addBlock(-29,36,6,3.2,6); addBlock(29,-36,6,3.2,6);
-
-// Разделительная стена + проём
-addBlock(GATE_X_MIN + 2, -(ARENA + GATE_Z_HALF)/2, 4, 12, ARENA - GATE_Z_HALF);
-addBlock(GATE_X_MIN + 2,  (ARENA + GATE_Z_HALF)/2, 4, 12, ARENA - GATE_Z_HALF);
-
-// Вторая локация
-const zone2Floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(ZONE2_X_MAX - ZONE2_X_MIN + 20, ARENA*2 + 20),
-  new THREE.MeshLambertMaterial({ color: 0x4a4038 })
+const mansionFloor = new THREE.Mesh(
+  new THREE.PlaneGeometry(MANSION_X_MAX - MANSION_X_MIN + 20, MANSION_Z_HALF*2 + 20),
+  new THREE.MeshLambertMaterial({ color: 0x3a3530 })
 );
-zone2Floor.rotation.x = -Math.PI/2;
-zone2Floor.position.set((ZONE2_X_MIN + ZONE2_X_MAX)/2, 0.01, 0);
-zone2Floor.receiveShadow = true;
-zone2Floor.userData.isWall = true;
-scene.add(zone2Floor); worldMeshes.push(zone2Floor);
+mansionFloor.rotation.x = -Math.PI/2;
+mansionFloor.position.set((MANSION_X_MIN + MANSION_X_MAX)/2, 0.01, 0);
+mansionFloor.receiveShadow = true;
+mansionFloor.userData.isWall = true;
+scene.add(mansionFloor); worldMeshes.push(mansionFloor);
 
-const buildingMatA = new THREE.MeshLambertMaterial({ color: 0x5a5048 });
-const buildingMatB = new THREE.MeshLambertMaterial({ color: 0x3a3028 });
-const crateMat = new THREE.MeshLambertMaterial({ color: 0x8a6a3a });
-function addBuilding(x, z, w, h, d, mat) {
-  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat || buildingMatA);
-  m.position.set(x, h/2, z);
-  m.castShadow = true; m.receiveShadow = true;
-  m.userData.isWall = true;
-  scene.add(m); worldMeshes.push(m);
-  boxColliders.push({ minX:x-w/2, maxX:x+w/2, minZ:z-d/2, maxZ:z+d/2 });
-}
-function addCrate(x, z, size, h) {
-  size = size || 2.5; h = h || size;
-  const m = new THREE.Mesh(new THREE.BoxGeometry(size, h, size), crateMat);
-  m.position.set(x, h/2, z);
-  m.castShadow = true; m.receiveShadow = true;
-  m.userData.isWall = true;
-  scene.add(m); worldMeshes.push(m);
-  boxColliders.push({ minX:x-size/2, maxX:x+size/2, minZ:z-size/2, maxZ:z+size/2 });
-}
-addBuilding(ZONE2_X_MIN + 18, -32, 22, 9, 13);
-addBuilding(ZONE2_X_MIN + 18,  32, 22, 9, 13);
-addBuilding(ZONE2_X_MIN + 48, -28, 18, 11, 15);
-addBuilding(ZONE2_X_MIN + 48,  28, 18, 11, 15);
-addBuilding(ZONE2_X_MAX - 15, 0, 14, 10, 26);
-addBuilding(ZONE2_X_MAX - 40, -18, 12, 8, 10);
-addBuilding(ZONE2_X_MAX - 40,  18, 12, 8, 10);
-addCrate(ZONE2_X_MIN + 10, -14);
-addCrate(ZONE2_X_MIN + 12, -17, 2.0);
-addCrate(ZONE2_X_MIN + 10,  14);
-addCrate(ZONE2_X_MIN + 12,  17, 2.0);
-addCrate(ZONE2_X_MIN + 34, -10);
-addCrate(ZONE2_X_MIN + 34,  10);
-addCrate(ZONE2_X_MAX - 28, -32, 2.0);
-addCrate(ZONE2_X_MAX - 28,  32, 2.0);
-addCrate(ZONE2_X_MAX - 34, 0, 3.0, 3.0);
-addCrate(ZONE2_X_MIN + 25, 0, 2.2);
+// --- Стены ---
+addBox(ARENA*2+4, 16, 2, 0, -ARENA-1, wallMat);
+addBox(ARENA*2+4, 16, 2, 0,  ARENA+1, wallMat);
+addBox(2, 16, ARENA*2+4, -ARENA-1, 0, wallMat);
+addBox(2, 16, ARENA - GATE_Z_HALF, ARENA+1, -(GATE_Z_HALF + (ARENA - GATE_Z_HALF)/2), wallMat);
+addBox(2, 16, ARENA - GATE_Z_HALF, ARENA+1,  (GATE_Z_HALF + (ARENA - GATE_Z_HALF)/2), wallMat);
 
-const gateLight = new THREE.PointLight(0xffcc44, 3, 32, 2);
-gateLight.position.set(GATE_X_MIN + 2, 4, 0);
-scene.add(gateLight);
-const z2Light1 = new THREE.PointLight(0xff7733, 2.5, 65, 2);
-z2Light1.position.set(ZONE2_X_MIN + 35, 12, 0);
+const archL = new THREE.Mesh(new THREE.BoxGeometry(4, 3, 1.2), marbleMat);
+archL.position.set(ARENA+1, 12, -GATE_Z_HALF - 0.5); archL.castShadow = true;
+scene.add(archL); worldMeshes.push(archL);
+const archR = new THREE.Mesh(new THREE.BoxGeometry(4, 3, 1.2), marbleMat);
+archR.position.set(ARENA+1, 12, GATE_Z_HALF + 0.5); archR.castShadow = true;
+scene.add(archR); worldMeshes.push(archR);
+const archT = new THREE.Mesh(new THREE.TorusGeometry(5.5, 0.6, 8, 16, Math.PI), marbleMat);
+archT.position.set(ARENA+1, 11.5, 0); archT.rotation.z = Math.PI/2; archT.rotation.y = Math.PI/2;
+archT.castShadow = true;
+scene.add(archT); worldMeshes.push(archT);
+
+addBox(2, 14, MANSION_Z_HALF*2 + 4, MANSION_X_MAX + 1, 0, stoneMat);
+addBox(MANSION_X_MAX - MANSION_X_MIN + 20, 14, 2, (MANSION_X_MIN + MANSION_X_MAX)/2, -MANSION_Z_HALF - 1, stoneMat);
+addBox(MANSION_X_MAX - MANSION_X_MIN + 20, 14, 2, (MANSION_X_MIN + MANSION_X_MAX)/2,  MANSION_Z_HALF + 1, stoneMat);
+
+// --- Внешний двор (север) ---
+for (let i = 0; i < 5; i++) {
+  const x = -40 + i*20;
+  addCyl(1.4, 12, x, 45, marbleMat);
+  addCyl(1.4, 12, x, 55, marbleMat);
+}
+for (let i = 0; i < 5; i++) {
+  const x = -40 + i*20;
+  const cap1 = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.6, 3.6), darkMarbleMat);
+  cap1.position.set(x, 12.3, 45); cap1.castShadow = true;
+  scene.add(cap1); worldMeshes.push(cap1);
+  const cap2 = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.6, 3.6), darkMarbleMat);
+  cap2.position.set(x, 12.3, 55); cap2.castShadow = true;
+  scene.add(cap2); worldMeshes.push(cap2);
+}
+addStatue(-35, 30, 1.2);
+addStatue( 35, 30, 1.2);
+addStatue(-35, 60, 1.2);
+addStatue( 35, 60, 1.2);
+addCrate(-15, 40, 1.8, 2);
+addCrate( 15, 40, 1.8, 2);
+addCrate(-22, 55, 1.6, 3);
+addCrate( 22, 55, 1.6, 3);
+addCrate( 0, 60, 2.0, 1);
+addTorch(-8, 30);
+addTorch( 8, 30);
+addTorch(-8, 62);
+addTorch( 8, 62);
+
+// --- Храм (центр) ---
+const podium = new THREE.Mesh(new THREE.BoxGeometry(50, 1.2, 50), marbleMat);
+podium.position.set(0, 0.6, 2.5);
+podium.castShadow = true; podium.receiveShadow = true;
+podium.userData.isWall = true;
+scene.add(podium); worldMeshes.push(podium);
+
+function makeStairs(cx, cz, dirX, dirZ) {
+  for (let i = 0; i < 4; i++) {
+    const step = new THREE.Mesh(new THREE.BoxGeometry(
+      Math.abs(dirX) > 0 ? 2 : 8,
+      0.3,
+      Math.abs(dirZ) > 0 ? 2 : 8
+    ), marbleMat);
+    step.position.set(
+      cx + dirX * (i*0.5 + 0.25),
+      0.15 + i*0.3,
+      cz + dirZ * (i*0.5 + 0.25)
+    );
+    step.castShadow = true; step.receiveShadow = true;
+    scene.add(step); worldMeshes.push(step);
+  }
+}
+makeStairs(0, -22.5, 0, -1);
+makeStairs(0,  27.5, 0,  1);
+makeStairs(-25,  2.5, -1, 0);
+makeStairs( 25,  2.5,  1, 0);
+
+const templeCols = [
+  [-20, -17], [0, -17], [20, -17],
+  [-20,  22], [0,  22], [20,  22],
+  [-22,  0], [22, 0]
+];
+for (const [x, z] of templeCols) {
+  addCyl(1.6, 15, x, z, colMat);
+  const cap = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.8, 4.2), goldMat);
+  cap.position.set(x, 15.4, z); cap.castShadow = true;
+  scene.add(cap); worldMeshes.push(cap);
+  const base = new THREE.Mesh(new THREE.BoxGeometry(4, 0.6, 4), darkMarbleMat);
+  base.position.set(x, 1.5, z); base.castShadow = true;
+  scene.add(base); worldMeshes.push(base);
+}
+
+const altarBase = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 2.8, 1.6, 16), marbleMat);
+altarBase.position.set(0, 2.0, 2.5);
+altarBase.castShadow = true; altarBase.receiveShadow = true;
+scene.add(altarBase); worldMeshes.push(altarBase);
+const altarTop = new THREE.Mesh(new THREE.CylinderGeometry(2.0, 2.4, 0.3, 16), goldMat);
+altarTop.position.set(0, 2.95, 2.5);
+altarTop.castShadow = true;
+scene.add(altarTop); worldMeshes.push(altarTop);
+const altarFire = new THREE.Mesh(new THREE.SphereGeometry(0.9, 12, 10),
+  new THREE.MeshBasicMaterial({ color: 0xffaa44, transparent: true, opacity: 0.85 }));
+altarFire.position.set(0, 3.8, 2.5);
+scene.add(altarFire);
+altarFire.userData = { life: 1, light: null, baseY: 3.8 };
+torchParts.push(altarFire);
+circleColliders.push({ x: 0, z: 2.5, r: 3 });
+
+const runeMat = new THREE.MeshBasicMaterial({ color: 0x66ddff, transparent: true, opacity: 0.55, side: THREE.DoubleSide });
+for (let r = 4; r <= 16; r += 4) {
+  const ring = new THREE.Mesh(new THREE.RingGeometry(r - 0.15, r + 0.15, 48), runeMat);
+  ring.rotation.x = -Math.PI/2;
+  ring.position.set(0, 1.22, 2.5);
+  scene.add(ring); worldMeshes.push(ring);
+}
+
+addTorch(-10, 15, 1.2);
+addTorch( 10, 15, 1.2);
+addTorch(-10, -8, 1.2);
+addTorch( 10, -8, 1.2);
+
+// --- Святилище (юг) ---
+const throneBase = new THREE.Mesh(new THREE.BoxGeometry(6, 1.2, 5), darkMarbleMat);
+throneBase.position.set(0, 0.6, -58);
+throneBase.castShadow = true; throneBase.receiveShadow = true;
+scene.add(throneBase); worldMeshes.push(throneBase);
+boxColliders.push({ minX: -3, maxX: 3, minZ: -60.5, maxZ: -55.5 });
+const throneSeat = new THREE.Mesh(new THREE.BoxGeometry(5, 3, 4), darkMarbleMat);
+throneSeat.position.set(0, 2.7, -58);
+throneSeat.castShadow = true;
+scene.add(throneSeat); worldMeshes.push(throneSeat);
+const throneBack = new THREE.Mesh(new THREE.BoxGeometry(5, 6, 0.6), goldMat);
+throneBack.position.set(0, 4.2, -60);
+throneBack.castShadow = true;
+scene.add(throneBack); worldMeshes.push(throneBack);
+
+addStatue(-20, -35, 1.6);
+addStatue( 20, -35, 1.6);
+addStatue(-20, -50, 1.6);
+addStatue( 20, -50, 1.6);
+
+addTorch(-14, -25);
+addTorch( 14, -25);
+addTorch(-14, -45);
+addTorch( 14, -45);
+addTorch(  0, -30);
+
+addCyl(1.5, 12, -22, -40, darkMarbleMat);
+addCyl(1.5, 12,  22, -40, darkMarbleMat);
+addCyl(1.5, 12, -22, -55, darkMarbleMat);
+addCyl(1.5, 12,  22, -55, darkMarbleMat);
+
+// --- Маншин ---
+addRuinBuilding(MANSION_X_MIN + 15, -35, 14, 8, 12);
+addRuinBuilding(MANSION_X_MIN + 15,  35, 14, 8, 12);
+addRuinBuilding(MANSION_X_MIN + 38, -30, 16, 10, 14);
+addRuinBuilding(MANSION_X_MIN + 38,  30, 16, 10, 14);
+addRuinBuilding(MANSION_X_MAX - 20, -25, 15, 11, 14);
+addRuinBuilding(MANSION_X_MAX - 20,  25, 15, 11, 14);
+addRuinBuilding(MANSION_X_MAX - 40, 0, 12, 7, 16);
+
+addRubble(MANSION_X_MIN + 25, -15, 5);
+addRubble(MANSION_X_MIN + 25,  15, 5);
+addRubble(MANSION_X_MAX - 30, -35, 4);
+addRubble(MANSION_X_MAX - 30,  35, 4);
+addRubble((MANSION_X_MIN + MANSION_X_MAX)/2, -20, 6);
+
+const fountainBase = new THREE.Mesh(new THREE.CylinderGeometry(4, 4.5, 1.5, 16), ruinMat);
+fountainBase.position.set((MANSION_X_MIN + MANSION_X_MAX)/2, 0.75, 0);
+fountainBase.castShadow = true; fountainBase.receiveShadow = true;
+scene.add(fountainBase); worldMeshes.push(fountainBase);
+circleColliders.push({ x: (MANSION_X_MIN + MANSION_X_MAX)/2, z: 0, r: 4.3 });
+const brokenStatue = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.9, 3, 8), ruinDarkMat);
+brokenStatue.position.set((MANSION_X_MIN + MANSION_X_MAX)/2 + 0.5, 2.5, 0.3);
+brokenStatue.rotation.z = 0.3;
+brokenStatue.castShadow = true;
+scene.add(brokenStatue); worldMeshes.push(brokenStatue);
+
+addBox(6, 2.2, 1.2, MANSION_X_MIN + 30, -8, ruinMat);
+addBox(6, 2.2, 1.2, MANSION_X_MIN + 30,  8, ruinMat);
+addBox(1.2, 2.2, 8, MANSION_X_MIN + 45, -20, ruinMat);
+addBox(1.2, 2.2, 8, MANSION_X_MIN + 45,  20, ruinMat);
+addBox(8, 1.8, 1.2, MANSION_X_MAX - 45, -12, ruinMat);
+addBox(8, 1.8, 1.2, MANSION_X_MAX - 45,  12, ruinMat);
+
+function addDeadTree(x, z) {
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.5, 6, 6), ruinDarkMat);
+  trunk.position.set(x, 3, z); trunk.castShadow = true;
+  scene.add(trunk); worldMeshes.push(trunk);
+  for (let i = 0; i < 4; i++) {
+    const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.15, 2.2, 5), ruinDarkMat);
+    branch.position.set(x + rand(-0.4, 0.4), 4.5 + i*0.3, z + rand(-0.4, 0.4));
+    branch.rotation.z = rand(-0.9, 0.9);
+    branch.rotation.x = rand(-0.9, 0.9);
+    branch.castShadow = true;
+    scene.add(branch); worldMeshes.push(branch);
+  }
+  circleColliders.push({ x, z, r: 0.6 });
+}
+addDeadTree(MANSION_X_MIN + 55, -40);
+addDeadTree(MANSION_X_MIN + 55,  40);
+addDeadTree(MANSION_X_MAX - 15, -38);
+addDeadTree(MANSION_X_MAX - 15,  38);
+
+addTorch(MANSION_X_MIN + 5, -GATE_Z_HALF + 2, 0);
+addTorch(MANSION_X_MIN + 5,  GATE_Z_HALF - 2, 0);
+addTorch(MANSION_X_MAX - 30, -20, 0);
+addTorch(MANSION_X_MAX - 30,  20, 0);
+
+const z2Light1 = new THREE.PointLight(0xff7733, 2.5, 70, 2);
+z2Light1.position.set(MANSION_X_MIN + 45, 10, 0);
 scene.add(z2Light1);
-const z2Light2 = new THREE.PointLight(0x4488ff, 2, 55, 2);
-z2Light2.position.set(ZONE2_X_MAX - 20, 10, -20);
+const z2Light2 = new THREE.PointLight(0x4488ff, 2, 60, 2);
+z2Light2.position.set(MANSION_X_MAX - 20, 10, -30);
 scene.add(z2Light2);
-const z2Light3 = new THREE.PointLight(0xffaa44, 2, 50, 2);
-z2Light3.position.set(ZONE2_X_MAX - 20, 10, 20);
+const z2Light3 = new THREE.PointLight(0xffaa44, 2, 55, 2);
+z2Light3.position.set(MANSION_X_MAX - 20, 10, 30);
 scene.add(z2Light3);
 
-const ped = new THREE.Mesh(new THREE.CylinderGeometry(4.5,5.5,1.6,24),
-  new THREE.MeshLambertMaterial({ color: 0x6b5a3a }));
-ped.position.y = 0.8; ped.castShadow = true; ped.receiveShadow = true;
-ped.userData.isWall = true;
-scene.add(ped); worldMeshes.push(ped);
-circleColliders.push({ x:0, z:0, r:5.6 });
-
-const fireLight = new THREE.PointLight(0xff7a20, 3.2, 42, 2);
-fireLight.position.set(0,4.5,0); scene.add(fireLight);
-const fireParts = [];
-for(let i=0;i<24;i++){
-  const f = new THREE.Mesh(new THREE.ConeGeometry(0.55,1.6,6),
-    new THREE.MeshBasicMaterial({ color: 0xff8a2a, transparent: true, opacity: 0.85 }));
-  f.position.set(rand(-1.6,1.6), rand(1.6,4.0), rand(-1.6,1.6));
-  f.userData = { life: Math.random()*1.2 };
-  scene.add(f); fireParts.push(f);
-}
+addBanner(-40, 8, 60, Math.PI, 0x8a2020);
+addBanner( 40, 8, 60, Math.PI, 0x8a2020);
+addBanner(-40, 8, -55, 0, 0x202a8a);
+addBanner( 40, 8, -55, 0, 0x202a8a);
 
 /* ============== PHYSICS ============== */
 function collide(pos, r) {
@@ -713,8 +977,11 @@ function collide(pos, r) {
       else { const k=(r-d)/d; pos.x+=dx*k; pos.z+=dz*k; }
     }
   }
-  pos.x = clamp(pos.x, -ARENA + r, ZONE2_X_MAX - r);
+  pos.x = clamp(pos.x, -ARENA + r, MANSION_X_MAX - r);
   pos.z = clamp(pos.z, -ARENA + r, ARENA - r);
+  if (pos.x > ARENA) {
+    pos.z = clamp(pos.z, -MANSION_Z_HALF + r, MANSION_Z_HALF - r);
+  }
 }
 
 /* ============== PARTICLES ============== */
@@ -812,23 +1079,23 @@ function newPlayer(x,z) {
                 _bulletCount: 0, _regenT: 0 }
   };
 }
-const player  = newPlayer(0, 38);
-const player2 = newPlayer(-3, 40);
+const player  = newPlayer(0, 45);
+const player2 = newPlayer(-3, 47);
 
-/* ============== WEAPONS ============== */
+/* ============== WEAPONS (ребаланс) ============== */
 const WEAPON_TPL = [
-  { id:'pistol', name:'Пистолет', auto:true, damage:26, rate:0.12, spread:0.01, pellets:1,
-    range:140, ammoMax:500, unlockedDefault:true, slot:'1', sfx:'pistol', kick:0.022 },
-  { id:'shotgun', name:'Дробовик Аида', auto:false, damage:22, rate:0.62, spread:0.085,
-    pellets:12, range:45, ammoMax:160, unlockedDefault:false, slot:'2', sfx:'shotgun', kick:0.075 },
-  { id:'minigun', name:'Миниган Гефеста', auto:true, damage:16, rate:0.018, spread:0.042,
-    pellets:1, range:110, ammoMax:1600, unlockedDefault:false, slot:'3', sfx:'minigun', kick:0.014 },
-  { id:'rocket', name:'Ракетница Титанов', auto:false, damage:280, rate:0.85, spread:0,
-    pellets:1, range:200, splash:8.5, ammoMax:80, unlockedDefault:false, slot:'4', sfx:'rocket', kick:0.11 },
-  { id:'zeus', name:'Молния Зевса', auto:false, damage:225, rate:0.42, spread:0, pellets:1,
-    range:90, chain:4, ammoMax:200, unlockedDefault:false, slot:'5', sfx:'zeus', lightning:true, kick:0.05 },
-  { id:'flamer', name:'Огнемёт Гефеста', auto:true, damage:9, rate:0.045, spread:0.12,
-    pellets:1, range:22, ammoMax:800, unlockedDefault:false, slot:'6', sfx:'minigun', kick:0.008,
+  { id:'pistol', name:'Пистолет', auto:true, damage:32, rate:0.11, spread:0.010, pellets:1,
+    range:150, ammoMax:600, unlockedDefault:true, slot:'1', sfx:'pistol', kick:0.022 },
+  { id:'shotgun', name:'Дробовик Аида', auto:false, damage:20, rate:0.72, spread:0.09,
+    pellets:10, range:42, ammoMax:120, unlockedDefault:false, slot:'2', sfx:'shotgun', kick:0.075 },
+  { id:'minigun', name:'Миниган Гефеста', auto:true, damage:11, rate:0.024, spread:0.048,
+    pellets:1, range:110, ammoMax:1200, unlockedDefault:false, slot:'3', sfx:'minigun', kick:0.014 },
+  { id:'rocket', name:'Ракетница Титанов', auto:false, damage:230, rate:1.0, spread:0,
+    pellets:1, range:200, splash:7.5, ammoMax:55, unlockedDefault:false, slot:'4', sfx:'rocket', kick:0.11 },
+  { id:'zeus', name:'Молния Зевса', auto:false, damage:150, rate:0.60, spread:0, pellets:1,
+    range:90, chain:3, ammoMax:100, unlockedDefault:false, slot:'5', sfx:'zeus', lightning:true, kick:0.05 },
+  { id:'flamer', name:'Огнемёт Гефеста', auto:true, damage:12, rate:0.045, spread:0.14,
+    pellets:1, range:17, ammoMax:700, unlockedDefault:false, slot:'6', sfx:'minigun', kick:0.008,
     flamer:true }
 ];
 const WEAPON_UNLOCK_WAVE = { shotgun:2, minigun:3, rocket:4, zeus:5, flamer:6 };
@@ -897,7 +1164,7 @@ function activateUlt(P) {
   if (P === player) updateUltHUD();
   SFX.ult();
   showMsg('⚡ ГНЕВ ОЛИМПА', 1400);
-  const R = 30;
+  const R = 24;
   for (let k=0;k<3;k++){
     const ring = new THREE.Mesh(new THREE.RingGeometry(0.8,1.4,40),
       new THREE.MeshBasicMaterial({ color: k===0?0xffffff:(k===1?0x66ddff:0x2299dd),
@@ -914,7 +1181,7 @@ function activateUlt(P) {
   for (const e of enemies) {
     if (e.dead) continue;
     const d = e.mesh.position.distanceTo(P.pos);
-    if (d < R) damageEnemy(e, 480 * ultMul * (1 - (d/R)*0.55), e.mesh.position.clone().setY(e.mesh.position.y+1), P);
+    if (d < R) damageEnemy(e, 420 * ultMul * (1 - (d/R)*0.55), e.mesh.position.clone().setY(e.mesh.position.y+1), P);
   }
   burst(P.pos.clone().setY(0.6), 50, { mat:'magic', speed:22, life:0.9, size:0.22, gravity:8 });
   burst(P.pos.clone().setY(1.2), 30, { mat:'gold', speed:16, life:1.1, size:0.16, gravity:4 });
@@ -940,30 +1207,40 @@ function updateUltHUD() {
   box.classList.toggle('ready', player.ultCharge >= req);
 }
 
-/* ============== LEVELS ============== */
+/* ============== LEVELS (с сюжетом) ============== */
 let currentLevel = 0;
 let ngPlus = 0;
 const LEVELS = [
-  { name:'ХРАМ ОЛИМПА', skyTop:0x0d1226, skyMid:0x3a2418, skyBottom:0x8a4a1a,
-    fog:0x2a1f14, fogNear:55, fogFar:185, sun:0xffb060, hemiSky:0x8899cc, hemiGround:0x3a2a18, hemiInt:0.55,
+  { name:'ВРАТА ОЛИМПА', subtitle:'Внешний двор. Первая волна врагов.',
+    skyTop:0x0d1226, skyMid:0x3a2418, skyBottom:0x8a4a1a,
+    fog:0x2a1f14, fogNear:65, fogFar:200, sun:0xffb060, hemiSky:0x8899cc, hemiGround:0x3a2a18, hemiInt:0.6,
     floorTint:0xffffff, wallTint:0xffffff, colTint:0xffffff,
-    types:['satyr','centaur','minotaur','harpy'], boss:'titan', bossName:'ТИТАН КРОНОС' },
-  { name:'ПОДЗЕМНОЕ ЦАРСТВО', skyTop:0x040208, skyMid:0x2a0a18, skyBottom:0x5a0e20,
-    fog:0x150510, fogNear:28, fogFar:120, sun:0xff4020, hemiSky:0x6633aa, hemiGround:0x1a0a0a, hemiInt:0.42,
+    types:['satyr','centaur','minotaur','harpy'], boss:'titan', bossName:'ТИТАН КРОНОС',
+    story:'Боги спят. Врата открыты. Отбей первую волну.' },
+  { name:'ТАРТАР', subtitle:'Подземное царство Аида.',
+    skyTop:0x040208, skyMid:0x2a0a18, skyBottom:0x5a0e20,
+    fog:0x150510, fogNear:30, fogFar:130, sun:0xff4020, hemiSky:0x6633aa, hemiGround:0x1a0a0a, hemiInt:0.45,
     floorTint:0x8866aa, wallTint:0x775588, colTint:0x9977bb,
-    types:['skeleton','skeleton_archer','cyclops','wraith'], boss:'cerberus', bossName:'ЦЕРБЕР' },
-  { name:'ВЕРШИНА ОЛИМПА', skyTop:0x4477bb, skyMid:0x99bbee, skyBottom:0xffe8cc,
-    fog:0xbbddee, fogNear:65, fogFar:230, sun:0xfff0e0, hemiSky:0xddeeff, hemiGround:0xaabbcc, hemiInt:0.9,
-    floorTint:0xfff0e0, wallTint:0xfff5e0, colTint:0xffffff,
-    types:['chimera','guard_archer','minotaur','gryphon'], boss:'hydra', bossName:'ГИДРА' },
-  { name:'ЛЕДЯНАЯ ЦИТАДЕЛЬ', skyTop:0x0a1a3a, skyMid:0x4a7ab0, skyBottom:0xcce8ff,
-    fog:0x8ab8e0, fogNear:50, fogFar:195, sun:0xcce8ff, hemiSky:0xddeeff, hemiGround:0x88aacc, hemiInt:0.75,
+    types:['skeleton','skeleton_archer','cyclops','wraith'], boss:'cerberus', bossName:'ЦЕРБЕР',
+    story:'Спустился во тьму. Цербер охраняет выход.' },
+  { name:'ЛАБИРИНТ', subtitle:'Обитель Минотавра.',
+    skyTop:0x1a1410, skyMid:0x2a2018, skyBottom:0x4a3a20,
+    fog:0x3a2a1a, fogNear:40, fogFar:150, sun:0xffaa66, hemiSky:0xaa8866, hemiGround:0x2a1a10, hemiInt:0.55,
+    floorTint:0xd8c0a0, wallTint:0xc0a880, colTint:0xd8c0a0,
+    types:['minotaur','guard_archer','chimera','gryphon'], boss:'hydra', bossName:'ГИДРА ЛЕРНЕЙСКАЯ',
+    story:'Лабиринт не имеет конца. Но Гидру это не спасёт.' },
+  { name:'ЛЕДЯНАЯ ЦИТАДЕЛЬ', subtitle:'Северные пределы.',
+    skyTop:0x0a1a3a, skyMid:0x4a7ab0, skyBottom:0xcce8ff,
+    fog:0x8ab8e0, fogNear:55, fogFar:220, sun:0xcce8ff, hemiSky:0xddeeff, hemiGround:0x88aacc, hemiInt:0.8,
     floorTint:0xaaddff, wallTint:0xbbddff, colTint:0xddeeff,
-    types:['satyr','centaur','minotaur','harpy'], boss:'titan', bossName:'ИМИР' },
-  { name:'ТАРТАР', skyTop:0x1a0000, skyMid:0x5a0a00, skyBottom:0xff4020,
-    fog:0x3a0800, fogNear:22, fogFar:110, sun:0xff5520, hemiSky:0xff6633, hemiGround:0x2a0505, hemiInt:0.55,
-    floorTint:0xff8866, wallTint:0xaa4422, colTint:0xffaa88,
-    types:['skeleton','skeleton_archer','cyclops','wraith'], boss:'hydra', bossName:'ТИФОН' }
+    types:['skeleton','skeleton_archer','minotaur','gryphon'], boss:'titan', bossName:'ИМИР',
+    story:'Здесь правит вечная мерзлота. И ледяной титан Имир.' },
+  { name:'ВЕРШИНА ОЛИМПА', subtitle:'Трон богов.',
+    skyTop:0x4477bb, skyMid:0x99bbee, skyBottom:0xffe8cc,
+    fog:0xbbddee, fogNear:70, fogFar:250, sun:0xfff0e0, hemiSky:0xddeeff, hemiGround:0xaabbcc, hemiInt:0.95,
+    floorTint:0xfff0e0, wallTint:0xfff5e0, colTint:0xffffff,
+    types:['chimera','guard_archer','cyclops','harpy'], boss:'hydra', bossName:'ТИФОН',
+    story:'Финальная битва. Тифон, отец всех чудовищ, вышел из Тартара.' }
 ];
 function applyLevel(idx) {
   const L = LEVELS[idx];
@@ -980,36 +1257,36 @@ function applyLevel(idx) {
   $('levelName').textContent = L.name;
 }
 
-/* ============== ENEMIES ============== */
+/* ============== ENEMIES (ребаланс) ============== */
 const ENEMY_TYPES = {
-  satyr:    { name:'Сатир', hp:78, speed:5.0, damage:10, range:2.6, cooldown:1.05, scale:1.0,
-              color:0x8b5a2b, score:100, hitR:0.9, melee:true, mass:1, family:'greek' },
-  centaur:  { name:'Кентавр-лучник', hp:114, speed:5.8, damage:14, range:34, cooldown:1.9, scale:1.2,
-              color:0x9a6a3a, score:200, hitR:1.05, ranged:true, archer:true, mass:1.4, family:'greek', projSpeed:38 },
-  minotaur: { name:'Минотавр', hp:408, speed:3.6, damage:26, range:3.8, cooldown:1.4, scale:1.8,
-              color:0x4a2f1a, score:550, hitR:1.7, melee:true, mass:3, family:'greek' },
-  harpy:    { name:'Гарпия', hp:66, speed:6.4, damage:11, range:3.0, cooldown:1.1, scale:1.0,
-              color:0xb04a28, score:150, hitR:0.9, melee:true, fly:true, flyH:3.2, mass:0.85, family:'greek' },
-  titan:    { name:'ТИТАН', hp:3800, speed:2.5, damage:42, range:5.2, cooldown:1.8, scale:4.0,
-              color:0x5a3a20, score:6000, hitR:3.4, melee:true, ranged:true, boss:true, mass:12, projSpeed:30, family:'greek' },
-  skeleton: { name:'Скелет', hp:96, speed:6.2, damage:14, range:2.8, cooldown:0.85, scale:1.05,
-              color:0xe8dcc0, score:130, hitR:0.85, melee:true, mass:0.9, family:'undead' },
-  skeleton_archer: { name:'Скелет-лучник', hp:84, speed:5.6, damage:13, range:36, cooldown:2.1, scale:1.05,
-              color:0xe8dcc0, score:170, hitR:0.85, ranged:true, archer:true, mass:0.9, family:'undead', projSpeed:34 },
-  cyclops:  { name:'Циклоп', hp:360, speed:2.9, damage:24, range:3.6, cooldown:1.7, scale:1.95,
-              color:0x9a7b4f, score:400, hitR:1.85, melee:true, mass:3.5, family:'undead' },
-  wraith:   { name:'Призрак', hp:90, speed:6.0, damage:15, range:3.0, cooldown:1.2, scale:1.1,
-              color:0x9955cc, score:200, hitR:0.95, melee:true, fly:true, flyH:2.6, mass:0.7, family:'undead' },
-  cerberus: { name:'ЦЕРБЕР', hp:3600, speed:4.2, damage:38, range:4.6, cooldown:1.15, scale:2.8,
-              color:0x2a1010, score:7000, hitR:2.6, melee:true, ranged:true, boss:true, mass:10, projSpeed:26, family:'undead' },
-  chimera:  { name:'Химера', hp:288, speed:4.6, damage:22, range:3.6, cooldown:1.4, scale:1.65,
-              color:0xd0662a, score:450, hitR:1.55, melee:true, mass:2.5, family:'olympian' },
-  guard_archer: { name:'Страж Аполлона', hp:168, speed:5.4, damage:18, range:40, cooldown:1.7, scale:1.25,
-              color:0xffcc88, score:300, hitR:1.1, ranged:true, archer:true, mass:1.5, family:'olympian', projSpeed:42 },
-  gryphon:  { name:'Грифон', hp:216, speed:6.8, damage:20, range:3.2, cooldown:1.0, scale:1.5,
-              color:0xc9a55a, score:350, hitR:1.3, melee:true, fly:true, flyH:4.0, mass:1.4, family:'olympian' },
-  hydra:    { name:'ГИДРА', hp:5000, speed:2.8, damage:44, range:5.5, cooldown:1.7, scale:3.3,
-              color:0x2a6a30, score:9000, hitR:2.9, melee:true, ranged:true, boss:true, mass:14, projSpeed:28, family:'olympian' }
+  satyr: { name:'Сатир', hp:70, speed:5.0, damage:12, range:2.6, cooldown:1.05, scale:1.0,
+    color:0x8b5a2b, score:100, hitR:0.9, melee:true, mass:1, family:'greek' },
+  centaur: { name:'Кентавр-лучник', hp:130, speed:5.8, damage:16, range:34, cooldown:1.9, scale:1.2,
+    color:0x9a6a3a, score:220, hitR:1.05, ranged:true, archer:true, mass:1.4, family:'greek', projSpeed:40 },
+  harpy: { name:'Гарпия', hp:58, speed:6.6, damage:9, range:3.0, cooldown:1.0, scale:1.0,
+    color:0xb04a28, score:140, hitR:0.9, melee:true, fly:true, flyH:3.2, mass:0.85, family:'greek' },
+  minotaur: { name:'Минотавр', hp:520, speed:3.8, damage:30, range:3.8, cooldown:1.35, scale:1.85,
+    color:0x4a2f1a, score:600, hitR:1.75, melee:true, mass:3, family:'greek' },
+  titan: { name:'ТИТАН', hp:5200, speed:2.8, damage:46, range:5.2, cooldown:1.7, scale:4.0,
+    color:0x5a3a20, score:6500, hitR:3.4, melee:true, ranged:true, boss:true, mass:12, projSpeed:30, family:'greek' },
+  skeleton: { name:'Скелет', hp:85, speed:6.4, damage:12, range:2.8, cooldown:0.85, scale:1.05,
+    color:0xe8dcc0, score:130, hitR:0.85, melee:true, mass:0.9, family:'undead' },
+  skeleton_archer: { name:'Скелет-лучник', hp:80, speed:5.6, damage:14, range:36, cooldown:2.0, scale:1.05,
+    color:0xe8dcc0, score:170, hitR:0.85, ranged:true, archer:true, mass:0.9, family:'undead', projSpeed:36 },
+  wraith: { name:'Призрак', hp:95, speed:6.0, damage:13, range:3.0, cooldown:1.15, scale:1.1,
+    color:0x9955cc, score:210, hitR:0.95, melee:true, fly:true, flyH:2.6, mass:0.7, family:'undead' },
+  cyclops: { name:'Циклоп', hp:420, speed:2.9, damage:22, range:3.6, cooldown:1.65, scale:1.95,
+    color:0x9a7b4f, score:450, hitR:1.85, melee:true, mass:3.5, family:'undead' },
+  cerberus: { name:'ЦЕРБЕР', hp:4800, speed:4.2, damage:40, range:4.6, cooldown:1.1, scale:2.8,
+    color:0x2a1010, score:7500, hitR:2.6, melee:true, ranged:true, boss:true, mass:10, projSpeed:26, family:'undead' },
+  chimera: { name:'Химера', hp:320, speed:4.6, damage:20, range:3.6, cooldown:1.35, scale:1.65,
+    color:0xd0662a, score:500, hitR:1.55, melee:true, mass:2.5, family:'olympian' },
+  guard_archer: { name:'Страж Аполлона', hp:180, speed:5.4, damage:20, range:42, cooldown:1.6, scale:1.25,
+    color:0xffcc88, score:340, hitR:1.1, ranged:true, archer:true, mass:1.5, family:'olympian', projSpeed:44 },
+  gryphon: { name:'Грифон', hp:230, speed:7.0, damage:18, range:3.2, cooldown:0.95, scale:1.5,
+    color:0xc9a55a, score:380, hitR:1.3, melee:true, fly:true, flyH:4.0, mass:1.4, family:'olympian' },
+  hydra: { name:'ГИДРА', hp:6500, speed:2.8, damage:46, range:5.5, cooldown:1.6, scale:3.3,
+    color:0x2a6a30, score:9500, hitR:2.9, melee:true, ranged:true, boss:true, mass:14, projSpeed:28, family:'olympian' }
 };
 const enemies = [];
 const enemyHitMeshes = [];
@@ -1360,7 +1637,7 @@ function updateEnemyBars() {
     else if (pct > 0.5) e.bar._fill.style.background = 'linear-gradient(90deg,#1a6a20,#3ac050)';
     else if (pct > 0.25) e.bar._fill.style.background = 'linear-gradient(90deg,#8a6a10,#e0c030)';
     else e.bar._fill.style.background = 'linear-gradient(90deg,#8a1010,#e04020)';
-    e.bar.style.opacity = camPos.distanceTo(e.mesh.position) > 70 ? 0.35 : 1;
+    e.bar.style.opacity = camPos.distanceTo(e.mesh.position) > 80 ? 0.35 : 1;
   }
 }
 
@@ -1379,7 +1656,7 @@ function spawnEnemy(type, pos) {
   if (cfg.fly) mesh.position.y = cfg.flyH;
   scene.add(mesh);
   for (const hm of mesh.userData.hitMeshes) enemyHitMeshes.push(hm);
-  const hpScale = (1 + (wave-1)*0.055) * (1 + ngPlus*0.6);
+  const hpScale = (1 + (wave-1)*0.08) * (1 + ngPlus*0.8);
   const e = {
     type, cfg, mesh, netId: nextNetId++,
     hp: cfg.hp*hpScale, maxHp: cfg.hp*hpScale,
@@ -1392,7 +1669,6 @@ function spawnEnemy(type, pos) {
     phase2: false, phase3: false,
     _dmgMul: 1, _speedMul: 1
   };
-  // Модификатор волны применяется к экземпляру
   if (activeModifier) {
     if (activeModifier.id === 'speed') e._speedMul = 1.3;
     if (activeModifier.id === 'tanky') { e.hp *= 1.5; e.maxHp *= 1.5; }
@@ -1484,7 +1760,7 @@ function updateProjectiles(dt) {
       if (player.alive && mp.distanceTo(player.pos) < 0.95) hit = true;
       if (!hit && player2.alive && net.mode === 'host' && mp.distanceTo(player2.pos) < 0.95) hit = true;
     }
-    if (!hit && (mp.y < 0.15 || mp.x < -ARENA || mp.x > ZONE2_X_MAX || Math.abs(mp.z) > ARENA)) hit = true;
+    if (!hit && (mp.y < 0.15 || mp.x < -ARENA || mp.x > MANSION_X_MAX || Math.abs(mp.z) > ARENA)) hit = true;
     if (!hit) {
       for (const c of circleColliders) {
         if (Math.hypot(mp.x-c.x, mp.z-c.z) < c.r + 0.3) { hit = true; break; }
@@ -1703,7 +1979,6 @@ function updateEnemies(dt) {
     }
     m.scale.setScalar(1);
 
-    // Фазы боссов
     if (cfg.boss && !e.phase2 && e.hp / e.maxHp < 0.7) {
       e.phase2 = true;
       cfg.speed = (cfg.speed || 2.5) * 1.3;
@@ -1864,7 +2139,7 @@ function fireHitscan(P, w, dir, cam) {
     if (h.object.userData.enemyRef && !h.object.userData.enemyRef.dead) {
       damageEnemy(h.object.userData.enemyRef, w.damage, h.point, P);
       endPoint = h.point; break;
-    } else if (h.object.userData.isWall || h.object === floor || h.object === zone2Floor) {
+    } else if (h.object.userData.isWall || h.object === floor || h.object === mansionFloor) {
       burst(h.point, 3, { mat:'stone', speed:4, life:0.3, size:0.07, gravity:14 });
       SFX.hitWall(); endPoint = h.point; break;
     }
@@ -1887,7 +2162,7 @@ function fireLightning(P, w, cam) {
     if (h.object.userData.enemyRef && !h.object.userData.enemyRef.dead) {
       first = h.object.userData.enemyRef; endPoint = h.point; break;
     }
-    if (h.object.userData.isWall || h.object === floor || h.object === zone2Floor) { endPoint = h.point; break; }
+    if (h.object.userData.isWall || h.object === floor || h.object === mansionFloor) { endPoint = h.point; break; }
   }
   spawnBeam(origin, endPoint, 0x88ddff, 0.10, 0.16);
   spawnBeam(origin, endPoint, 0xffffff, 0.045, 0.22);
@@ -2053,7 +2328,7 @@ let sayBubble = null;
 function ensureBubble() {
   if (sayBubble) return;
   sayBubble = document.createElement('div');
-  sayBubble.style.cssText = `position:absolute;padding:6px 12px;background:rgba(255,240,245,.96);color:#3a0a1e;border-radius:14px;font-size:13px;pointer-events:none;transform:translate(-50%,-100%);box-shadow:0 2px 10px rgba(0,0,0,.5);z-index:20;font-family:inherit;transition:opacity .25s;max-width:260px;text-align:center;line-height:1.3;opacity:0;`;
+  sayBubble.style.cssText = `position:absolute;padding:6px 12px;background:rgba(255,240,245,.96);color:#3a0a1e;border-radius:14px;font-size:13px;pointer-events:none;transform:translate(-50%,-100%);box-shadow:0 2px 10px rgba(0,0,0,.5);z-index:20;font-family:inherit;transition:opacity .25s;max-width:280px;text-align:center;line-height:1.3;opacity:0;`;
   $('hud').appendChild(sayBubble);
 }
 let sayTimer = null;
@@ -2076,15 +2351,17 @@ function updateCompanionBubble() {
 }
 function pickCompTarget() {
   let tries = 0;
-  while (tries++ < 10) {
-    const a = Math.random()*TAU, r = rand(12, ARENA-10);
+  while (tries++ < 15) {
+    const a = Math.random()*TAU, r = rand(15, ARENA-15);
     const x = Math.cos(a)*r, z = Math.sin(a)*r;
     let ok = true;
     for (const cc of circleColliders) if (Math.hypot(x-cc.x, z-cc.z) < cc.r+1.5) { ok = false; break; }
     if (!ok) continue;
+    for (const b of boxColliders) if (x > b.minX-1 && x < b.maxX+1 && z > b.minZ-1 && z < b.maxZ+1) { ok = false; break; }
+    if (!ok) continue;
     companion.target.set(x, 0, z); return;
   }
-  companion.target.set(rand(-25,25), 0, rand(-25,25));
+  companion.target.set(rand(-30,30), 0, rand(-30,30));
 }
 function updateCompanion(dt) {
   const c = companion;
@@ -2092,7 +2369,6 @@ function updateCompanion(dt) {
   c.animT += dt; c.stateT -= dt; c.sayCd -= dt;
   c.tripCd -= dt;
 
-  // Случайные спотыкания
   if (c.state === 'wander' && c.tripCd <= 0 && Math.random() < 0.012) {
     c.state = 'trip';
     c.tripTimer = 1.7;
@@ -2303,8 +2579,41 @@ function startWave(n) {
   spawnQueue = waveComposition(n);
   spawnTimer = 0;
   SFX.waveStart();
-  if (n % 5 === 0) { SFX.boss(); showMsg('⚠ БОСС ⚠', 2200); Music.setMode('boss'); }
-  else { showMsg(`ВОЛНА ${n}`, 1500); Music.setMode('combat'); }
+
+  // Сюжетный показ локации при первой волне уровня
+  if (n === 1 || (n - 1) % 5 === 0) {
+    const L = LEVELS[currentLevel];
+    setTimeout(() => {
+      showMsg(L.name, 3000);
+      setTimeout(() => {
+        addFeed(`<span style="color:#ffd27a">📍 ${L.name} — ${L.subtitle}</span>`);
+        addFeed(`<span style="color:#c9a55a; font-style:italic;">${L.story}</span>`);
+        if (companion) companionSay(pick([
+          'Ох... куда нас занесло.','Это место мне не нравится.','Опять приключения. Опять я не в восторге.','Красиво... по-страшному.'
+        ]), 2600);
+      }, 1200);
+    }, 400);
+  }
+
+  if (n % 5 === 0) {
+    SFX.boss();
+    const bossName = LEVELS[currentLevel].bossName;
+    showMsg('⚠ ' + bossName + ' ⚠', 3000);
+    setTimeout(() => {
+      addFeed(`<span style="color:#ff4444; font-weight:bold">☠ БОСС: ${bossName}</span>`);
+      if (companion) companionSay(pick([
+        'О БОГИ! Это ' + bossName + '! БЕЖИМ!',
+        'Я НЕ ХОЧУ УМИРАТЬ! То есть... я не могу умереть. Но всё равно!',
+        'Этот точно нас убьёт! То есть тебя. Меня-то нет.',
+        bossName + '?! СЕРЬЁЗНО?!'
+      ]), 2800);
+    }, 800);
+    Music.setMode('boss');
+  } else {
+    showMsg(`ВОЛНА ${n}`, 1500);
+    Music.setMode('combat');
+  }
+
   // Модификатор
   if (n >= 3 && n % 3 === 0 && n % 5 !== 0) {
     activeModifier = pick(MODIFIERS);
@@ -2316,9 +2625,7 @@ function startWave(n) {
   } else {
     activeModifier = null;
   }
-  if (n === 1) companionSay('О боги, начинается...', 2400);
-  else if (n % 5 === 0) companionSay('Это ГИГАНТ! Я в укрытие!', 2400);
-  else if (Math.random() < 0.6) companionSay('Опять они! Держись!', 1800);
+
   for (const w of player.weapons) {
     if (WEAPON_UNLOCK_WAVE[w.id] === n && !w.unlocked) {
       w.unlocked = true; w.ammo = w.ammoMax;
@@ -2334,14 +2641,18 @@ function startWave(n) {
   updateHUD();
 }
 function spawnPoint() {
-  for (let i=0;i<20;i++){
+  for (let i=0;i<25;i++){
     let x, z;
-    if (Math.random() < 0.6) {
-      const a = Math.random()*TAU, r = rand(30, ARENA-6);
-      x = Math.cos(a)*r; z = Math.sin(a)*r;
+    const r = Math.random();
+    if (r < 0.35) {
+      x = rand(-50, 50); z = rand(28, 60);
+    } else if (r < 0.55) {
+      x = rand(-22, 22); z = rand(-15, 22);
+    } else if (r < 0.75) {
+      x = rand(-30, 30); z = rand(-58, -25);
     } else {
-      x = rand(ZONE2_X_MIN + 6, ZONE2_X_MAX - 6);
-      z = rand(-ARENA + 10, ARENA - 10);
+      x = rand(MANSION_X_MIN + 8, MANSION_X_MAX - 8);
+      z = rand(-MANSION_Z_HALF + 8, MANSION_Z_HALF - 8);
     }
     let ok = true;
     for (const c of circleColliders) if (Math.hypot(x-c.x, z-c.z) < c.r+2.5) { ok = false; break; }
@@ -2350,8 +2661,7 @@ function spawnPoint() {
     if (!ok) continue;
     return new THREE.Vector3(x, 0, z);
   }
-  const a = Math.random()*TAU;
-  return new THREE.Vector3(Math.cos(a)*44, 0, Math.sin(a)*44);
+  return new THREE.Vector3(rand(-40, 40), 0, rand(30, 50));
 }
 function updateWaves(dt) {
   if (!waveActive) {
@@ -2400,17 +2710,22 @@ function updateWaves(dt) {
         setTimeout(()=>{
           applyLevel(currentLevel);
           SFX.levelUp();
-          showMsg(`УРОВЕНЬ ${currentLevel+1}: ${LEVELS[currentLevel].name}`, 3400);
-          companionSay('Ого, новое место!', 2400);
-          addFeed(`<span style="color:#66ddff">✦ УРОВЕНЬ ${currentLevel+1}: ${LEVELS[currentLevel].name}</span>`);
+          const L = LEVELS[currentLevel];
+          showMsg(`→ ${L.name}`, 3200);
+          addFeed(`<span style="color:#66ddff">✦ ПЕРЕХОД: ${L.name}</span>`);
+          companionSay(L.story, 3400);
         }, 1400);
       } else {
         ngPlus++;
         currentLevel = 0;
         setTimeout(()=>{
-          applyLevel(0);
-          SFX.levelUp();
-          showMsg(`ПОБЕДА! NG+${ngPlus}`, 3600);
+          Music.setMode('calm');
+          gameState = 'paused';
+          if (document.exitPointerLock) document.exitPointerLock();
+          $('victoryScreen').classList.remove('hidden');
+          meta = loadMeta();
+          meta.credits += 500;
+          saveMeta(meta);
         }, 1400);
       }
     }
@@ -2422,7 +2737,6 @@ function updateWaves(dt) {
 function updatePlayerEntity(P, cam, inp, dt) {
   if (!P.alive) return;
   if (P.invuln > 0) P.invuln -= dt;
-  // Регенерация
   if (P.upgrades && P.upgrades.regen > 0) {
     P.upgrades._regenT = (P.upgrades._regenT || 0) + dt;
     if (P.upgrades._regenT >= 3) {
@@ -2483,15 +2797,16 @@ function updatePlayerEntity(P, cam, inp, dt) {
 
 /* ============== WORLD UPDATE ============== */
 function updateWorld(dt) {
-  fireLight.intensity = 2.6 + Math.sin(performance.now()*0.008)*0.9 + Math.random()*0.4;
-  for (const f of fireParts) {
+  sun.intensity = 1.3 + Math.sin(performance.now()*0.0004)*0.08;
+  for (const f of torchParts) {
     f.userData.life -= dt;
-    if (f.userData.life <= 0) { f.userData.life = 1.2; f.position.set(rand(-1.6,1.6), 1.6, rand(-1.6,1.6)); f.scale.setScalar(rand(0.6,1.3)); }
-    f.position.y += dt * (2.4 + Math.random()*1.4);
-    f.scale.multiplyScalar(1 - dt*0.85);
-    f.rotation.y += dt*3;
-    f.material.opacity = clamp(f.userData.life/1.2, 0, 0.9);
-    if (f.scale.x < 0.05) f.scale.setScalar(rand(0.5,1.1));
+    if (f.userData.life <= 0) { f.userData.life = 1.2; f.scale.setScalar(rand(0.85, 1.15)); }
+    const baseY = f.userData.baseY || 0;
+    f.position.y = baseY + Math.sin(performance.now()*0.005 + baseY) * 0.15;
+    f.scale.setScalar(f.scale.x * (1 + Math.sin(performance.now()*0.02) * 0.01));
+    f.rotation.y += dt * 4;
+    f.material.opacity = 0.75 + Math.random() * 0.2;
+    if (f.userData.light) f.userData.light.intensity = 2 + Math.sin(performance.now()*0.008 + baseY) * 0.5 + Math.random()*0.3;
   }
   for (let i=beams.length-1;i>=0;i--) {
     const b = beams[i];
@@ -2505,24 +2820,27 @@ function updateWorld(dt) {
 /* ============== MINIMAP ============== */
 const minimapCanvas = $('minimap');
 const minimapCtx = minimapCanvas ? minimapCanvas.getContext('2d') : null;
-if (minimapCanvas) { minimapCanvas.width = 170; minimapCanvas.height = 170; }
+if (minimapCanvas) { minimapCanvas.width = 190; minimapCanvas.height = 190; }
 function drawMinimap() {
   if (!minimapCtx) return;
-  const c = minimapCtx, W = 170, H = 170;
+  const c = minimapCtx, W = 190, H = 190;
   c.clearRect(0, 0, W, H);
-  const worldW = 130 - (-53), worldH = 106;
+  const worldW = MANSION_X_MAX - (-ARENA), worldH = ARENA*2;
   const sc = Math.min(W / worldW, H / worldH) * 0.94;
-  const ox = W / 2 - ((130 + (-53)) / 2) * sc;
+  const ox = W / 2 - ((MANSION_X_MAX + (-ARENA)) / 2) * sc;
   const oy = H / 2;
   const wx = x => ox + x * sc;
   const wz = z => oy + z * sc;
-  c.fillStyle = 'rgba(80,50,20,0.55)';
-  c.fillRect(wx(-53), wz(-53), 106 * sc, 106 * sc);
-  c.fillStyle = 'rgba(80,80,80,0.5)';
-  c.fillRect(wx(58), wz(-53), 72 * sc, 106 * sc);
-  c.strokeStyle = '#ffd27a';
-  c.lineWidth = 1.5;
-  c.beginPath(); c.moveTo(wx(53), wz(0)); c.lineTo(wx(58), wz(0)); c.stroke();
+  c.fillStyle = 'rgba(90,70,40,0.5)';
+  c.fillRect(wx(-ARENA), wz(25), ARENA*2 * sc, 40 * sc);
+  c.fillStyle = 'rgba(200,180,120,0.55)';
+  c.fillRect(wx(-25), wz(-22.5), 50 * sc, 50 * sc);
+  c.fillStyle = 'rgba(60,40,60,0.6)';
+  c.fillRect(wx(-ARENA), wz(-ARENA), ARENA*2 * sc, 45 * sc);
+  c.fillStyle = 'rgba(70,70,70,0.55)';
+  c.fillRect(wx(MANSION_X_MIN), wz(-MANSION_Z_HALF), (MANSION_X_MAX-MANSION_X_MIN) * sc, MANSION_Z_HALF*2 * sc);
+  c.strokeStyle = '#ffd27a'; c.lineWidth = 2;
+  c.beginPath(); c.moveTo(wx(ARENA), wz(0)); c.lineTo(wx(MANSION_X_MIN), wz(0)); c.stroke();
   for (const e of enemies) {
     if (e.dead) continue;
     c.fillStyle = e.cfg.boss ? '#ff2020' : '#ff6644';
@@ -2563,8 +2881,8 @@ function addFeed(html) {
   const d = document.createElement('div');
   d.innerHTML = html;
   $('feed').appendChild(d);
-  setTimeout(()=>d.remove(), 2600);
-  while ($('feed').children.length > 7) $('feed').firstChild.remove();
+  setTimeout(()=>d.remove(), 3400);
+  while ($('feed').children.length > 8) $('feed').firstChild.remove();
 }
 function updateComboBox(multiplier) {
   const box = $('comboBox');
@@ -2811,7 +3129,7 @@ function humanizePeerError(e) {
 function startHost() {
   net.mode = 'host';
   net.nick = genNick();
-  net.peerId = 'wrath-olympus-v9-' + translit(net.nick);
+  net.peerId = 'wrath-olympus-v13-' + translit(net.nick);
   $('netChoice').classList.add('hidden');
   $('hostPanel').classList.remove('hidden');
   $('joinPanel').classList.add('hidden');
@@ -2847,7 +3165,7 @@ function startHost() {
           setConnState(1, 'wait', 'НИК ЗАНЯТ, ГЕНЕРИРУЕМ ДРУГОЙ...', '');
           try { net.peer.destroy(); } catch(_) {}
           net.nick = genNick();
-          net.peerId = 'wrath-olympus-v9-' + translit(net.nick);
+          net.peerId = 'wrath-olympus-v13-' + translit(net.nick);
           $('nickBox').textContent = net.nick;
           setTimeout(tryConnect, 400);
           return;
@@ -2858,7 +3176,7 @@ function startHost() {
           setTimeout(tryConnect, 2000);
           return;
         }
-        setConnState(1, 'err', humanizePeerError(e), 'Сервер перегружен или блокируется. Попробуй другую сеть или нажми «Попробовать снова».');
+        setConnState(1, 'err', humanizePeerError(e), 'Сервер перегружен или блокируется. Попробуй другую сеть.');
         $('retryNetBtn').classList.remove('hidden');
       }
     );
@@ -2870,11 +3188,11 @@ function joinRoom(input) {
   if (code.includes('join=')) {
     try { const u = new URL(code, location.href); code = u.searchParams.get('join') || code; } catch(_) {}
   }
-  code = decodeURIComponent(code).replace(/^wrath-olympus-v9-/i, '').trim();
+  code = decodeURIComponent(code).replace(/^wrath-olympus-v13-/i, '').trim();
   if (!code) { setConnState(2, 'err', 'ВВЕДИ НИК ИЛИ ССЫЛКУ', ''); return; }
   net.nick = code;
   net.mode = 'client';
-  net.peerId = 'wrath-olympus-v9-' + translit(code);
+  net.peerId = 'wrath-olympus-v13-' + translit(code);
   setConnState(2, 'info', 'ПОДКЛЮЧАЕМСЯ К «' + code + '»...', '');
   let attempts = 0;
   function tryJoin() {
@@ -2893,7 +3211,7 @@ function joinRoom(input) {
               setConnState(2, 'wait', 'ХОСТ НЕ ОТВЕЧАЕТ', 'Ещё попытка через 2 сек...');
               setTimeout(tryJoin, 2000);
             } else {
-              setConnState(2, 'err', 'ХОСТ НЕ ОТВЕЧАЕТ', 'Проверь ник. Возможно хост вышел.');
+              setConnState(2, 'err', 'ХОСТ НЕ ОТВЕЧАЕТ', 'Проверь ник.');
             }
           }
         }, 8000);
@@ -2910,7 +3228,7 @@ function joinRoom(input) {
       },
       (e) => {
         if (e.type === 'peer-unavailable') {
-          setConnState(2, 'err', 'ИГРОК «' + code + '» НЕ НАЙДЕН', 'Проверь ник или попроси ссылку.');
+          setConnState(2, 'err', 'ИГРОК «' + code + '» НЕ НАЙДЕН', 'Проверь ник.');
           return;
         }
         const isRetryable = ['network','socket-error','socket-closed','timeout','server-error'].includes(e.type);
@@ -3031,7 +3349,7 @@ function handleNetEvent(ev) {
     spawnBeam(new THREE.Vector3(ev.fx,ev.fy,ev.fz), new THREE.Vector3(ev.tx,ev.ty,ev.tz), ev.c, ev.rad, ev.life);
   } else if (ev.t === 'ult') {
     const P = ev.p === 1 ? player : player2;
-    const R = 30;
+    const R = 24;
     for (let k=0;k<3;k++) {
       const ring = new THREE.Mesh(new THREE.RingGeometry(0.8,1.4,40),
         new THREE.MeshBasicMaterial({ color: k===0?0xffffff:(k===1?0x66ddff:0x2299dd),
@@ -3112,12 +3430,12 @@ function resetGame() {
   particles.length = 0;
 
   applyMetaBonuses();
-  player.pos.set(0, 1.7, 38); player.vel.set(0,0,0);
+  player.pos.set(0, 1.7, 45); player.vel.set(0,0,0);
   player.yaw = Math.PI; player.pitch = 0;
   player.alive = true; player.invuln = 0; player.recoil = 0; player.kick = 0;
   player.weapons = makeWeapons(); player.curWeapon = 0; player.weaponCd = 0; player.ultCharge = 0;
 
-  player2.pos.set(-3, 1.7, 40); player2.vel.set(0,0,0);
+  player2.pos.set(-3, 1.7, 47); player2.vel.set(0,0,0);
   player2.yaw = Math.PI; player2.pitch = 0;
   player2.hp = player2.maxHp; player2.armor = 0;
   player2.alive = true; player2.invuln = 0; player2.recoil = 0; player2.kick = 0;
@@ -3179,7 +3497,7 @@ function startNetHost() {
   player2.alive = true;
   player2.hp = player2.maxHp;
   player2.armor = 0;
-  player2.pos.set(-3, 1.7, 40);
+  player2.pos.set(-3, 1.7, 47);
   player2.vel.set(0, 0, 0);
   player2.yaw = Math.PI;
   player2.weapons = makeWeapons();
@@ -3215,6 +3533,12 @@ function startNetClientGame() {
 }
 
 /* ============== BUTTONS ============== */
+$('introBtn').onclick = () => {
+  initAudio();
+  if (actx && actx.state === 'suspended') actx.resume();
+  $('introScreen').classList.add('hidden');
+  $('modeScreen').classList.remove('hidden');
+};
 $('soloBtn').onclick = startSolo;
 $('metaBtn').onclick = () => {
   $('modeScreen').classList.add('hidden');
@@ -3298,6 +3622,12 @@ $('pauseExitBtn').onclick = () => {
   $('modeScreen').classList.remove('hidden');
   gameState = 'menu';
   Music.setMode('calm');
+  resetGame();
+};
+$('victoryBtn').onclick = () => {
+  $('victoryScreen').classList.add('hidden');
+  $('modeScreen').classList.remove('hidden');
+  gameState = 'menu';
   resetGame();
 };
 $('restartBtn').onclick = () => {
@@ -3394,11 +3724,13 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight);
 });
 
+/* ============== INIT ============== */
 (function checkInvite() {
   try {
     const params = new URLSearchParams(location.search);
     const join = params.get('join');
     if (join) {
+      $('introScreen').classList.add('hidden');
       $('modeScreen').classList.add('hidden');
       $('netScreen').classList.remove('hidden');
       $('netChoice').classList.add('hidden');
@@ -3417,7 +3749,7 @@ camera.position.copy(player.pos);
 camera.rotation.set(0, player.yaw, 0, 'YXZ');
 animate();
 
-console.log('%c⚔ WRATH OF OLYMPUS v10 — все фичи', 'color:#ffd27a;font-size:16px;font-weight:bold');
+console.log('%c⚔ WRATH OF OLYMPUS v13 — новая карта + сюжет + ребаланс', 'color:#ffd27a;font-size:16px;font-weight:bold');
 </script>
 </body>
 </html>
