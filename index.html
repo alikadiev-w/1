@@ -63,6 +63,19 @@
     text-shadow:0 0 24px rgba(255,140,20,.9); transition:opacity .4s; width:100%; pointer-events:none; }
   #feed { position:absolute; right:26px; top:80px; text-align:right; font-size:13px; max-width:340px; }
   #feed div { color:#ffcf8a; text-shadow:0 0 6px #000; margin-bottom:3px; }
+  #comboBox { position:absolute; top:120px; left:50%; transform:translateX(-50%);
+    text-align:center; opacity:0; transition:opacity .3s; pointer-events:none; }
+  #comboBox.on { opacity:1; }
+  #comboBox .num { font-size:44px; font-weight:bold; color:#ffd27a;
+    text-shadow:0 0 20px rgba(255,180,60,.9), 0 3px 0 #7a3a0a; line-height:1; }
+  #comboBox .lbl { font-size:11px; color:#c9a55a; letter-spacing:4px; margin-top:4px; }
+  #comboBox .timer { width:120px; height:3px; background:#3a2a1a; margin:6px auto 0;
+    border-radius:2px; overflow:hidden; }
+  #comboBox .timer i { display:block; height:100%; width:100%;
+    background:linear-gradient(90deg,#ff5a3c,#ffd27a); transition:width .05s linear; }
+  #minimap { position:absolute; top:80px; left:26px; width:170px; height:170px;
+    border:2px solid #7a5c26; border-radius:50%; background:rgba(10,6,2,.7);
+    box-shadow:0 0 18px rgba(0,0,0,.8), inset 0 0 30px rgba(255,180,60,.06); }
   .screen { position:fixed; inset:0; z-index:50; display:flex; flex-direction:column;
     align-items:center; justify-content:center; text-align:center;
     background:radial-gradient(ellipse at 50% 40%, #2a1c10 0%, #0a0705 70%);
@@ -94,32 +107,70 @@
   .ebar.boss { border-color:#a01010; }
   .ebar .nm { position:absolute; top:-14px; left:50%; transform:translateX(-50%);
     font-size:10px; color:#ffd27a; white-space:nowrap; text-shadow:0 0 4px #000; }
-  /* Статус соединения */
-  #connStatus { margin-top:26px; min-height:80px; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:8px; }
-  #connDot { font-size:22px; line-height:1; }
-  #connText { font-size:17px; letter-spacing:2px; }
-  #connSub { font-size:13px; color:#8a785a; max-width:520px; line-height:1.5; }
+  #connStatus, #connStatus2 { margin-top:26px; min-height:70px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:6px; }
+  #connDot, #connDot2 { font-size:22px; line-height:1; }
+  #connText, #connText2 { font-size:16px; letter-spacing:2px; }
+  #connSub, #connSub2 { font-size:12px; color:#8a785a; max-width:520px; line-height:1.5; }
   @keyframes pulseWait { 0%,100%{opacity:.4;} 50%{opacity:1;} }
   @keyframes pulseOk { 0%,100%{transform:scale(1); opacity:1;} 50%{transform:scale(1.15); opacity:.85;} }
-  .state-wait #connDot { color:#ffcc44; animation: pulseWait 1.2s infinite; }
-  .state-wait #connText { color:#ffcc44; }
-  .state-ok #connDot { color:#66ff88; animation: pulseOk 1s infinite; }
-  .state-ok #connText { color:#66ff88; font-weight:bold; }
-  .state-err #connDot { color:#ff4444; }
-  .state-err #connText { color:#ff4444; }
-  .state-info #connDot { color:#a8895a; }
-  .state-info #connText { color:#a8895a; }
+  .state-wait #connDot, .state-wait #connDot2 { color:#ffcc44; animation: pulseWait 1.2s infinite; }
+  .state-wait #connText, .state-wait #connText2 { color:#ffcc44; }
+  .state-ok #connDot, .state-ok #connDot2 { color:#66ff88; animation: pulseOk 1s infinite; }
+  .state-ok #connText, .state-ok #connText2 { color:#66ff88; font-weight:bold; }
+  .state-err #connDot, .state-err #connDot2 { color:#ff4444; }
+  .state-err #connText, .state-err #connText2 { color:#ff4444; }
+  .state-info #connDot, .state-info #connDot2 { color:#a8895a; }
+  .state-info #connText, .state-info #connText2 { color:#a8895a; }
   .nickBox { background:rgba(255,210,120,.12); border:2px dashed #7a5c26;
-    border-radius:8px; padding:14px 26px; font-size:32px; letter-spacing:3px;
+    border-radius:8px; padding:14px 26px; font-size:30px; letter-spacing:3px;
     color:#ffd27a; cursor:pointer; text-shadow:0 0 18px rgba(255,140,20,.8);
     transition:all .15s; user-select:text; }
   .nickBox:hover { background:rgba(255,210,120,.2); border-color:#ffd27a; }
-  .nickBox:active { transform:scale(0.98); }
   .inviteHelp { font-size:13px; color:#8a785a; letter-spacing:1px; line-height:1.8;
     text-align:left; background:rgba(0,0,0,.3); padding:14px 20px; border-radius:6px;
     border-left:3px solid #ffd27a; margin-top:20px; max-width:520px; }
   .inviteHelp b { color:#ffd27a; }
+  #upgradeScreen { z-index:70; }
+  #upgradeScreen h1 { font-size:44px; }
+  #upgradeCards { display:flex; gap:22px; margin-top:30px; flex-wrap:wrap; justify-content:center; }
+  .card { width:260px; min-height:280px; padding:22px 20px;
+    background:linear-gradient(180deg, rgba(40,26,10,.92), rgba(15,8,2,.95));
+    border:2px solid #7a5c26; border-radius:10px; cursor:pointer;
+    transition:all .15s; display:flex; flex-direction:column; align-items:center;
+    text-align:center; box-shadow:0 0 24px rgba(0,0,0,.6); }
+  .card:hover { transform:translateY(-6px); border-color:#ffd27a;
+    box-shadow:0 0 40px rgba(255,180,60,.55); }
+  .card .icon { font-size:52px; margin-bottom:14px; line-height:1; }
+  .card .name { font-size:17px; color:#ffd27a; letter-spacing:2px;
+    text-transform:uppercase; margin-bottom:12px; font-weight:bold; }
+  .card .desc { font-size:13px; color:#c9b088; line-height:1.6; flex:1; }
+  .card .rarity { margin-top:14px; font-size:10px; letter-spacing:3px;
+    padding:4px 12px; border-radius:12px; }
+  .card.r-common .rarity { background:#3a3a3a; color:#bbbbbb; }
+  .card.r-rare .rarity { background:#1a3a5a; color:#66ccff; }
+  .card.r-epic .rarity { background:#3a1a5a; color:#cc88ff; }
+  .card.r-common { border-color:#5a5a5a; }
+  .card.r-rare { border-color:#2a5a8a; }
+  .card.r-epic { border-color:#6a3a9a; }
+  #metaScreen h1 { font-size:48px; }
+  #metaStats { font-size:15px; color:#c9a55a; line-height:2; margin-bottom:14px; }
+  #metaStats b { color:#fff; font-size:22px; }
+  #metaUpgrades { display:flex; flex-direction:column; gap:10px; max-width:560px;
+    margin-top:16px; max-height:44vh; overflow-y:auto; padding-right:8px; }
+  .metaRow { display:flex; justify-content:space-between; align-items:center;
+    padding:12px 18px; background:rgba(30,18,8,.7); border:1px solid #5a3a1a;
+    border-radius:6px; }
+  .metaRow .info { text-align:left; flex:1; }
+  .metaRow .nm { font-size:15px; color:#ffd27a; }
+  .metaRow .ds { font-size:12px; color:#9c8a68; margin-top:2px; }
+  .metaRow .lvl { color:#66ccff; font-size:13px; margin-left:14px; }
+  .metaRow button { padding:8px 16px; font-size:12px; letter-spacing:2px;
+    background:linear-gradient(180deg,#ffd27a,#c9963a); color:#1a1008;
+    border:none; border-radius:4px; cursor:pointer; font-weight:bold;
+    box-shadow:0 3px 0 #7a5c1e; margin-left:14px; font-family:inherit; }
+  .metaRow button:hover { transform:translateY(-1px); }
+  .metaRow button:disabled { opacity:.35; cursor:not-allowed; transform:none; }
 </style>
 </head>
 <body>
@@ -169,31 +220,47 @@
   <div id="scoreBox">ОЧКИ<br><b id="scoreVal">0</b></div>
   <div id="killBox">УБИЙСТВ<br><b id="killVal">0</b></div>
 
+  <div id="comboBox">
+    <div class="num" id="comboNum">x2</div>
+    <div class="lbl">КОМБО</div>
+    <div class="timer"><i id="comboTimer"></i></div>
+  </div>
+  <canvas id="minimap"></canvas>
+
   <div id="msg"></div>
   <div id="feed"></div>
 </div>
 
-<!-- ГЛАВНОЕ МЕНЮ -->
 <div class="screen" id="modeScreen">
   <h1>WRATH OF OLYMPUS</h1>
   <h2>АРЕНА БОГОВ</h2>
   <p>5 уровней, 5 боссов, бесконечные волны. Выживи и убей всех.</p>
   <button class="btn" id="soloBtn">ОДИН ИГРОК</button>
+  <button class="btn" id="metaBtn" style="background:linear-gradient(180deg,#c9a55a,#8a6a2a); box-shadow:0 5px 0 #4a3a1a; color:#1a1008;">⚙ ХРАМ АПГРЕЙДОВ</button>
   <button class="btn pink" id="netBtn">СЕТЕВАЯ ИГРА (2 ПК)</button>
 </div>
 
-<!-- СЕТЕВОЕ ЛОББИ -->
+<div class="screen hidden" id="upgradeScreen">
+  <h1>ВЫБЕРИ УЛУЧШЕНИЕ</h1>
+  <h2>ПОСЛЕ ВОЛНЫ</h2>
+  <div id="upgradeCards"></div>
+</div>
+
+<div class="screen hidden" id="metaScreen">
+  <h1>ХРАМ АПГРЕЙДОВ</h1>
+  <h2>МЕТА-ПРОГРЕССИЯ</h2>
+  <div id="metaStats"></div>
+  <div id="metaUpgrades"></div>
+  <button class="btn" id="metaBackBtn" style="margin-top:24px;">← НАЗАД</button>
+</div>
+
 <div class="screen hidden" id="netScreen">
   <h1>СЕТЕВАЯ ИГРА</h1>
   <h2>2 ИГРОКА · РАЗНЫЕ ПК</h2>
-
-  <!-- Выбор режима -->
   <div id="netChoice" class="row">
     <button class="btn" id="hostBtn">СОЗДАТЬ КОМНАТУ</button>
     <button class="btn blue" id="joinBtn">ПОДКЛЮЧИТЬСЯ</button>
   </div>
-
-  <!-- Хост: панель -->
   <div id="hostPanel" class="hidden" style="display:flex; flex-direction:column; align-items:center;">
     <div style="font-size:12px; color:#8a785a; letter-spacing:3px; margin-bottom:12px;">ТВОЙ НИК · НАЖМИ ЧТОБЫ СКОПИРОВАТЬ</div>
     <div class="nickBox" id="nickBox">—</div>
@@ -207,17 +274,16 @@
       <div id="connSub"></div>
     </div>
     <button class="btn green hidden" id="startNetBtn">НАЧАТЬ ИГРУ</button>
+    <button class="btn hidden" id="retryNetBtn" style="background:linear-gradient(180deg,#ffcc66,#cc8800); box-shadow:0 5px 0 #7a4a00;">🔄 ПОПРОБОВАТЬ СНОВА</button>
     <div class="inviteHelp">
       <b>Как пригласить друга:</b><br>
-      1. Нажми <b>📋 СКОПИРОВАТЬ ССЫЛКУ</b> — ссылка уйдёт в буфер обмена<br>
+      1. <b>📋 СКОПИРОВАТЬ ССЫЛКУ</b> — ссылка уйдёт в буфер<br>
       2. Отправь другу (телега, ватсап, дискорд)<br>
-      3. Друг открывает ссылку — у него сразу появится твой ник<br>
+      3. Друг открывает ссылку → ник уже подставлен<br>
       4. Когда он жмёт «ПРИСОЕДИНИТЬСЯ» — у тебя загорится <b style="color:#66ff88">✓ ИГРОК ПОДКЛЮЧЁН</b><br>
       5. Жми <b>НАЧАТЬ ИГРУ</b>
     </div>
   </div>
-
-  <!-- Гость: панель -->
   <div id="joinPanel" class="hidden" style="display:flex; flex-direction:column; align-items:center;">
     <div style="font-size:12px; color:#8a785a; letter-spacing:3px; margin-bottom:12px;">ВВЕДИ НИК ИЛИ ВСТАВЬ ССЫЛКУ (Ctrl+V)</div>
     <input id="codeInput" maxlength="100" placeholder="Короткий Писюн" autocomplete="off" spellcheck="false">
@@ -229,23 +295,21 @@
     </div>
     <div class="inviteHelp">
       <b>Важно:</b><br>
-      • Ник чувствителен к буквам, но не важен регистр: «Короткий Писюн» = «короткий писюн»<br>
-      • Ссылку можно вставить целиком — ник подхватится автоматически<br>
-      • Если не подключается — попроси хоста ещё раз скинуть ссылку
+      • Регистр не важен: «Короткий Писюн» = «короткий писюн»<br>
+      • Ссылку можно вставить целиком — ник подхватится сам<br>
+      • Если не подключается — попроси хоста скинуть ссылку заново
     </div>
   </div>
-
   <button class="btn" id="netBackBtn" style="padding:10px 22px; font-size:13px; margin-top:30px;">← НАЗАД</button>
 </div>
 
-<!-- ПАУЗА -->
 <div class="screen hidden" id="pauseScreen">
   <h1>ПАУЗА</h1>
-  <p>Нажми кнопку чтобы продолжить.</p>
+  <p>ESC — вернуться в бой. Или выйди в меню.</p>
   <button class="btn" id="resumeBtn">ПРОДОЛЖИТЬ</button>
+  <button class="btn pink" id="pauseExitBtn">В ГЛАВНОЕ МЕНЮ</button>
 </div>
 
-<!-- GAME OVER -->
 <div class="screen hidden" id="overScreen">
   <h1 style="color:#e04a2a;">ТЫ ПАЛ</h1>
   <h2>ОЛИМП СКОРБИТ</h2>
@@ -263,7 +327,6 @@ import * as THREE from 'three';
 window.addEventListener('error', e => console.error('[ERR]', e.message, e.filename, e.lineno));
 window.addEventListener('unhandledrejection', e => console.error('[PROMISE]', e.reason));
 
-/* ============== UTIL ============== */
 const rand = (a,b) => a + Math.random()*(b-a);
 const clamp = (v,a,b) => v<a?a:v>b?b:v;
 const lerp = (a,b,t) => a+(b-a)*t;
@@ -278,7 +341,7 @@ function initAudio() {
   try {
     actx = new (window.AudioContext||window.webkitAudioContext)();
     mg = actx.createGain(); mg.gain.value = 0.45; mg.connect(actx.destination);
-  } catch(e) { console.warn('Audio failed', e); }
+  } catch(e) {}
 }
 function noise(dur, freq, gain, type='lowpass') {
   if (!actx) return;
@@ -301,6 +364,95 @@ function tone(freq, dur, type='sine', gain=0.15, slide=null) {
   g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime+dur);
   o.connect(g); g.connect(mg); o.start(); o.stop(actx.currentTime+dur);
 }
+const Music = {
+  playing: false, timer: null, step: 0, bpm: 96, mode: 'calm',
+  bassGain: null, drumGain: null,
+  bassPattern: [0, 0, 3, 0, 5, 0, 3, 3],
+  bassBaseFreq: 55, scale: [0, 3, 5, 7, 10],
+  start() {
+    if (this.playing || !actx) return;
+    this.playing = true;
+    this.bassGain = actx.createGain(); this.bassGain.gain.value = 0.14; this.bassGain.connect(mg);
+    this.drumGain = actx.createGain(); this.drumGain.gain.value = 0.10; this.drumGain.connect(mg);
+    const interval = () => {
+      if (!this.playing) return;
+      this.tick();
+      this.timer = setTimeout(interval, (60/this.bpm/4)*1000);
+    };
+    this.tick();
+    this.timer = setTimeout(interval, (60/this.bpm/4)*1000);
+  },
+  stop() {
+    this.playing = false;
+    if (this.timer) clearTimeout(this.timer);
+    if (this.bassGain) try { this.bassGain.disconnect(); } catch(_) {}
+    if (this.drumGain) try { this.drumGain.disconnect(); } catch(_) {}
+  },
+  setMode(m) {
+    if (this.mode === m) return;
+    this.mode = m;
+    if (m === 'combat') { this.bpm = 120; this.bassBaseFreq = 55; this.bassGain.gain.value = 0.16; }
+    else if (m === 'boss') { this.bpm = 140; this.bassBaseFreq = 46; this.bassGain.gain.value = 0.20; }
+    else { this.bpm = 88; this.bassBaseFreq = 66; this.bassGain.gain.value = 0.11; }
+  },
+  tick() {
+    if (!actx || !this.bassGain) return;
+    const s = this.step % 16;
+    if (s % 2 === 0) {
+      const noteIdx = this.bassPattern[(this.step>>1) % this.bassPattern.length];
+      const semi = this.scale[noteIdx % this.scale.length];
+      this.playBass(this.bassBaseFreq * Math.pow(2, semi/12));
+    }
+    if (s === 0 || s === 6 || s === 10) this.playKick();
+    if (s % 2 === 1) this.playHat();
+    if ((this.mode === 'combat' || this.mode === 'boss') && (s === 4 || s === 12)) this.playSnare();
+    this.step++;
+  },
+  playBass(freq) {
+    if (!actx) return;
+    const o = actx.createOscillator(); o.type = 'triangle'; o.frequency.value = freq;
+    const g = actx.createGain(); const now = actx.currentTime;
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(0.9, now + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    o.connect(g); g.connect(this.bassGain);
+    o.start(now); o.stop(now + 0.25);
+  },
+  playKick() {
+    if (!actx) return;
+    const o = actx.createOscillator(); o.type = 'sine';
+    const now = actx.currentTime;
+    o.frequency.setValueAtTime(140, now);
+    o.frequency.exponentialRampToValueAtTime(38, now + 0.15);
+    const g = actx.createGain();
+    g.gain.setValueAtTime(0.9, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.20);
+    o.connect(g); g.connect(this.drumGain);
+    o.start(now); o.stop(now + 0.22);
+  },
+  playHat() {
+    if (!actx) return;
+    const n = Math.floor(actx.sampleRate * 0.04);
+    const buf = actx.createBuffer(1, n, actx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i=0; i<n; i++) d[i] = (Math.random()*2-1)*(1-i/n);
+    const src = actx.createBufferSource(); src.buffer = buf;
+    const f = actx.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 6000;
+    const g = actx.createGain(); g.gain.value = 0.35;
+    src.connect(f); f.connect(g); g.connect(this.drumGain); src.start();
+  },
+  playSnare() {
+    if (!actx) return;
+    const n = Math.floor(actx.sampleRate * 0.12);
+    const buf = actx.createBuffer(1, n, actx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i=0; i<n; i++) d[i] = (Math.random()*2-1)*(1-i/n);
+    const src = actx.createBufferSource(); src.buffer = buf;
+    const f = actx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 2200; f.Q.value = 0.8;
+    const g = actx.createGain(); g.gain.value = 0.6;
+    src.connect(f); f.connect(g); g.connect(this.drumGain); src.start();
+  }
+};
 const SFX = {
   pistol:()=>{noise(0.09,2600,0.3,'highpass');tone(190,0.09,'square',0.13,70);},
   shotgun:()=>{noise(0.24,1200,0.45);tone(95,0.22,'sawtooth',0.2,45);},
@@ -350,12 +502,11 @@ const hemi = new THREE.HemisphereLight(0x8899cc, 0x3a2a18, 0.55); scene.add(hemi
 const sun = new THREE.DirectionalLight(0xffb060, 1.3);
 sun.position.set(-70,85,50); sun.castShadow = true;
 sun.shadow.mapSize.set(2048,2048);
-sun.shadow.camera.left = -85; sun.shadow.camera.right = 85;
+sun.shadow.camera.left = -95; sun.shadow.camera.right = 95;
 sun.shadow.camera.top = 85; sun.shadow.camera.bottom = -85;
-sun.shadow.camera.far = 260; sun.shadow.bias = -0.001;
+sun.shadow.camera.far = 300; sun.shadow.bias = -0.001;
 scene.add(sun);
 
-/* ============== TEXTURES ============== */
 function makeTex(size, draw, repeat=1) {
   const c = document.createElement('canvas'); c.width = c.height = size;
   draw(c.getContext('2d'), size);
@@ -396,8 +547,13 @@ const colTex = makeTex(128, (g,s)=>{
   }
 });
 
-/* ============== ARENA (увеличена на 20%) ============== */
-const ARENA = 53;                       // было 44
+/* ============== ARENA ============== */
+const ARENA = 53;
+const ZONE2_X_MIN = ARENA + 5;
+const ZONE2_X_MAX = ARENA + 77;
+const GATE_X_MIN = ARENA + 1;
+const GATE_X_MAX = ARENA + 5;
+const GATE_Z_HALF = 8;
 const circleColliders = [];
 const boxColliders = [];
 const worldMeshes = [];
@@ -415,10 +571,10 @@ function addWall(w,h,d,x,y,z) {
   m.userData.isWall = true;
   scene.add(m); worldMeshes.push(m);
 }
-addWall(ARENA*2+4, 12, 2, 0, 6, -ARENA-1);
-addWall(ARENA*2+4, 12, 2, 0, 6,  ARENA+1);
+addWall(ZONE2_X_MAX*2 + 20, 12, 2, (ZONE2_X_MAX - ARENA)/2, 6, -ARENA-1);
+addWall(ZONE2_X_MAX*2 + 20, 12, 2, (ZONE2_X_MAX - ARENA)/2, 6,  ARENA+1);
 addWall(2, 12, ARENA*2+4, -ARENA-1, 6, 0);
-addWall(2, 12, ARENA*2+4,  ARENA+1, 6, 0);
+addWall(2, 12, ARENA*2+4, ZONE2_X_MAX+1, 6, 0);
 
 const colMat = new THREE.MeshLambertMaterial({ map: colTex });
 const colGeo = new THREE.CylinderGeometry(1.5,1.7,14,16);
@@ -436,7 +592,6 @@ function addColumn(x,z,scale=1){
   g.position.set(x,0,z); scene.add(g);
   circleColliders.push({ x, z, r: 1.85*scale });
 }
-// Колонны: было 26 и 14, теперь 31 и 17
 for(let i=0;i<4;i++){
   const a = i*Math.PI/2 + Math.PI/4;
   addColumn(Math.cos(a)*31, Math.sin(a)*31, 1);
@@ -453,10 +608,75 @@ function addBlock(x,z,w,h,d){
   scene.add(m); worldMeshes.push(m);
   boxColliders.push({ minX:x-w/2, maxX:x+w/2, minZ:z-d/2, maxZ:z+d/2 });
 }
-// Блоки: было ±32, ±34, ±24, ±30 → умножаем на 1.2
 addBlock(-38,-10,10,2.2,5); addBlock(38,10,10,2.2,5);
 addBlock(0,-41,14,1.6,4); addBlock(0,41,14,1.6,4);
 addBlock(-29,36,6,3.2,6); addBlock(29,-36,6,3.2,6);
+
+// Разделительная стена + проём
+addBlock(GATE_X_MIN + 2, -(ARENA + GATE_Z_HALF)/2, 4, 12, ARENA - GATE_Z_HALF);
+addBlock(GATE_X_MIN + 2,  (ARENA + GATE_Z_HALF)/2, 4, 12, ARENA - GATE_Z_HALF);
+
+// Вторая локация
+const zone2Floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(ZONE2_X_MAX - ZONE2_X_MIN + 20, ARENA*2 + 20),
+  new THREE.MeshLambertMaterial({ color: 0x4a4038 })
+);
+zone2Floor.rotation.x = -Math.PI/2;
+zone2Floor.position.set((ZONE2_X_MIN + ZONE2_X_MAX)/2, 0.01, 0);
+zone2Floor.receiveShadow = true;
+zone2Floor.userData.isWall = true;
+scene.add(zone2Floor); worldMeshes.push(zone2Floor);
+
+const buildingMatA = new THREE.MeshLambertMaterial({ color: 0x5a5048 });
+const buildingMatB = new THREE.MeshLambertMaterial({ color: 0x3a3028 });
+const crateMat = new THREE.MeshLambertMaterial({ color: 0x8a6a3a });
+function addBuilding(x, z, w, h, d, mat) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat || buildingMatA);
+  m.position.set(x, h/2, z);
+  m.castShadow = true; m.receiveShadow = true;
+  m.userData.isWall = true;
+  scene.add(m); worldMeshes.push(m);
+  boxColliders.push({ minX:x-w/2, maxX:x+w/2, minZ:z-d/2, maxZ:z+d/2 });
+}
+function addCrate(x, z, size, h) {
+  size = size || 2.5; h = h || size;
+  const m = new THREE.Mesh(new THREE.BoxGeometry(size, h, size), crateMat);
+  m.position.set(x, h/2, z);
+  m.castShadow = true; m.receiveShadow = true;
+  m.userData.isWall = true;
+  scene.add(m); worldMeshes.push(m);
+  boxColliders.push({ minX:x-size/2, maxX:x+size/2, minZ:z-size/2, maxZ:z+size/2 });
+}
+addBuilding(ZONE2_X_MIN + 18, -32, 22, 9, 13);
+addBuilding(ZONE2_X_MIN + 18,  32, 22, 9, 13);
+addBuilding(ZONE2_X_MIN + 48, -28, 18, 11, 15);
+addBuilding(ZONE2_X_MIN + 48,  28, 18, 11, 15);
+addBuilding(ZONE2_X_MAX - 15, 0, 14, 10, 26);
+addBuilding(ZONE2_X_MAX - 40, -18, 12, 8, 10);
+addBuilding(ZONE2_X_MAX - 40,  18, 12, 8, 10);
+addCrate(ZONE2_X_MIN + 10, -14);
+addCrate(ZONE2_X_MIN + 12, -17, 2.0);
+addCrate(ZONE2_X_MIN + 10,  14);
+addCrate(ZONE2_X_MIN + 12,  17, 2.0);
+addCrate(ZONE2_X_MIN + 34, -10);
+addCrate(ZONE2_X_MIN + 34,  10);
+addCrate(ZONE2_X_MAX - 28, -32, 2.0);
+addCrate(ZONE2_X_MAX - 28,  32, 2.0);
+addCrate(ZONE2_X_MAX - 34, 0, 3.0, 3.0);
+addCrate(ZONE2_X_MIN + 25, 0, 2.2);
+
+const gateLight = new THREE.PointLight(0xffcc44, 3, 32, 2);
+gateLight.position.set(GATE_X_MIN + 2, 4, 0);
+scene.add(gateLight);
+const z2Light1 = new THREE.PointLight(0xff7733, 2.5, 65, 2);
+z2Light1.position.set(ZONE2_X_MIN + 35, 12, 0);
+scene.add(z2Light1);
+const z2Light2 = new THREE.PointLight(0x4488ff, 2, 55, 2);
+z2Light2.position.set(ZONE2_X_MAX - 20, 10, -20);
+scene.add(z2Light2);
+const z2Light3 = new THREE.PointLight(0xffaa44, 2, 50, 2);
+z2Light3.position.set(ZONE2_X_MAX - 20, 10, 20);
+scene.add(z2Light3);
 
 const ped = new THREE.Mesh(new THREE.CylinderGeometry(4.5,5.5,1.6,24),
   new THREE.MeshLambertMaterial({ color: 0x6b5a3a }));
@@ -493,8 +713,8 @@ function collide(pos, r) {
       else { const k=(r-d)/d; pos.x+=dx*k; pos.z+=dz*k; }
     }
   }
-  pos.x = clamp(pos.x, -ARENA+r, ARENA-r);
-  pos.z = clamp(pos.z, -ARENA+r, ARENA-r);
+  pos.x = clamp(pos.x, -ARENA + r, ZONE2_X_MAX - r);
+  pos.z = clamp(pos.z, -ARENA + r, ARENA - r);
 }
 
 /* ============== PARTICLES ============== */
@@ -516,7 +736,7 @@ function spawnParticle(pos, opts) {
   const m = new THREE.Mesh(pGeo, pMats[opts.mat] || pMats.spark);
   m.position.copy(pos);
   m.scale.setScalar((opts.size||0.12) * rand(0.7,1.4));
-  m.visible = true; scene.add(m);
+  scene.add(m);
   particles.push({
     m, v: opts.vel || new THREE.Vector3(rand(-3,3),rand(2,6),rand(-3,3)),
     life: (opts.life||0.7)*rand(0.7,1.3), max: opts.life||0.7,
@@ -586,7 +806,10 @@ function newPlayer(x,z) {
     bobT: 0, bobAmp: 0, recoil: 0, kick: 0,
     alive: true, invuln: 0,
     weapons: null, curWeapon: 0, weaponCd: 0, ultCharge: 0,
-    avatar: null, _semiLatch: false
+    avatar: null, _semiLatch: false, grenades: 3,
+    upgrades: { damage: 1, fireRate: 1, pierce: 0, regen: 0, lifesteal: 0,
+                ultKills: 10, ultDmg: 1, explosive: false, bloodFeast: false,
+                _bulletCount: 0, _regenT: 0 }
   };
 }
 const player  = newPlayer(0, 38);
@@ -603,16 +826,19 @@ const WEAPON_TPL = [
   { id:'rocket', name:'Ракетница Титанов', auto:false, damage:280, rate:0.85, spread:0,
     pellets:1, range:200, splash:8.5, ammoMax:80, unlockedDefault:false, slot:'4', sfx:'rocket', kick:0.11 },
   { id:'zeus', name:'Молния Зевса', auto:false, damage:225, rate:0.42, spread:0, pellets:1,
-    range:90, chain:4, ammoMax:200, unlockedDefault:false, slot:'5', sfx:'zeus', lightning:true, kick:0.05 }
+    range:90, chain:4, ammoMax:200, unlockedDefault:false, slot:'5', sfx:'zeus', lightning:true, kick:0.05 },
+  { id:'flamer', name:'Огнемёт Гефеста', auto:true, damage:9, rate:0.045, spread:0.12,
+    pellets:1, range:22, ammoMax:800, unlockedDefault:false, slot:'6', sfx:'minigun', kick:0.008,
+    flamer:true }
 ];
-const WEAPON_UNLOCK_WAVE = { shotgun:2, minigun:3, rocket:4, zeus:6 };
+const WEAPON_UNLOCK_WAVE = { shotgun:2, minigun:3, rocket:4, zeus:5, flamer:6 };
 function makeWeapons() {
   return WEAPON_TPL.map(w => ({ ...w, ammo: w.ammoMax, unlocked: w.unlockedDefault }));
 }
 player.weapons = makeWeapons();
 player2.weapons = makeWeapons();
 
-/* ============== PLAYER AVATARS ============== */
+/* ============== AVATARS ============== */
 function buildAvatar(color) {
   const g = new THREE.Group();
   const mat = new THREE.MeshLambertMaterial({ color });
@@ -654,15 +880,19 @@ scene.add(player2.avatar);
 const ULT_REQ = 10;
 const ultWaves = [];
 function gainUlt(P) {
-  if (!P || P.ultCharge >= ULT_REQ) return;
+  if (!P) return;
+  const req = P.upgrades ? P.upgrades.ultKills : ULT_REQ;
+  if (P.ultCharge >= req) return;
   P.ultCharge++;
   if (P === player) {
-    if (P.ultCharge === ULT_REQ) { SFX.ultReady(); showMsg('⚡ ГНЕВ ОЛИМПА ГОТОВ (Q)', 1400); addFeed('<span style="color:#66ddff">⚡ ГНЕВ ОЛИМПА ЗАРЯЖЕН (Q)</span>'); }
+    if (P.ultCharge === req) { SFX.ultReady(); showMsg('⚡ ГНЕВ ОЛИМПА ГОТОВ (Q)', 1400); addFeed('<span style="color:#66ddff">⚡ ГНЕВ ОЛИМПА ЗАРЯЖЕН (Q)</span>'); }
     updateUltHUD();
   }
 }
 function activateUlt(P) {
-  if (!P || P.ultCharge < ULT_REQ) { addFeed('<span style="color:#c04040">УЛЬТА НЕ ЗАРЯЖЕНА</span>'); return; }
+  if (!P) return;
+  const req = P.upgrades ? P.upgrades.ultKills : ULT_REQ;
+  if (P.ultCharge < req) { addFeed('<span style="color:#c04040">УЛЬТА НЕ ЗАРЯЖЕНА</span>'); return; }
   P.ultCharge = 0;
   if (P === player) updateUltHUD();
   SFX.ult();
@@ -680,10 +910,11 @@ function activateUlt(P) {
   const light = new THREE.PointLight(0xaaeaff, 90, 60, 2);
   light.position.copy(P.pos); light.position.y += 1.5;
   scene.add(light); beams.push({ m: light, life: 0.7, max: 0.7, isLight: true });
+  const ultMul = (P.upgrades ? P.upgrades.ultDmg : 1);
   for (const e of enemies) {
     if (e.dead) continue;
     const d = e.mesh.position.distanceTo(P.pos);
-    if (d < R) damageEnemy(e, 480 * (1 - (d/R)*0.55), e.mesh.position.clone().setY(e.mesh.position.y+1), P);
+    if (d < R) damageEnemy(e, 480 * ultMul * (1 - (d/R)*0.55), e.mesh.position.clone().setY(e.mesh.position.y+1), P);
   }
   burst(P.pos.clone().setY(0.6), 50, { mat:'magic', speed:22, life:0.9, size:0.22, gravity:8 });
   burst(P.pos.clone().setY(1.2), 30, { mat:'gold', speed:16, life:1.1, size:0.16, gravity:4 });
@@ -703,9 +934,10 @@ function updateUltWaves(dt) {
 }
 function updateUltHUD() {
   const box = $('ultBox'); if (!box) return;
-  $('ultBar').firstElementChild.style.width = clamp(player.ultCharge/ULT_REQ,0,1)*100 + '%';
-  $('ultCount').textContent = player.ultCharge + ' / ' + ULT_REQ;
-  box.classList.toggle('ready', player.ultCharge >= ULT_REQ);
+  const req = player.upgrades ? player.upgrades.ultKills : ULT_REQ;
+  $('ultBar').firstElementChild.style.width = clamp(player.ultCharge/req,0,1)*100 + '%';
+  $('ultCount').textContent = player.ultCharge + ' / ' + req;
+  box.classList.toggle('ready', player.ultCharge >= req);
 }
 
 /* ============== LEVELS ============== */
@@ -748,7 +980,7 @@ function applyLevel(idx) {
   $('levelName').textContent = L.name;
 }
 
-/* ============== ENEMIES (HP увеличены на 20% у простых) ============== */
+/* ============== ENEMIES ============== */
 const ENEMY_TYPES = {
   satyr:    { name:'Сатир', hp:78, speed:5.0, damage:10, range:2.6, cooldown:1.05, scale:1.0,
               color:0x8b5a2b, score:100, hitR:0.9, melee:true, mass:1, family:'greek' },
@@ -1073,12 +1305,11 @@ function buildEnemyMesh(type) {
     }
     g.userData.limbs = { arms, legs, wings };
   }
-
   g.userData.animT = Math.random()*10;
   return g;
 }
 
-/* ============== ENEMY HP BARS ============== */
+/* ============== HP BARS ============== */
 const barContainer = $('enemyBars');
 const barPool = [];
 function getBar(isBoss) {
@@ -1133,7 +1364,14 @@ function updateEnemyBars() {
   }
 }
 
-/* ============== SPAWN ENEMY ============== */
+/* ============== SPAWN ============== */
+let activeModifier = null;
+const MODIFIERS = [
+  { id:'speed', name:'ГНЕВ ГЕРМЕСА', desc:'Враги бегут на 30% быстрее' },
+  { id:'tanky', name:'ПАНЦИРЬ ГЕИ', desc:'+50% HP у врагов' },
+  { id:'frenzy', name:'ЯРОСТЬ АРЕСА', desc:'Враги бьют на 40% сильнее' },
+  { id:'dark', name:'ТЬМА АИДА', desc:'Туман ближе' }
+];
 function spawnEnemy(type, pos) {
   const cfg = ENEMY_TYPES[type];
   const mesh = buildEnemyMesh(type);
@@ -1150,8 +1388,16 @@ function spawnEnemy(type, pos) {
     atkCd: rand(0.3,1.2),
     hurtT: 0, dead: false, animT: Math.random()*10,
     strafe: Math.random()<0.5?1:-1, strafeT: rand(0.6,2.2),
-    spawnT: 0.55, bar: null
+    spawnT: 0.55, bar: null,
+    phase2: false, phase3: false,
+    _dmgMul: 1, _speedMul: 1
   };
+  // Модификатор волны применяется к экземпляру
+  if (activeModifier) {
+    if (activeModifier.id === 'speed') e._speedMul = 1.3;
+    if (activeModifier.id === 'tanky') { e.hp *= 1.5; e.maxHp *= 1.5; }
+    if (activeModifier.id === 'frenzy') e._dmgMul = 1.4;
+  }
   for (const hm of mesh.userData.hitMeshes) hm.userData.enemyRef = e;
   e.bar = getBar(cfg.boss);
   e.bar._nm.textContent = cfg.boss ? LEVELS[currentLevel].bossName : cfg.name;
@@ -1238,7 +1484,7 @@ function updateProjectiles(dt) {
       if (player.alive && mp.distanceTo(player.pos) < 0.95) hit = true;
       if (!hit && player2.alive && net.mode === 'host' && mp.distanceTo(player2.pos) < 0.95) hit = true;
     }
-    if (!hit && (mp.y < 0.15 || Math.abs(mp.x) > ARENA || Math.abs(mp.z) > ARENA)) hit = true;
+    if (!hit && (mp.y < 0.15 || mp.x < -ARENA || mp.x > ZONE2_X_MAX || Math.abs(mp.z) > ARENA)) hit = true;
     if (!hit) {
       for (const c of circleColliders) {
         if (Math.hypot(mp.x-c.x, mp.z-c.z) < c.r + 0.3) { hit = true; break; }
@@ -1255,6 +1501,61 @@ function updateProjectiles(dt) {
       }
       scene.remove(p.mesh);
       projectiles.splice(i,1);
+    }
+  }
+}
+
+/* ============== GRENADES ============== */
+const grenades = [];
+function throwGrenade(P, cam) {
+  if (!P || !P.alive) return;
+  if (P.grenades == null) P.grenades = 3;
+  if (P.grenades <= 0) { addFeed('<span style="color:#c04040">НЕТ ГРАНАТ</span>'); return; }
+  P.grenades--;
+  const origin = cam.getWorldPosition(tmpV1).clone();
+  const dir = getAimDir(cam, 0);
+  const vel = dir.clone().multiplyScalar(22);
+  vel.y += 8;
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.18, 10, 8),
+    new THREE.MeshLambertMaterial({ color: 0x3a5a2a, emissive: 0x110800 }));
+  mesh.position.copy(origin);
+  scene.add(mesh);
+  grenades.push({ mesh, vel, life: 2.5, owner: P });
+  SFX.reload();
+}
+function updateGrenades(dt) {
+  for (let i = grenades.length - 1; i >= 0; i--) {
+    const g = grenades[i];
+    g.life -= dt;
+    g.vel.y -= 20 * dt;
+    g.mesh.position.addScaledVector(g.vel, dt);
+    if (g.mesh.position.y < 0.18) {
+      g.mesh.position.y = 0.18;
+      g.vel.y = Math.abs(g.vel.y) * 0.4;
+      g.vel.x *= 0.7; g.vel.z *= 0.7;
+    }
+    g.mesh.rotation.x += dt * 10;
+    g.mesh.rotation.y += dt * 12;
+    if (g.life <= 0) {
+      const pos = g.mesh.position.clone();
+      scene.remove(g.mesh);
+      const R = 7;
+      for (const e of enemies) {
+        if (e.dead) continue;
+        const d = e.mesh.position.distanceTo(pos);
+        if (d < R + e.radius) {
+          const falloff = 1 - clamp((d - e.radius) / R, 0, 1);
+          damageEnemy(e, 180 * (0.4 + falloff * 0.6), pos, g.owner);
+        }
+      }
+      SFX.explode();
+      burst(pos, 30, { mat:'fire', speed:16, life:0.7, size:0.34, gravity:12 });
+      burst(pos, 12, { mat:'smoke', speed:8, life:1.3, size:0.6, gravity:-2, spin:false });
+      const flash = new THREE.PointLight(0xffaa44, 40, 30, 2);
+      flash.position.copy(pos); scene.add(flash);
+      beams.push({ m: flash, life: 0.35, max: 0.35, isLight: true });
+      if (net.mode === 'host') netEvent('explode', { x: pos.x, y: pos.y, z: pos.z, r: R });
+      grenades.splice(i, 1);
     }
   }
 }
@@ -1298,6 +1599,7 @@ function applyPickup(type, P) {
   if (type === 'health') { P.hp = Math.min(P.maxHp, P.hp+30); if (P === player) flashHeal(); }
   else if (type === 'armor') P.armor = Math.min(P.maxArmor, P.armor+30);
   else if (type === 'ammo') {
+    P.grenades = Math.min(6, (P.grenades || 0) + 1);
     for (const w of P.weapons) {
       if (!w.unlocked) continue;
       w.ammo = Math.min(w.ammoMax, w.ammo + Math.ceil(w.ammoMax*0.22));
@@ -1307,6 +1609,8 @@ function applyPickup(type, P) {
 }
 
 /* ============== DAMAGE ============== */
+let combo = 0, comboTimer = 0;
+const COMBO_WINDOW = 3.0;
 function damageEnemy(e, amount, hitPos, attacker) {
   if (e.dead) return;
   e.hp -= amount; e.hurtT = 0.12;
@@ -1332,11 +1636,20 @@ function killEnemy(e, attacker) {
     if (enemyHitMeshes[i].userData.enemyRef === e) enemyHitMeshes.splice(i,1);
   }
   SFX.die();
-  kills++; score += e.cfg.score;
+  kills++;
+  combo++;
+  comboTimer = COMBO_WINDOW;
+  const multiplier = Math.min(5, 1 + Math.floor(combo / 3) * 0.5);
+  score += Math.floor(e.cfg.score * multiplier);
+  if (combo >= 3) updateComboBox(multiplier);
   const dispName = e.cfg.boss ? LEVELS[currentLevel].bossName : e.cfg.name;
-  addFeed(`☠ ${dispName} <span style="color:#a08a68">+${e.cfg.score}</span>`);
-  if (net.mode === 'host') netEvent('feed', { html: `☠ ${dispName} +${e.cfg.score}` });
-  if (attacker === player) gainUlt(player);
+  addFeed(`☠ ${dispName} <span style="color:#a08a68">+${Math.floor(e.cfg.score * multiplier)}</span>`);
+  if (net.mode === 'host') netEvent('feed', { html: `☠ ${dispName} +${Math.floor(e.cfg.score * multiplier)}` });
+  if (attacker && attacker.upgrades) {
+    if (attacker.upgrades.lifesteal) attacker.hp = Math.min(attacker.maxHp, attacker.hp + attacker.upgrades.lifesteal);
+    if (attacker.upgrades.bloodFeast) attacker.hp = Math.min(attacker.maxHp, attacker.hp + 2);
+    gainUlt(attacker);
+  }
   const roll = Math.random();
   if (e.cfg.boss) {
     spawnPickup('health', p.clone().setY(1));
@@ -1361,7 +1674,11 @@ function damagePlayer(P, amount) {
   SFX.hurt();
   if (P.hp <= 0) {
     P.hp = 0; P.alive = false;
-    if (!player.alive && !player2.alive) gameOver();
+    if (net.mode === 'host') {
+      if (!player.alive && !player2.alive) gameOver();
+    } else {
+      gameOver();
+    }
   }
   updateHUD();
 }
@@ -1385,6 +1702,30 @@ function updateEnemies(dt) {
       continue;
     }
     m.scale.setScalar(1);
+
+    // Фазы боссов
+    if (cfg.boss && !e.phase2 && e.hp / e.maxHp < 0.7) {
+      e.phase2 = true;
+      cfg.speed = (cfg.speed || 2.5) * 1.3;
+      cfg.cooldown = (cfg.cooldown || 1.8) * 0.75;
+      showMsg('⚠ ФАЗА 2 ⚠', 1500);
+      burst(e.mesh.position.clone().setY(3), 40, { mat:'fire', speed:12, life:0.9, size:0.3, gravity:8 });
+      const flash = new THREE.PointLight(0xff4020, 60, 40, 2);
+      flash.position.copy(e.mesh.position); flash.position.y += 3;
+      scene.add(flash);
+      beams.push({ m: flash, life: 0.5, max: 0.5, isLight: true });
+    }
+    if (cfg.boss && !e.phase3 && e.hp / e.maxHp < 0.4) {
+      e.phase3 = true;
+      cfg.speed = (cfg.speed || 3) * 1.25;
+      cfg.cooldown = (cfg.cooldown || 1.5) * 0.6;
+      showMsg('☠ ЯРОСТЬ ☠', 1500);
+      burst(e.mesh.position.clone().setY(3), 60, { mat:'blood', speed:14, life:1.1, size:0.35, gravity:8 });
+      const flash = new THREE.PointLight(0xff2020, 80, 50, 2);
+      flash.position.copy(e.mesh.position); flash.position.y += 3;
+      scene.add(flash);
+      beams.push({ m: flash, life: 0.7, max: 0.7, isLight: true });
+    }
 
     let target = null;
     if (player.alive && player2.alive) {
@@ -1426,6 +1767,7 @@ function updateEnemies(dt) {
     }
     if (moveDir.lengthSq() > 0) moveDir.normalize();
     spd *= (0.7 + 0.3*cfg.mass/4);
+    if (e._speedMul) spd *= e._speedMul;
     m.position.x += moveDir.x * spd * dt;
     m.position.z += moveDir.z * spd * dt;
     const p2 = { x: m.position.x, z: m.position.z };
@@ -1448,30 +1790,31 @@ function updateEnemies(dt) {
 
     e.atkCd -= dt;
     if (e.atkCd <= 0) {
+      const dmgTo = (d) => Math.floor(d * e._dmgMul);
       if (cfg.archer && dist < cfg.range) {
         e.atkCd = cfg.cooldown;
         const origin = m.position.clone(); origin.y += cfg.scale*2;
         const tgt = target.pos.clone(); tgt.y -= 0.2;
         const pdir = tgt.sub(origin).normalize();
         pdir.x += rand(-0.03,0.03); pdir.z += rand(-0.03,0.03); pdir.normalize();
-        spawnProjectile(origin, pdir, cfg.projSpeed, 'enemy', { damage: cfg.damage, kind:'arrow', color:0xffcc88 });
+        spawnProjectile(origin, pdir, cfg.projSpeed, 'enemy', { damage: dmgTo(cfg.damage), kind:'arrow', color:0xffcc88 });
         SFX.bow();
       } else if (cfg.melee && dist < cfg.range + e.radius) {
         e.atkCd = cfg.cooldown;
-        damagePlayer(target, cfg.damage);
+        damagePlayer(target, dmgTo(cfg.damage));
         burst(target.pos.clone().setY(1.2), 5, { mat:'blood2', speed:5, life:0.3, size:0.1 });
       } else if (cfg.ranged && !cfg.melee && dist < cfg.range) {
         e.atkCd = cfg.cooldown;
         const origin = m.position.clone(); origin.y += cfg.scale*1.6;
         const tgt = target.pos.clone(); tgt.y -= 0.15;
         const pdir = tgt.sub(origin).normalize();
-        spawnProjectile(origin, pdir, cfg.projSpeed, 'enemy', { damage: cfg.damage, homing: cfg.boss, color:0xff8822 });
+        spawnProjectile(origin, pdir, cfg.projSpeed, 'enemy', { damage: dmgTo(cfg.damage), homing: cfg.boss, color:0xff8822 });
       } else if (cfg.melee && cfg.ranged && dist < cfg.range*5) {
         e.atkCd = cfg.cooldown*1.6;
         const origin = m.position.clone(); origin.y += cfg.scale*2.2;
         const tgt = target.pos.clone(); tgt.y -= 0.2;
         const pdir = tgt.sub(origin).normalize();
-        spawnProjectile(origin, pdir, cfg.projSpeed, 'enemy', { damage:30, homing:true, size:2, color:0xaa5533 });
+        spawnProjectile(origin, pdir, cfg.projSpeed, 'enemy', { damage: dmgTo(30), homing:true, size:2, color:0xaa5533 });
       }
     }
   }
@@ -1493,6 +1836,25 @@ function getAimDir(cam, spread) {
 }
 function fireHitscan(P, w, dir, cam) {
   const origin = cam.getWorldPosition(tmpV1).clone();
+  if (w.flamer) {
+    const endPoint = origin.clone().addScaledVector(dir, w.range);
+    for (let k = 0; k < 3; k++) {
+      spawnParticle(origin.clone().addScaledVector(dir, rand(1, w.range * 0.8)),
+        { mat:'fire', vel: dir.clone().multiplyScalar(rand(2, 6)),
+          size: rand(0.15, 0.4), life: rand(0.3, 0.6), gravity: -2, spin: false });
+    }
+    const coneCos = Math.cos(0.4);
+    for (const e of enemies) {
+      if (e.dead) continue;
+      const toE = e.mesh.position.clone().sub(origin);
+      const dist = toE.length();
+      if (dist > w.range + e.radius) continue;
+      toE.normalize();
+      if (toE.dot(dir) < coneCos) continue;
+      damageEnemy(e, w.damage, e.mesh.position.clone(), P);
+    }
+    return;
+  }
   ray.set(origin, dir);
   ray.far = w.range;
   const targets = [...worldMeshes, ...enemyHitMeshes];
@@ -1502,7 +1864,7 @@ function fireHitscan(P, w, dir, cam) {
     if (h.object.userData.enemyRef && !h.object.userData.enemyRef.dead) {
       damageEnemy(h.object.userData.enemyRef, w.damage, h.point, P);
       endPoint = h.point; break;
-    } else if (h.object.userData.isWall || h.object === floor) {
+    } else if (h.object.userData.isWall || h.object === floor || h.object === zone2Floor) {
       burst(h.point, 3, { mat:'stone', speed:4, life:0.3, size:0.07, gravity:14 });
       SFX.hitWall(); endPoint = h.point; break;
     }
@@ -1525,7 +1887,7 @@ function fireLightning(P, w, cam) {
     if (h.object.userData.enemyRef && !h.object.userData.enemyRef.dead) {
       first = h.object.userData.enemyRef; endPoint = h.point; break;
     }
-    if (h.object.userData.isWall || h.object === floor) { endPoint = h.point; break; }
+    if (h.object.userData.isWall || h.object === floor || h.object === zone2Floor) { endPoint = h.point; break; }
   }
   spawnBeam(origin, endPoint, 0x88ddff, 0.10, 0.16);
   spawnBeam(origin, endPoint, 0xffffff, 0.045, 0.22);
@@ -1562,10 +1924,13 @@ function tryFire(P, cam) {
     addFeed('<span style="color:#c04040">НЕТ ПАТРОНОВ</span>');
     return;
   }
-  P.weaponCd = w.rate;
+  P.weaponCd = w.rate * (P.upgrades ? P.upgrades.fireRate : 1);
   w.ammo--;
   P.kick = w.kick;
   P.recoil += w.kick*22;
+  const dmgMul = P.upgrades ? P.upgrades.damage : 1;
+  const origDamage = w.damage;
+  w.damage = origDamage * dmgMul;
   if (w.sfx) SFX[w.sfx]();
   if (w.lightning) fireLightning(P, w, cam);
   else if (w.id === 'rocket') {
@@ -1573,9 +1938,12 @@ function tryFire(P, cam) {
     const dir = getAimDir(cam, 0);
     origin.addScaledVector(dir, 1.0);
     spawnProjectile(origin, dir, 44, 'player', { damage: w.damage, splash: w.splash });
+  } else if (w.flamer) {
+    fireHitscan(P, w, getAimDir(cam, w.spread||0), cam);
   } else {
     for (let i=0;i<(w.pellets||1);i++) fireHitscan(P, w, getAimDir(cam, w.spread||0), cam);
   }
+  w.damage = origDamage;
   updateHUD();
 }
 
@@ -1586,7 +1954,8 @@ const COMPANION_KILL  = ['Молодец!','Убил!','Один готов!','�
 const companion = {
   pos: new THREE.Vector3(8,0,28), vel: new THREE.Vector3(),
   yaw: 0, state: 'wander', stateT: 2, target: new THREE.Vector3(8,0,28),
-  mesh: null, animT: 0, sayCd: 4, speed: 5.4, radius: 0.4, panic: false
+  mesh: null, animT: 0, sayCd: 4, speed: 5.4, radius: 0.4, panic: false,
+  tripTimer: 0, tripCd: 10, lieDir: 1
 };
 function buildCompanion() {
   const g = new THREE.Group();
@@ -1721,6 +2090,46 @@ function updateCompanion(dt) {
   const c = companion;
   if (!c.mesh) return;
   c.animT += dt; c.stateT -= dt; c.sayCd -= dt;
+  c.tripCd -= dt;
+
+  // Случайные спотыкания
+  if (c.state === 'wander' && c.tripCd <= 0 && Math.random() < 0.012) {
+    c.state = 'trip';
+    c.tripTimer = 1.7;
+    c.tripCd = rand(9, 20);
+    c.lieDir = Math.random() < 0.5 ? 1 : -1;
+    SFX.squeal();
+    if (Math.random() < 0.65) companionSay(pick([
+      'Ой! Камень!','Ай! Споткнулась!','Кто тут ящик поставил?!','Я в порядке! Всё нормально!','Мои колени...','Не смотри на меня!','Это всё пол виноват!'
+    ]), 1700);
+  }
+
+  if (c.state === 'trip') {
+    c.tripTimer -= dt;
+    if (c.tripTimer <= 0) { c.state = 'wander'; c.stateT = 1; }
+    const t = c.tripTimer;
+    let lie = 1;
+    if (t > 1.3) lie = (1.7 - t) / 0.4;
+    else if (t > 0.3) lie = 1;
+    else lie = t / 0.3;
+    lie = clamp(lie, 0, 1);
+    c.mesh.position.copy(c.pos);
+    c.mesh.position.y = 0.15 * lie;
+    c.mesh.rotation.y = c.yaw;
+    c.mesh.rotation.x = -1.5 * lie;
+    c.mesh.rotation.z = Math.sin(c.animT * 18) * 0.06 * lie;
+    const L = c.mesh.userData.limbs;
+    L.legs[0].rotation.x = -0.9 * lie;
+    L.legs[1].rotation.x = -1.15 * lie;
+    L.arms[0].rotation.x = -1.7 * lie;
+    L.arms[1].rotation.x = -1.5 * lie;
+    for (let i=0;i<L.strands.length;i++) {
+      L.strands[i].rotation.z = Math.sin(c.animT * 12 + i) * 0.35 * lie;
+    }
+    updateCompanionBubble();
+    return;
+  }
+
   let nearEnemy = null, nearDist = Infinity;
   for (const e of enemies) {
     if (e.dead) continue;
@@ -1770,6 +2179,8 @@ function updateCompanion(dt) {
   }
   c.mesh.position.copy(c.pos);
   c.mesh.rotation.y = c.yaw;
+  c.mesh.rotation.x = 0;
+  c.mesh.rotation.z = 0;
   const L = c.mesh.userData.limbs;
   const sn = clamp(spd/c.speed, 0, 2.2);
   const sw = Math.sin(c.animT*(4.5+spd*0.85))*(0.32+sn*0.55);
@@ -1788,9 +2199,22 @@ const keys = {}, keys2 = {};
 let mouseDown = false, pointerLocked = false;
 
 addEventListener('keydown', e => {
-  // Если фокус в поле ввода — не перехватываем ничего, чтобы пробел работал
   const el = document.activeElement;
   if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) return;
+
+  if (e.code === 'Escape') {
+    if (gameState === 'playing') {
+      gameState = 'paused';
+      if (document.exitPointerLock) document.exitPointerLock();
+      $('pauseScreen').classList.remove('hidden');
+    } else if (gameState === 'paused') {
+      gameState = 'playing';
+      $('pauseScreen').classList.add('hidden');
+      safeLock();
+      clock.getDelta();
+    }
+    return;
+  }
 
   if (['KeyW','KeyA','KeyS','KeyD','Space','ShiftLeft','ShiftRight'].includes(e.code)) keys[e.code] = true;
   if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','KeyI','KeyJ','KeyK','KeyL',
@@ -1801,7 +2225,9 @@ addEventListener('keydown', e => {
     if (e.code === 'Digit3') selectWeapon(player, 2);
     if (e.code === 'Digit4') selectWeapon(player, 3);
     if (e.code === 'Digit5') selectWeapon(player, 4);
+    if (e.code === 'Digit6') selectWeapon(player, 5);
     if (e.code === 'KeyQ') activateUlt(player);
+    if (e.code === 'KeyG') throwGrenade(player, camera);
   }
   if (e.code === 'Space') e.preventDefault();
 });
@@ -1877,8 +2303,19 @@ function startWave(n) {
   spawnQueue = waveComposition(n);
   spawnTimer = 0;
   SFX.waveStart();
-  if (n % 5 === 0) { SFX.boss(); showMsg('⚠ БОСС ⚠', 2200); }
-  else showMsg(`ВОЛНА ${n}`, 1500);
+  if (n % 5 === 0) { SFX.boss(); showMsg('⚠ БОСС ⚠', 2200); Music.setMode('boss'); }
+  else { showMsg(`ВОЛНА ${n}`, 1500); Music.setMode('combat'); }
+  // Модификатор
+  if (n >= 3 && n % 3 === 0 && n % 5 !== 0) {
+    activeModifier = pick(MODIFIERS);
+    setTimeout(()=>{
+      showMsg('МОДИФИКАТОР: ' + activeModifier.name, 2600);
+      addFeed('<span style="color:#ff8844">⚠ ' + activeModifier.name + ' — ' + activeModifier.desc + '</span>');
+    }, 1600);
+    if (activeModifier.id === 'dark') { scene.fog.near *= 0.55; scene.fog.far *= 0.6; }
+  } else {
+    activeModifier = null;
+  }
   if (n === 1) companionSay('О боги, начинается...', 2400);
   else if (n % 5 === 0) companionSay('Это ГИГАНТ! Я в укрытие!', 2400);
   else if (Math.random() < 0.6) companionSay('Опять они! Держись!', 1800);
@@ -1897,9 +2334,15 @@ function startWave(n) {
   updateHUD();
 }
 function spawnPoint() {
-  for (let i=0;i<14;i++){
-    const a = Math.random()*TAU, r = rand(30, ARENA-5);
-    const x = Math.cos(a)*r, z = Math.sin(a)*r;
+  for (let i=0;i<20;i++){
+    let x, z;
+    if (Math.random() < 0.6) {
+      const a = Math.random()*TAU, r = rand(30, ARENA-6);
+      x = Math.cos(a)*r; z = Math.sin(a)*r;
+    } else {
+      x = rand(ZONE2_X_MIN + 6, ZONE2_X_MAX - 6);
+      z = rand(-ARENA + 10, ARENA - 10);
+    }
     let ok = true;
     for (const c of circleColliders) if (Math.hypot(x-c.x, z-c.z) < c.r+2.5) { ok = false; break; }
     if (!ok) continue;
@@ -1921,10 +2364,14 @@ function updateWaves(dt) {
     if (spawnTimer <= 0 && enemies.length < MAX_ALIVE) {
       const type = spawnQueue.shift();
       spawnEnemy(type, spawnPoint());
-      spawnTimer = ENEMY_TYPES[type].boss ? 1.5 : rand(0.22, 0.7);
+      let base = ENEMY_TYPES[type].boss ? 1.5 : rand(0.22, 0.7);
+      if (activeModifier && activeModifier.id === 'swarm') base *= 0.66;
+      spawnTimer = base;
     }
   }
   if (spawnQueue.length === 0 && enemies.length === 0) {
+    if (activeModifier && activeModifier.id === 'dark') applyLevel(currentLevel);
+    activeModifier = null;
     waveActive = false;
     waveBreakTimer = 4.5;
     const bonus = 250 * wave;
@@ -1942,6 +2389,11 @@ function updateWaves(dt) {
     if (net.mode === 'host') for (const w of player2.weapons) if (w.unlocked) w.ammo = Math.min(w.ammoMax, w.ammo + Math.ceil(w.ammoMax*0.18));
     spawnPickup('health', new THREE.Vector3(rand(-25,25), 1, rand(-25,25)));
     spawnPickup('ammo',   new THREE.Vector3(rand(-25,25), 1, rand(-25,25)));
+    if (wave % 5 !== 0) {
+      setTimeout(() => {
+        if (gameState === 'playing') showUpgradeScreen();
+      }, 1200);
+    }
     if (wave % 5 === 0) {
       if (currentLevel < LEVELS.length - 1) {
         currentLevel++;
@@ -1970,6 +2422,14 @@ function updateWaves(dt) {
 function updatePlayerEntity(P, cam, inp, dt) {
   if (!P.alive) return;
   if (P.invuln > 0) P.invuln -= dt;
+  // Регенерация
+  if (P.upgrades && P.upgrades.regen > 0) {
+    P.upgrades._regenT = (P.upgrades._regenT || 0) + dt;
+    if (P.upgrades._regenT >= 3) {
+      P.upgrades._regenT = 0;
+      P.hp = Math.min(P.maxHp, P.hp + P.upgrades.regen);
+    }
+  }
   const fwd = new THREE.Vector3(-Math.sin(P.yaw), 0, -Math.cos(P.yaw));
   const right = new THREE.Vector3(Math.cos(P.yaw), 0, -Math.sin(P.yaw));
   const wish = new THREE.Vector3();
@@ -2042,6 +2502,43 @@ function updateWorld(dt) {
   }
 }
 
+/* ============== MINIMAP ============== */
+const minimapCanvas = $('minimap');
+const minimapCtx = minimapCanvas ? minimapCanvas.getContext('2d') : null;
+if (minimapCanvas) { minimapCanvas.width = 170; minimapCanvas.height = 170; }
+function drawMinimap() {
+  if (!minimapCtx) return;
+  const c = minimapCtx, W = 170, H = 170;
+  c.clearRect(0, 0, W, H);
+  const worldW = 130 - (-53), worldH = 106;
+  const sc = Math.min(W / worldW, H / worldH) * 0.94;
+  const ox = W / 2 - ((130 + (-53)) / 2) * sc;
+  const oy = H / 2;
+  const wx = x => ox + x * sc;
+  const wz = z => oy + z * sc;
+  c.fillStyle = 'rgba(80,50,20,0.55)';
+  c.fillRect(wx(-53), wz(-53), 106 * sc, 106 * sc);
+  c.fillStyle = 'rgba(80,80,80,0.5)';
+  c.fillRect(wx(58), wz(-53), 72 * sc, 106 * sc);
+  c.strokeStyle = '#ffd27a';
+  c.lineWidth = 1.5;
+  c.beginPath(); c.moveTo(wx(53), wz(0)); c.lineTo(wx(58), wz(0)); c.stroke();
+  for (const e of enemies) {
+    if (e.dead) continue;
+    c.fillStyle = e.cfg.boss ? '#ff2020' : '#ff6644';
+    const r = e.cfg.boss ? 4 : 2;
+    c.beginPath(); c.arc(wx(e.mesh.position.x), wz(e.mesh.position.z), r, 0, TAU); c.fill();
+  }
+  c.fillStyle = '#ff99cc';
+  c.beginPath(); c.arc(wx(companion.pos.x), wz(companion.pos.z), 2.5, 0, TAU); c.fill();
+  c.fillStyle = '#44aaff';
+  c.beginPath(); c.arc(wx(player.pos.x), wz(player.pos.z), 3.5, 0, TAU); c.fill();
+  if (net.mode === 'host' && player2.alive) {
+    c.fillStyle = '#ff8844';
+    c.beginPath(); c.arc(wx(player2.pos.x), wz(player2.pos.z), 3.5, 0, TAU); c.fill();
+  }
+}
+
 /* ============== HUD ============== */
 function updateHUD() {
   const P = net.mode === 'client' ? player2 : player;
@@ -2069,6 +2566,19 @@ function addFeed(html) {
   setTimeout(()=>d.remove(), 2600);
   while ($('feed').children.length > 7) $('feed').firstChild.remove();
 }
+function updateComboBox(multiplier) {
+  const box = $('comboBox');
+  box.classList.add('on');
+  $('comboNum').innerHTML = 'x' + multiplier.toFixed(1);
+}
+function hideComboBox() { $('comboBox').classList.remove('on'); }
+function updateCombo(dt) {
+  if (comboTimer > 0) {
+    comboTimer -= dt;
+    $('comboTimer').style.width = (comboTimer / COMBO_WINDOW * 100) + '%';
+    if (comboTimer <= 0) { combo = 0; hideComboBox(); }
+  }
+}
 let msgTimer = null;
 function showMsg(text, dur=1500) {
   $('msg').textContent = text;
@@ -2089,25 +2599,165 @@ function flashHeal() {
   healT = setTimeout(()=>{ $('healFlash').style.opacity = '0'; }, 90);
 }
 
+/* ============== UPGRADES ============== */
+const UPGRADE_POOL = [
+  { id:'dmg',     icon:'⚔', name:'Урон +25%',    desc:'Все оружия наносят на 25% больше урона.', rarity:'common',
+    apply:(P)=>{ P.upgrades.damage = (P.upgrades.damage||1) * 1.25; } },
+  { id:'hp',      icon:'❤', name:'Здоровье +30', desc:'Максимум здоровья +30. Восстанавливается полностью.', rarity:'common',
+    apply:(P)=>{ P.maxHp += 30; P.hp = P.maxHp; } },
+  { id:'rate',    icon:'⚡', name:'Скорострельность +20%', desc:'Все оружия стреляют на 20% быстрее.', rarity:'common',
+    apply:(P)=>{ P.upgrades.fireRate = (P.upgrades.fireRate||1) * 0.8; } },
+  { id:'armor',   icon:'🛡', name:'Броня +40',   desc:'Максимум брони +40. Восстанавливается полностью.', rarity:'common',
+    apply:(P)=>{ P.maxArmor += 40; P.armor = P.maxArmor; } },
+  { id:'ultfast', icon:'🌩', name:'Ульта быстрее', desc:'Ульта требует 7 убийств вместо 10.', rarity:'rare',
+    apply:(P)=>{ P.upgrades.ultKills = 7; } },
+  { id:'lifesteal', icon:'🩸', name:'Вампиризм',  desc:'Каждое убийство даёт +3 HP.', rarity:'rare',
+    apply:(P)=>{ P.upgrades.lifesteal = (P.upgrades.lifesteal||0) + 3; } },
+  { id:'regen',   icon:'✚', name:'Регенерация',  desc:'+2 HP каждые 3 секунды.', rarity:'rare',
+    apply:(P)=>{ P.upgrades.regen = (P.upgrades.regen||0) + 2; } },
+  { id:'explosive', icon:'💥', name:'Взрывные пули', desc:'Каждое 5-е попадание даёт микро-взрыв.', rarity:'epic',
+    apply:(P)=>{ P.upgrades.explosive = true; } },
+  { id:'giant',   icon:'🔥', name:'Гигант', desc:'+50 HP, +25 брони, но −10% скорости.', rarity:'epic',
+    apply:(P)=>{ P.maxHp += 50; P.hp = P.maxHp; P.maxArmor += 25; P.armor = P.maxArmor; P.speed *= 0.9; } },
+  { id:'bloodFeast', icon:'👑', name:'Кровавый пир', desc:'Каждое убийство даёт +2 HP (постоянно).', rarity:'epic',
+    apply:(P)=>{ P.upgrades.bloodFeast = true; } },
+  { id:'fastult', icon:'🌪', name:'Смерч',   desc:'Ульта наносит на 50% больше урона.', rarity:'epic',
+    apply:(P)=>{ P.upgrades.ultDmg = (P.upgrades.ultDmg||1) * 1.5; } }
+];
+function pickUpgrades(count) {
+  const pool = UPGRADE_POOL.slice();
+  const picked = [];
+  for (let i = 0; i < count && pool.length; i++) {
+    const idx = Math.floor(Math.random() * pool.length);
+    picked.push(pool.splice(idx, 1)[0]);
+  }
+  return picked;
+}
+function showUpgradeScreen() {
+  if (!player.alive) return;
+  const cards = pickUpgrades(3);
+  const container = $('upgradeCards');
+  container.innerHTML = '';
+  for (const card of cards) {
+    const el = document.createElement('div');
+    el.className = 'card r-' + card.rarity;
+    el.innerHTML = `<div class="icon">${card.icon}</div>
+      <div class="name">${card.name}</div>
+      <div class="desc">${card.desc}</div>
+      <div class="rarity">${card.rarity === 'common' ? 'ОБЫЧНОЕ' : card.rarity === 'rare' ? 'РЕДКОЕ' : 'ЭПИЧЕСКОЕ'}</div>`;
+    el.onclick = () => {
+      card.apply(player);
+      if (player2 && net.mode === 'host') card.apply(player2);
+      SFX.pickup();
+      $('upgradeScreen').classList.add('hidden');
+      gameState = 'playing';
+      safeLock();
+      clock.getDelta();
+      waveBreakTimer = 0.5;
+    };
+    container.appendChild(el);
+  }
+  $('upgradeScreen').classList.remove('hidden');
+  gameState = 'paused';
+  if (document.exitPointerLock) document.exitPointerLock();
+}
+
+/* ============== META ============== */
+const META_KEY = 'wrath_meta_v1';
+function loadMeta() {
+  try { const raw = localStorage.getItem(META_KEY); if (raw) return JSON.parse(raw); } catch(_) {}
+  return { credits: 0, totalKills: 0, bestScore: 0, upgrades: {} };
+}
+function saveMeta(meta) { try { localStorage.setItem(META_KEY, JSON.stringify(meta)); } catch(_) {} }
+let meta = loadMeta();
+const META_UPGRADES = [
+  { id:'hpStart', name:'Живучесть', desc:'+10 к стартовому HP за уровень',
+    maxLvl:5, baseCost:50, costMul:1.8,
+    apply:(lvl)=>{ player.maxHp = 100 + lvl*10; player.hp = player.maxHp; } },
+  { id:'dmgStart', name:'Оружейник', desc:'+8% к урону за уровень',
+    maxLvl:5, baseCost:80, costMul:1.9,
+    apply:(lvl)=>{ player.upgrades.damage = (player.upgrades.damage||1) * (1 + lvl*0.08); } },
+  { id:'grenades', name:'Арсенал', desc:'+1 граната на старте за уровень',
+    maxLvl:3, baseCost:120, costMul:2.2,
+    apply:(lvl)=>{ player.grenades = 3 + lvl; } },
+  { id:'armorStart', name:'Кузнец', desc:'Стартовая броня +20 за уровень',
+    maxLvl:3, baseCost:70, costMul:1.8,
+    apply:(lvl)=>{ player.armor = lvl * 20; player.maxArmor = 100 + lvl*20; } },
+  { id:'ultStart', name:'Гнев богов', desc:'Ульта требует на 1 убийство меньше за уровень',
+    maxLvl:3, baseCost:150, costMul:2.1,
+    apply:(lvl)=>{ player.upgrades.ultKills = 10 - lvl; } }
+];
+function metaCost(up, lvl) { return Math.floor(up.baseCost * Math.pow(up.costMul, lvl)); }
+function renderMetaScreen() {
+  meta = loadMeta();
+  $('metaStats').innerHTML =
+    `УБИЙСТВ ВСЕГО: <b>${meta.totalKills}</b> · ЛУЧШИЙ СЧЁТ: <b>${meta.bestScore}</b><br>` +
+    `КРЕДИТЫ: <b style="color:#ffd27a">${meta.credits}</b>`;
+  const container = $('metaUpgrades');
+  container.innerHTML = '';
+  for (const up of META_UPGRADES) {
+    const lvl = meta.upgrades[up.id] || 0;
+    const cost = metaCost(up, lvl);
+    const maxed = lvl >= up.maxLvl;
+    const canBuy = !maxed && meta.credits >= cost;
+    const row = document.createElement('div');
+    row.className = 'metaRow';
+    row.innerHTML = `<div class="info"><div class="nm">${up.name}</div><div class="ds">${up.desc}</div></div>
+      <div class="lvl">ур. ${lvl}/${up.maxLvl}</div>
+      <button ${canBuy ? '' : 'disabled'} data-id="${up.id}">${maxed ? 'MAX' : 'КУПИТЬ · ' + cost}</button>`;
+    container.appendChild(row);
+  }
+  container.querySelectorAll('button').forEach(btn => {
+    btn.onclick = () => {
+      const id = btn.dataset.id;
+      const up = META_UPGRADES.find(u => u.id === id);
+      if (!up) return;
+      const lvl = meta.upgrades[up.id] || 0;
+      const cost = metaCost(up, lvl);
+      if (lvl >= up.maxLvl || meta.credits < cost) return;
+      meta.credits -= cost;
+      meta.upgrades[up.id] = lvl + 1;
+      saveMeta(meta);
+      SFX.pickup();
+      renderMetaScreen();
+    };
+  });
+}
+function applyMetaBonuses() {
+  meta = loadMeta();
+  player.maxHp = 100; player.hp = 100;
+  player.maxArmor = 100; player.armor = 0;
+  player.grenades = 3;
+  player.upgrades = { damage: 1, fireRate: 1, pierce: 0, regen: 0, lifesteal: 0,
+                      ultKills: 10, ultDmg: 1, explosive: false, bloodFeast: false,
+                      _bulletCount: 0, _regenT: 0 };
+  for (const up of META_UPGRADES) {
+    const lvl = meta.upgrades[up.id] || 0;
+    if (lvl > 0) { try { up.apply(lvl); } catch(e) {} }
+  }
+}
+
 /* ============== NETWORK ============== */
 const PEER_CONFIG = {
-  debug: 0,
-  config: {
-    iceServers: [
-      { urls: 'stun:stun.l.google.com:19302' },
-      { urls: 'stun:stun1.l.google.com:19302' },
-      { urls: 'stun:stun2.l.google.com:19302' }
-    ]
-  }
+  debug: 1,
+  host: '0.peerjs.com',
+  port: 443,
+  path: '/',
+  secure: true,
+  config: { iceServers: [
+    { urls: 'stun:stun.l.google.com:19302' },
+    { urls: 'stun:stun1.l.google.com:19302' },
+    { urls: 'stun:global.stun.twilio.com:3478' }
+  ] }
 };
 const net = {
   mode: 'none', peer: null, conn: null, nick: '', peerId: '', connected: false,
-  hostTickT: 0, TICK: 0.05, remoteInput: { forward:false, back:false, left:false, right:false,
+  hostTickT: 0, TICK: 0.05,
+  remoteInput: { forward:false, back:false, left:false, right:false,
     jump:false, sprint:false, shoot:false, yawDelta:0, pitchDelta:0 },
   events: []
 };
 function netEvent(t, d={}) { net.events.push({ t, ...d }); }
-
 const NICKS_ADJ = ['Короткий','Длинный','Мокрый','Сухой','Толстый','Тонкий','Лысый','Волосатый',
   'Бородатый','Ржавый','Косой','Пьяный','Сонный','Голодный','Злой','Весёлый','Хромой','Кривой',
   'Пузатый','Задумчивый','Скромный','Буйный','Тихий','Тупой','Хитрый','Упрямый','Грязный',
@@ -2125,11 +2775,7 @@ function translit(s) {
   return s.toLowerCase().split('').map(c => TRANSLIT[c] != null ? TRANSLIT[c] : c)
     .join('').replace(/[^a-z0-9-]/g,'').replace(/-+/g,'-').replace(/^-|-$/g,'');
 }
-function genNick() {
-  return pick(NICKS_ADJ) + ' ' + pick(NICKS_NOUN);
-}
-
-/* --- Статусные сообщения --- */
+function genNick() { return pick(NICKS_ADJ) + ' ' + pick(NICKS_NOUN); }
 function setConnState(side, state, text, sub) {
   const prefix = side === 1 ? '' : '2';
   const box = $('connStatus' + prefix);
@@ -2140,7 +2786,28 @@ function setConnState(side, state, text, sub) {
   if (textEl) textEl.textContent = text;
   if (subEl) subEl.textContent = sub || '';
 }
-
+function makePeer(peerId, onReady, onError) {
+  let peer;
+  try { peer = peerId ? new Peer(peerId, PEER_CONFIG) : new Peer(PEER_CONFIG); }
+  catch(e) { onError({ type: 'create-failed', message: e.message }); return null; }
+  let opened = false;
+  const openTimeout = setTimeout(() => {
+    if (!opened) { try { peer.destroy(); } catch(_) {} onError({ type: 'timeout' }); }
+  }, 10000);
+  peer.on('open', (id) => { opened = true; clearTimeout(openTimeout); onReady(peer, id); });
+  peer.on('error', (e) => { clearTimeout(openTimeout); onError(e); });
+  peer.on('disconnected', () => { try { peer.reconnect(); } catch(_) {} });
+  return peer;
+}
+function humanizePeerError(e) {
+  if (!e) return 'НЕИЗВЕСТНАЯ ОШИБКА';
+  const t = e.type || e.message || '';
+  if (t === 'network' || t === 'socket-error' || t === 'socket-closed' || t === 'timeout') return 'НЕТ СВЯЗИ С СЕРВЕРОМ';
+  if (t === 'server-error') return 'СЕРВЕР PEERJS НЕДОСТУПЕН';
+  if (t === 'unavailable-id') return 'НИК ЗАНЯТ';
+  if (t === 'peer-unavailable') return 'ИГРОК НЕ НАЙДЕН';
+  return 'ОШИБКА: ' + t.toUpperCase();
+}
 function startHost() {
   net.mode = 'host';
   net.nick = genNick();
@@ -2150,106 +2817,123 @@ function startHost() {
   $('joinPanel').classList.add('hidden');
   $('nickBox').textContent = net.nick;
   $('startNetBtn').classList.add('hidden');
-  setConnState(1, 'info', 'ПОДКЛЮЧЕНИЕ К СЕРВЕРУ...', 'Создаём комнату...');
-  try {
-    net.peer = new Peer(net.peerId, PEER_CONFIG);
-  } catch(e) { setConnState(1, 'err', 'ОШИБКА', e.message); return; }
-  net.peer.on('open', () => {
-    setConnState(1, 'wait', 'ОЖИДАНИЕ ИГРОКА...', 'Отправь другу ссылку или ник «' + net.nick + '»');
-  });
-  net.peer.on('connection', conn => {
-    net.conn = conn;
-    conn.on('open', () => {
-      net.connected = true;
-      SFX.connect();
-      setConnState(1, 'ok', '✓ ИГРОК ПОДКЛЮЧЁН!', 'Жми «НАЧАТЬ ИГРУ» внизу');
-      $('startNetBtn').classList.remove('hidden');
-    });
-    conn.on('data', onClientData);
-    conn.on('close', () => {
-      net.connected = false;
-      setConnState(1, 'wait', 'ИГРОК ОТКЛЮЧИЛСЯ', 'Ожидаем нового подключения...');
-      $('startNetBtn').classList.add('hidden');
-    });
-  });
-  net.peer.on('error', e => {
-    if (e.type === 'unavailable-id') {
-      setConnState(1, 'wait', 'НИК ЗАНЯТ, ГЕНЕРИРУЕМ ДРУГОЙ...', '');
-      try { net.peer.destroy(); } catch(_) {}
-      setTimeout(() => startHost(), 300);
-    } else {
-      setConnState(1, 'err', 'ОШИБКА: ' + e.type.toUpperCase(), 'Попробуй обновить страницу');
-    }
-  });
-  net.peer.on('disconnected', () => {
-    setConnState(1, 'wait', 'ПОТЕРЯ СВЯЗИ С СЕРВЕРОМ', 'Пробуем переподключиться...');
-    try { net.peer.reconnect(); } catch(_) {}
-  });
+  $('retryNetBtn').classList.add('hidden');
+  setConnState(1, 'info', 'СОЗДАЁМ КОМНАТУ...', 'Подключение к серверу');
+  let attempts = 0;
+  function tryConnect() {
+    attempts++;
+    setConnState(1, 'wait', attempts > 1 ? 'ПОПЫТКА ' + attempts + '...' : 'СОЗДАЁМ КОМНАТУ...', '');
+    net.peer = makePeer(net.peerId,
+      (peer) => {
+        setConnState(1, 'wait', 'ОЖИДАНИЕ ИГРОКА...', 'Отправь другу ссылку или ник «' + net.nick + '»');
+        peer.on('connection', conn => {
+          net.conn = conn;
+          conn.on('open', () => {
+            net.connected = true; SFX.connect();
+            setConnState(1, 'ok', '✓ ИГРОК ПОДКЛЮЧЁН!', 'Жми «НАЧАТЬ ИГРУ» внизу');
+            $('startNetBtn').classList.remove('hidden');
+          });
+          conn.on('data', onClientData);
+          conn.on('close', () => {
+            net.connected = false;
+            setConnState(1, 'wait', 'ИГРОК ОТКЛЮЧИЛСЯ', 'Ожидаем нового подключения...');
+            $('startNetBtn').classList.add('hidden');
+          });
+        });
+      },
+      (e) => {
+        const isRetryable = ['network','socket-error','socket-closed','timeout','server-error'].includes(e.type);
+        if (e.type === 'unavailable-id') {
+          setConnState(1, 'wait', 'НИК ЗАНЯТ, ГЕНЕРИРУЕМ ДРУГОЙ...', '');
+          try { net.peer.destroy(); } catch(_) {}
+          net.nick = genNick();
+          net.peerId = 'wrath-olympus-v9-' + translit(net.nick);
+          $('nickBox').textContent = net.nick;
+          setTimeout(tryConnect, 400);
+          return;
+        }
+        if (isRetryable && attempts < 3) {
+          setConnState(1, 'wait', 'ПОПЫТКА ' + attempts + ' ИЗ 3 НЕ УДАЛАСЬ', 'Пробуем ещё раз через 2 секунды...');
+          try { net.peer.destroy(); } catch(_) {}
+          setTimeout(tryConnect, 2000);
+          return;
+        }
+        setConnState(1, 'err', humanizePeerError(e), 'Сервер перегружен или блокируется. Попробуй другую сеть или нажми «Попробовать снова».');
+        $('retryNetBtn').classList.remove('hidden');
+      }
+    );
+  }
+  tryConnect();
 }
 function joinRoom(input) {
   let code = input.trim();
-  // Если вставили ссылку — вытащим ?join=
   if (code.includes('join=')) {
-    try {
-      const u = new URL(code, location.href);
-      code = u.searchParams.get('join') || code;
-    } catch(_) {}
+    try { const u = new URL(code, location.href); code = u.searchParams.get('join') || code; } catch(_) {}
   }
   code = decodeURIComponent(code).replace(/^wrath-olympus-v9-/i, '').trim();
   if (!code) { setConnState(2, 'err', 'ВВЕДИ НИК ИЛИ ССЫЛКУ', ''); return; }
   net.nick = code;
   net.mode = 'client';
   net.peerId = 'wrath-olympus-v9-' + translit(code);
-  setConnState(2, 'info', 'ПОДКЛЮЧАЕМСЯ К «' + code + '»...', 'Это может занять 5-10 секунд');
-  try { net.peer = new Peer(PEER_CONFIG); }
-  catch(e) { setConnState(2, 'err', 'ОШИБКА', e.message); return; }
-
-  let gotOpen = false;
-  const timeout = setTimeout(() => {
-    if (!gotOpen) setConnState(2, 'err', 'НЕ УДАЛОСЬ ПОДКЛЮЧИТЬСЯ', 'Проверь ник, попроси ссылку');
-  }, 12000);
-
-  net.peer.on('open', () => {
-    const conn = net.peer.connect(net.peerId, { reliable: true });
-    net.conn = conn;
-    conn.on('open', () => {
-      gotOpen = true;
-      clearTimeout(timeout);
-      net.connected = true;
-      SFX.connect();
-      setConnState(2, 'ok', '✓ ПОДКЛЮЧЕНО!', 'Ждём, пока хост нажмёт «НАЧАТЬ ИГРУ»');
-    });
-    conn.on('data', onHostData);
-    conn.on('close', () => {
-      net.connected = false;
-      setConnState(2, 'err', 'ХОСТ ОТКЛЮЧИЛСЯ', 'Попроси ссылку заново');
-    });
-    conn.on('error', (e) => {
-      clearTimeout(timeout);
-      setConnState(2, 'err', 'ОШИБКА СОЕДИНЕНИЯ', String(e));
-    });
-  });
-  net.peer.on('error', e => {
-    clearTimeout(timeout);
-    if (e.type === 'peer-unavailable') {
-      setConnState(2, 'err', 'ИГРОК НЕ НАЙДЕН', 'Проверь ник: «' + code + '»');
-    } else {
-      setConnState(2, 'err', 'ОШИБКА: ' + e.type.toUpperCase(), '');
-    }
-  });
+  setConnState(2, 'info', 'ПОДКЛЮЧАЕМСЯ К «' + code + '»...', '');
+  let attempts = 0;
+  function tryJoin() {
+    attempts++;
+    setConnState(2, attempts > 1 ? 'wait' : 'info', attempts > 1 ? 'ПОПЫТКА ' + attempts + '...' : 'ПОДКЛЮЧАЕМСЯ К «' + code + '»...', '');
+    net.peer = makePeer(null,
+      (peer) => {
+        const conn = peer.connect(net.peerId, { reliable: true });
+        net.conn = conn;
+        let settled = false;
+        const connTimeout = setTimeout(() => {
+          if (!settled) {
+            settled = true;
+            try { conn.close(); } catch(_) {}
+            if (attempts < 3) {
+              setConnState(2, 'wait', 'ХОСТ НЕ ОТВЕЧАЕТ', 'Ещё попытка через 2 сек...');
+              setTimeout(tryJoin, 2000);
+            } else {
+              setConnState(2, 'err', 'ХОСТ НЕ ОТВЕЧАЕТ', 'Проверь ник. Возможно хост вышел.');
+            }
+          }
+        }, 8000);
+        conn.on('open', () => {
+          settled = true; clearTimeout(connTimeout);
+          net.connected = true; SFX.connect();
+          setConnState(2, 'ok', '✓ ПОДКЛЮЧЕНО!', 'Ждём, пока хост нажмёт «НАЧАТЬ ИГРУ»');
+        });
+        conn.on('data', onHostData);
+        conn.on('close', () => {
+          net.connected = false;
+          setConnState(2, 'err', 'ХОСТ ОТКЛЮЧИЛСЯ', 'Попроси ссылку заново');
+        });
+      },
+      (e) => {
+        if (e.type === 'peer-unavailable') {
+          setConnState(2, 'err', 'ИГРОК «' + code + '» НЕ НАЙДЕН', 'Проверь ник или попроси ссылку.');
+          return;
+        }
+        const isRetryable = ['network','socket-error','socket-closed','timeout','server-error'].includes(e.type);
+        if (isRetryable && attempts < 3) {
+          setConnState(2, 'wait', 'ПОПЫТКА ' + attempts + ' ИЗ 3 НЕ УДАЛАСЬ', 'Ещё попытка через 2 сек...');
+          try { net.peer.destroy(); } catch(_) {}
+          setTimeout(tryJoin, 2000);
+          return;
+        }
+        setConnState(2, 'err', humanizePeerError(e), '');
+      }
+    );
+  }
+  tryJoin();
 }
 function onClientData(data) {
   if (!data || data.t !== 'input') return;
   const i = data.i;
-  net.remoteInput.forward = i.forward;
-  net.remoteInput.back = i.back;
-  net.remoteInput.left = i.left;
-  net.remoteInput.right = i.right;
-  net.remoteInput.jump = i.jump;
-  net.remoteInput.sprint = i.sprint;
+  net.remoteInput.forward = i.forward; net.remoteInput.back = i.back;
+  net.remoteInput.left = i.left; net.remoteInput.right = i.right;
+  net.remoteInput.jump = i.jump; net.remoteInput.sprint = i.sprint;
   net.remoteInput.shoot = i.shoot;
-  net.remoteInput.yawDelta = i.yawDelta;
-  net.remoteInput.pitchDelta = i.pitchDelta;
+  net.remoteInput.yawDelta = i.yawDelta; net.remoteInput.pitchDelta = i.pitchDelta;
 }
 function onHostData(data) {
   if (!data) return;
@@ -2263,9 +2947,7 @@ function onHostData(data) {
   }
 }
 function sendToPeer(obj) {
-  if (net.conn && net.conn.open) {
-    try { net.conn.send(obj); } catch(e) {}
-  }
+  if (net.conn && net.conn.open) { try { net.conn.send(obj); } catch(e) {} }
 }
 function serializeState() {
   const evs = net.events; net.events = [];
@@ -2327,7 +3009,8 @@ function spawnEnemyClient(type, pos) {
   const e = {
     type, cfg, mesh, netId: null, hp: cfg.hp, maxHp: cfg.hp, radius: cfg.hitR*0.55,
     vel: new THREE.Vector3(), atkCd: 999, hurtT: 0, dead: false, animT: Math.random()*10,
-    strafe: 1, strafeT: 1, spawnT: 0.55, bar: null, isClient: true
+    strafe: 1, strafeT: 1, spawnT: 0.55, bar: null, isClient: true,
+    phase2: false, phase3: false, _dmgMul: 1, _speedMul: 1
   };
   e.bar = getBar(cfg.boss);
   e.bar._nm.textContent = cfg.boss ? LEVELS[currentLevel].bossName : cfg.name;
@@ -2417,6 +3100,8 @@ function resetGame() {
   enemies.length = 0; enemyHitMeshes.length = 0; nextNetId = 1;
   for (const p of projectiles) scene.remove(p.mesh);
   projectiles.length = 0;
+  for (const g of grenades) scene.remove(g.mesh);
+  grenades.length = 0;
   for (const p of pickups) scene.remove(p.mesh);
   pickups.length = 0;
   for (const b of beams) scene.remove(b.m);
@@ -2426,9 +3111,9 @@ function resetGame() {
   for (const p of particles) scene.remove(p.m);
   particles.length = 0;
 
+  applyMetaBonuses();
   player.pos.set(0, 1.7, 38); player.vel.set(0,0,0);
   player.yaw = Math.PI; player.pitch = 0;
-  player.hp = player.maxHp; player.armor = 0;
   player.alive = true; player.invuln = 0; player.recoil = 0; player.kick = 0;
   player.weapons = makeWeapons(); player.curWeapon = 0; player.weaponCd = 0; player.ultCharge = 0;
 
@@ -2440,31 +3125,39 @@ function resetGame() {
   player2.avatar.position.copy(player2.pos); player2.avatar.position.y = 0;
 
   wave = 0; score = 0; kills = 0;
+  combo = 0; comboTimer = 0; hideComboBox();
   spawnQueue = []; waveActive = false; waveBreakTimer = 1.2;
+  activeModifier = null;
   currentLevel = 0; ngPlus = 0;
   applyLevel(0);
 
   companion.pos.set(8, 0, 28); companion.vel.set(0,0,0);
   companion.state = 'wander'; companion.stateT = 2; companion.panic = false;
+  companion.tripTimer = 0; companion.tripCd = 10;
   companion.mesh.position.copy(companion.pos);
 
   $('feed').innerHTML = '';
   updateHUD();
   updateUltHUD();
 }
-
 function gameOver() {
   gameState = 'over';
+  Music.setMode('calm');
   if (document.exitPointerLock) document.exitPointerLock();
+  meta = loadMeta();
+  meta.totalKills += kills;
+  meta.bestScore = Math.max(meta.bestScore, score);
+  meta.credits += Math.floor(score / 100);
+  saveMeta(meta);
   $('goStats').innerHTML =
     `УРОВЕНЬ <b>${currentLevel+1} (${LEVELS[currentLevel].name})</b><br>` +
-    `ВОЛНА <b>${wave}</b><br>УБИЙСТВ <b>${kills}</b><br>ОЧКОВ <b>${score}</b>`;
+    `ВОЛНА <b>${wave}</b><br>УБИЙСТВ <b>${kills}</b><br>ОЧКОВ <b>${score}</b><br>` +
+    `<span style="color:#ffd27a">+${Math.floor(score/100)} кредитов в храм</span>`;
   $('overScreen').classList.remove('hidden');
   mouseDown = false;
   if (sayBubble) sayBubble.style.opacity = '0';
   if (net.mode === 'host' && net.connected) sendToPeer({ t:'end', stats: $('goStats').innerHTML });
 }
-
 function startSolo() {
   initAudio();
   if (actx && actx.state === 'suspended') actx.resume();
@@ -2476,6 +3169,8 @@ function startSolo() {
   gameState = 'playing';
   safeLock();
   clock.getDelta();
+  Music.start();
+  Music.setMode('combat');
   setTimeout(()=>companionSay('Ну наконец-то!', 2400), 800);
 }
 function startNetHost() {
@@ -2499,6 +3194,8 @@ function startNetHost() {
   gameState = 'playing';
   safeLock();
   clock.getDelta();
+  Music.start();
+  Music.setMode('combat');
   sendToPeer({ t: 'start' });
 }
 function startNetClientGame() {
@@ -2513,10 +3210,21 @@ function startNetClientGame() {
   $('netScreen').classList.add('hidden');
   gameState = 'playing';
   safeLock();
+  Music.start();
+  Music.setMode('combat');
 }
 
 /* ============== BUTTONS ============== */
 $('soloBtn').onclick = startSolo;
+$('metaBtn').onclick = () => {
+  $('modeScreen').classList.add('hidden');
+  $('metaScreen').classList.remove('hidden');
+  renderMetaScreen();
+};
+$('metaBackBtn').onclick = () => {
+  $('metaScreen').classList.add('hidden');
+  $('modeScreen').classList.remove('hidden');
+};
 $('netBtn').onclick = () => {
   initAudio();
   $('modeScreen').classList.add('hidden');
@@ -2556,45 +3264,41 @@ $('rerollBtn').onclick = () => {
   $('startNetBtn').classList.add('hidden');
   startHost();
 };
+$('retryNetBtn').onclick = () => {
+  if (net.peer) { try { net.peer.destroy(); } catch(_) {} net.peer = null; }
+  net.conn = null; net.connected = false;
+  $('startNetBtn').classList.add('hidden');
+  $('retryNetBtn').classList.add('hidden');
+  startHost();
+};
 $('nickBox').onclick = () => {
   const t = net.nick;
-  const done = () => {
-    $('nickBox').textContent = '✓ СКОПИРОВАНО: ' + t;
-    setTimeout(() => { $('nickBox').textContent = t; }, 1500);
-  };
-  const fallback = () => {
-    const ta = document.createElement('textarea');
-    ta.value = t; ta.style.position='fixed'; ta.style.opacity='0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); } catch(_){}
-    document.body.removeChild(ta); done();
-  };
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(t).then(done).catch(fallback);
-  } else fallback();
+  const done = () => { $('nickBox').textContent = '✓ СКОПИРОВАНО: ' + t; setTimeout(() => { $('nickBox').textContent = t; }, 1500); };
+  const fallback = () => { const ta = document.createElement('textarea'); ta.value = t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch(_){} document.body.removeChild(ta); done(); };
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).then(done).catch(fallback); } else fallback();
 };
 $('copyInviteBtn').onclick = () => {
   const link = location.origin + location.pathname + '?join=' + encodeURIComponent(net.nick);
-  const done = () => {
-    $('copyInviteBtn').textContent = '✓ ССЫЛКА СКОПИРОВАНА!';
-    setTimeout(() => { $('copyInviteBtn').textContent = '📋 СКОПИРОВАТЬ ССЫЛКУ'; }, 1800);
-  };
-  const fallback = () => {
-    const ta = document.createElement('textarea');
-    ta.value = link; ta.style.position='fixed'; ta.style.opacity='0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); } catch(_){}
-    document.body.removeChild(ta); done();
-  };
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(link).then(done).catch(fallback);
-  } else fallback();
+  const done = () => { $('copyInviteBtn').textContent = '✓ ССЫЛКА СКОПИРОВАНА!'; setTimeout(() => { $('copyInviteBtn').textContent = '📋 СКОПИРОВАТЬ ССЫЛКУ'; }, 1800); };
+  const fallback = () => { const ta = document.createElement('textarea'); ta.value = link; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch(_){} document.body.removeChild(ta); done(); };
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(link).then(done).catch(fallback); } else fallback();
 };
 $('resumeBtn').onclick = () => {
   $('pauseScreen').classList.add('hidden');
   gameState = 'playing';
   safeLock();
   clock.getDelta();
+};
+$('pauseExitBtn').onclick = () => {
+  $('pauseScreen').classList.add('hidden');
+  if (net.peer) { try { net.peer.destroy(); } catch(e){} net.peer = null; }
+  net.conn = null; net.connected = false; net.mode = 'none';
+  player2.avatar.visible = false;
+  $('ultBox').style.display = 'none';
+  $('modeScreen').classList.remove('hidden');
+  gameState = 'menu';
+  Music.setMode('calm');
+  resetGame();
 };
 $('restartBtn').onclick = () => {
   $('overScreen').classList.add('hidden');
@@ -2620,10 +3324,12 @@ function animate() {
       updateParticles(dt);
       updateBeams(dt);
       updateUltWaves(dt);
+      updateGrenades(dt);
       updateWorld(dt);
       updateCompanionBubble();
       updateHUD();
       updateUltHUD();
+      updateCombo(dt);
       renderer.render(scene, camera);
       return;
     }
@@ -2638,6 +3344,7 @@ function animate() {
 
     updateEnemies(dt);
     updateProjectiles(dt);
+    updateGrenades(dt);
     updatePickups(dt);
     updateCompanion(dt);
     updateParticles(dt);
@@ -2646,10 +3353,15 @@ function animate() {
     updateWorld(dt);
     updateWaves(dt);
     updateEnemyBars();
+    updateCombo(dt);
 
     if (!animate._hudT || performance.now() - animate._hudT > 80) {
       animate._hudT = performance.now();
       updateHUD();
+    }
+    if (!animate._mapT || performance.now() - animate._mapT > 100) {
+      animate._mapT = performance.now();
+      drawMinimap();
     }
 
     if (net.mode === 'host' && net.connected) {
@@ -2682,7 +3394,6 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight);
 });
 
-// Авто-подключение по ссылке ?join=Ник
 (function checkInvite() {
   try {
     const params = new URLSearchParams(location.search);
@@ -2696,10 +3407,9 @@ addEventListener('resize', () => {
       $('codeInput').value = join;
       setConnState(2, 'info', 'ТЕБЯ ПРИГЛАСИЛИ К «' + join + '»', 'Нажми ПРИСОЕДИНИТЬСЯ ниже');
     }
-  } catch(e) { console.warn('URL parse failed', e); }
+  } catch(e) {}
 })();
 
-// INIT
 updateHUD();
 updateUltHUD();
 applyLevel(0);
@@ -2707,7 +3417,7 @@ camera.position.copy(player.pos);
 camera.rotation.set(0, player.yaw, 0, 'YXZ');
 animate();
 
-console.log('%c⚔ WRATH OF OLYMPUS v9', 'color:#ffd27a;font-size:16px;font-weight:bold');
+console.log('%c⚔ WRATH OF OLYMPUS v10 — все фичи', 'color:#ffd27a;font-size:16px;font-weight:bold');
 </script>
 </body>
 </html>
