@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { Peer } from 'peerjs';
 import { loadGameTextures } from './assets.js';
 import { createWorldMaterials } from './materials.js';
 import { loadXanthippeModel, updateXanthippeAnimation } from './xanthippe.js';
@@ -2853,8 +2852,10 @@ function setConnState(side, state, text, sub) {
   if (subEl) subEl.textContent = sub || '';
 }
 function makePeer(peerId, onReady, onError) {
+  const PeerCtor = window.Peer;
+  if (!PeerCtor) { onError({ type:'peerjs-missing', message:'PeerJS не загрузился' }); return null; }
   let peer;
-  try { peer = peerId ? new Peer(peerId, PEER_CONFIG) : new Peer(PEER_CONFIG); }
+  try { peer = peerId ? new PeerCtor(peerId, PEER_CONFIG) : new PeerCtor(PEER_CONFIG); }
   catch(e) { onError({ type:'create-failed', message:e.message }); return null; }
   let opened = false;
   const timeout = setTimeout(() => { if (!opened) { try { peer.destroy(); } catch(_) {} onError({ type:'timeout' }); } }, 10000);

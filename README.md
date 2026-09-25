@@ -1,146 +1,53 @@
-# WRATH OF OLYMPUS — v21 GitHub Pages Build
+# WRATH OF OLYMPUS v22 — GitHub Pages Static
 
-Версия проекта, подготовленная специально под GitHub Pages. Исходники собираются Vite через GitHub Actions; Three.js и PeerJS ставятся как npm-зависимости и попадают в итоговый build, поэтому игра больше не зависит от `unpkg`/другого CDN при обычном запуске опубликованной страницы.
+Эта версия специально сделана так, чтобы GitHub Pages мог отдавать проект **как обычную статику без Vite/npm build**.
 
-## Самый быстрый способ опубликовать
+## Самый простой вариант публикации
 
-1. Создай пустой GitHub-репозиторий.
-2. Загрузи **содержимое этой папки** в корень репозитория. Не загружай ZIP как один файл — сначала распакуй его.
-3. В GitHub открой `Settings → Pages`.
-4. В `Build and deployment → Source` выбери **GitHub Actions**.
-5. Сделай push/commit в ветку `main` или `master`.
-6. Открой вкладку `Actions` и дождись зелёного workflow `Deploy WRATH OF OLYMPUS to GitHub Pages`.
-7. Адрес опубликованной игры появится в `Settings → Pages` и в завершённом workflow.
+1. Загрузите **содержимое этой папки** в корень репозитория.
+2. GitHub → **Settings → Pages**.
+3. Можно выбрать либо:
+   - **Deploy from a branch** → `main` → `/ (root)`, либо
+   - **GitHub Actions** (workflow уже лежит в `.github/workflows/pages.yml`).
+4. Подождите публикацию и откройте адрес Pages.
 
-Файл `.github/workflows/pages.yml` уже включён. Он сам выполняет:
+## Почему эта версия исправляет ошибку `Failed to resolve module specifier "three"`
 
-```text
-npm install
-npm run build
-upload dist/
-deploy GitHub Pages
-```
+В `index.html` есть browser `importmap`, который явно сопоставляет:
 
-## Почему эта версия подходит для Pages
+- `three` → Three.js 0.160.0
+- `three/addons/` → addons Three.js 0.160.0
 
-- Vite настроен с `base: './'`, поэтому проект работает и по адресу вида `https://USER.github.io/REPO/`, и на custom domain.
-- Все игровые JPG/PNG/GLB лежат в `public/assets/` и копируются в build без изменения имён.
-- Пути к текстурам и Ксантиппе вычисляются относительно опубликованной страницы, а не относительно домена.
-- В HTML нет блокирующего CDN-скрипта PeerJS.
-- Three.js, GLTFLoader и PeerJS собираются npm/Vite в итоговые локальные JS chunks.
-- Добавлен экран загрузки с прогрессом и сообщением об ошибке, если модуль игры не стартовал.
-- Добавлен `.nojekyll`.
+Поэтому браузер умеет открыть `js/main.js` напрямую, без bundler.
 
-## Локальный запуск для разработки
+PeerJS подключается отдельным browser-скриптом и нужен только сетевому режиму. Одиночная игра не импортирует `peerjs` как npm-модуль.
 
-Нужен Node.js LTS.
+## Ассеты
 
-### Windows
+Все игровые файлы лежат прямо в `assets/`:
 
-Запусти:
+- `assets/models/xanthippe/xanthippe.glb`
+- `assets/models/xanthippe/textures/`
+- `assets/textures/`
 
-```text
-start_dev.bat
-```
+Это важно: при прямом GitHub Pages-деплое больше нет различия между `public/assets` и `/assets`.
 
-### macOS / Linux
+## Локальный запуск
+
+Не открывайте `index.html` через `file://`.
+
+Запустите любой HTTP-server, например Python:
 
 ```bash
-./start_dev.sh
+python -m http.server 8080
 ```
 
-Или вручную:
-
-```bash
-npm install
-npm run dev
-```
-
-Vite покажет локальный адрес, обычно `http://localhost:5173/`.
-
-Для проверки production-build:
-
-```bash
-npm run build
-npm run preview
-```
-
-## Структура проекта
+и откройте:
 
 ```text
-wrath-of-olympus/
-├─ .github/
-│  └─ workflows/
-│     └─ pages.yml              # автоматический deploy GitHub Pages
-├─ public/
-│  ├─ .nojekyll
-│  └─ assets/
-│     ├─ textures/              # игровые JPG/PNG
-│     ├─ models/
-│     │  └─ xanthippe/
-│     │     ├─ xanthippe.glb
-│     │     └─ textures/
-│     ├─ audio/
-│     └─ ui/
-├─ css/
-│  └─ style.css
-├─ js/
-│  ├─ main.js
-│  ├─ assets.js
-│  ├─ materials.js
-│  └─ xanthippe.js
-├─ index.html
-├─ package.json
-├─ vite.config.js
-├─ start_dev.bat
-├─ start_dev.sh
-└─ LICENSES.md
+http://localhost:8080/
 ```
 
-## Ксантиппа
+## Внешние зависимости
 
-В игре используется присланная модель `public/assets/models/xanthippe/xanthippe.glb` и её отдельные карты тела, головы, глаз, волос, одежды и обуви.
-
-Исходный GLB не содержит собственного skeleton/animation clips, поэтому `js/xanthippe.js` строит auto-rig во время загрузки и использует процедурные состояния:
-
-- idle;
-- walk;
-- run;
-- nervous;
-- panic / flee;
-- trip / fall;
-- flip / trick.
-
-Старая low-poly Ксантиппа остаётся fallback-моделью, если GLB не загрузился.
-
-## Текстуры
-
-Основные наборы находятся в `public/assets/textures/`:
-
-```text
-floor_stone_diffuse.jpg
-floor_stone_normal.jpg
-floor_stone_roughness.jpg
-
-wall_stone_diffuse.jpg
-wall_stone_normal.jpg
-wall_stone_roughness.jpg
-
-marble_diffuse.jpg
-marble_normal.jpg
-marble_roughness.jpg
-
-ruin_stone_diffuse.jpg
-ruin_stone_normal.jpg
-ruin_stone_roughness.jpg
-```
-
-Чтобы заменить материал своим, достаточно заменить соответствующий файл с тем же именем и сделать новый commit.
-
-## Сетевая игра
-
-Сам JavaScript PeerJS теперь входит в build и не загружается с CDN. Но сетевой режим по определению использует интернет: PeerJS Cloud для сигналинга и STUN-серверы для WebRTC. Одиночная игра после загрузки build-ассетов от этих сетевых сервисов не зависит.
-
-## Важное про GitHub Pages
-
-Если после push открывается старая версия, сначала проверь вкладку `Actions`: Pages обновляется только после успешной сборки. При ошибке workflow открой красный job — там будет точный лог `npm install` или `npm run build`.
+Three.js и PeerJS загружаются через `unpkg.com`, поэтому для запуска нужен интернет. Все модели и текстуры игры находятся в репозитории локально.

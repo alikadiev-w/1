@@ -105,10 +105,19 @@ window.__WOO_BOOT_READY__ = false;
   window.addEventListener('error', (ev) => fail(ev.message || 'Ошибка загрузки JavaScript.'));
   window.addEventListener('unhandledrejection', (ev) => fail(String(ev.reason?.message || ev.reason || 'Ошибка загрузки ресурсов.')));
   setTimeout(() => {
-    if (!window.__WOO_MODULE_STARTED__) fail('Модуль игры не загрузился. Если это GitHub Pages — дождись завершения Actions и обнови страницу.');
+    if (!window.__WOO_MODULE_STARTED__) fail('Модуль игры не загрузился. Проверь доступ к unpkg.com и обнови страницу.');
   }, 15000);
 })();
 </script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script defer src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 <script type="module" src="./js/main.js"></script>
 </body>
 </html>
