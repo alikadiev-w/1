@@ -346,6 +346,22 @@ function addBanner(x, y, z, rotY, color) {
   const gold = new THREE.Mesh(new THREE.BoxGeometry(1.7,0.18,0.12), goldMat);
   gold.position.set(x, y+1.7, z); gold.rotation.y = rotY; scene.add(gold); worldMeshes.push(gold);
 }
+function addDeadTree(x, z) {
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.5,6,6), ruinDarkMat);
+  trunk.position.set(x,3,z);
+  trunk.castShadow=true;
+  trunk.receiveShadow=true;
+  scene.add(trunk); worldMeshes.push(trunk);
+  for (let i = 0; i < 4; i++) {
+    const br = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.15,2.2,5), ruinDarkMat);
+    br.position.set(x+rand(-0.4,0.4), 4.5+i*0.3, z+rand(-0.4,0.4));
+    br.rotation.z = rand(-0.9,0.9);
+    br.rotation.x = rand(-0.9,0.9);
+    br.castShadow = true;
+    scene.add(br); worldMeshes.push(br);
+  }
+  circleColliders.push({ x, z, r: 0.6 });
+}
 
 const floor = new THREE.Mesh(new THREE.PlaneGeometry(ARENA*2+20, ARENA*2+20), floorMat);
 floor.rotation.x = -Math.PI/2; floor.receiveShadow=true; floor.userData.isWall=true;
