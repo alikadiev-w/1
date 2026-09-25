@@ -1,0 +1,19 @@
+{
+  "name": "wrath-of-olympus",
+  "version": "21.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "npm run validate && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "validate": "node scripts/validate.mjs"
+  },
+  "dependencies": {
+    "peerjs": "1.5.2",
+    "three": "0.160.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}

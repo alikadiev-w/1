@@ -1,16 +1,24 @@
-# Asset licenses
+# Licenses and asset notes
 
 ## Photo-based source textures
 
 Часть локальных текстур проекта подготовлена из фотографических CC0-образцов, входящих в `scikit-image.data`:
 
-- `skimage.data.brick()` — исходное изображение CC0Textures `Bricks25`, лицензия Creative Commons CC0.
-  Использовано как фотобаза для `wall_stone_*`.
-- `skimage.data.gravel()` — исходное изображение CC0Textures `Gravel04`, лицензия Creative Commons CC0.
-  Использовано как фотобаза для `floor_stone_*`, `ruin_stone_*`, `water_normal.jpg` и микродетали мраморного материала.
+- `skimage.data.brick()` — фотобаза CC0Textures `Bricks25`, Creative Commons CC0; использована как основа `wall_stone_*`.
+- `skimage.data.gravel()` — фотобаза CC0Textures `Gravel04`, Creative Commons CC0; использована как основа `floor_stone_*`, `ruin_stone_*`, `water_normal.jpg` и микродетали мрамора.
 
-Карты normal/roughness, цветовые варианты и декоративные PNG были подготовлены для этого проекта из этих локальных CC0-источников.
+Normal/roughness-карты, цветовые варианты и декоративные PNG были подготовлены для этого проекта из этих локальных CC0-источников.
 
-## Runtime libraries
+## Xanthippe model
 
-Игра загружает Three.js 0.160.0 и PeerJS 1.5.2 через CDN. Их лицензии принадлежат соответствующим проектам.
+`public/assets/models/xanthippe/xanthippe.glb` и соответствующие текстуры были предоставлены пользователем для интеграции в игру. Этот репозиторий не переопределяет лицензию исходной модели; перед публичным распространением владелец репозитория должен убедиться, что условия источника модели разрешают такое использование.
+
+## Runtime/build libraries
+
+Зависимости устанавливаются через npm при сборке GitHub Actions:
+
+- Three.js `0.160.0` — MIT License.
+- PeerJS `1.5.2` — MIT License.
+- Vite `5.x` — MIT License (только build/development tooling).
+
+В production-build библиотеки бандлятся Vite; игра не загружает Three.js или PeerJS с CDN.

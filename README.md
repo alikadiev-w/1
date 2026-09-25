@@ -1,108 +1,146 @@
-# WRATH OF OLYMPUS — v19 Auto-Rig Project
+# WRATH OF OLYMPUS — v21 GitHub Pages Build
 
-Многофайловая версия браузерного arena-FPS. Текущая игровая логика сохранена, но визуальный слой больше не генерирует материалы пола/стен/мрамора через Canvas во время запуска: они загружаются из `assets/textures/` как обычные JPG/PNG.
+Версия проекта, подготовленная специально под GitHub Pages. Исходники собираются Vite через GitHub Actions; Three.js и PeerJS ставятся как npm-зависимости и попадают в итоговый build, поэтому игра больше не зависит от `unpkg`/другого CDN при обычном запуске опубликованной страницы.
 
-## Быстрый запуск
+## Самый быстрый способ опубликовать
 
-Из-за ES-модулей игру лучше открывать через локальный HTTP-сервер, а не двойным кликом по `index.html`.
+1. Создай пустой GitHub-репозиторий.
+2. Загрузи **содержимое этой папки** в корень репозитория. Не загружай ZIP как один файл — сначала распакуй его.
+3. В GitHub открой `Settings → Pages`.
+4. В `Build and deployment → Source` выбери **GitHub Actions**.
+5. Сделай push/commit в ветку `main` или `master`.
+6. Открой вкладку `Actions` и дождись зелёного workflow `Deploy WRATH OF OLYMPUS to GitHub Pages`.
+7. Адрес опубликованной игры появится в `Settings → Pages` и в завершённом workflow.
 
-### Windows
-1. Запусти `start_server.bat`.
-2. Открой `http://localhost:8080`.
-
-### macOS / Linux
-```bash
-chmod +x start_server.sh
-./start_server.sh
-```
-Затем открой `http://localhost:8080`.
-
-Или вручную:
-```bash
-python3 -m http.server 8080
-```
-
-## Структура
+Файл `.github/workflows/pages.yml` уже включён. Он сам выполняет:
 
 ```text
-wrath_of_olympus_project/
-├─ index.html
+npm install
+npm run build
+upload dist/
+deploy GitHub Pages
+```
+
+## Почему эта версия подходит для Pages
+
+- Vite настроен с `base: './'`, поэтому проект работает и по адресу вида `https://USER.github.io/REPO/`, и на custom domain.
+- Все игровые JPG/PNG/GLB лежат в `public/assets/` и копируются в build без изменения имён.
+- Пути к текстурам и Ксантиппе вычисляются относительно опубликованной страницы, а не относительно домена.
+- В HTML нет блокирующего CDN-скрипта PeerJS.
+- Three.js, GLTFLoader и PeerJS собираются npm/Vite в итоговые локальные JS chunks.
+- Добавлен экран загрузки с прогрессом и сообщением об ошибке, если модуль игры не стартовал.
+- Добавлен `.nojekyll`.
+
+## Локальный запуск для разработки
+
+Нужен Node.js LTS.
+
+### Windows
+
+Запусти:
+
+```text
+start_dev.bat
+```
+
+### macOS / Linux
+
+```bash
+./start_dev.sh
+```
+
+Или вручную:
+
+```bash
+npm install
+npm run dev
+```
+
+Vite покажет локальный адрес, обычно `http://localhost:5173/`.
+
+Для проверки production-build:
+
+```bash
+npm run build
+npm run preview
+```
+
+## Структура проекта
+
+```text
+wrath-of-olympus/
+├─ .github/
+│  └─ workflows/
+│     └─ pages.yml              # автоматический deploy GitHub Pages
+├─ public/
+│  ├─ .nojekyll
+│  └─ assets/
+│     ├─ textures/              # игровые JPG/PNG
+│     ├─ models/
+│     │  └─ xanthippe/
+│     │     ├─ xanthippe.glb
+│     │     └─ textures/
+│     ├─ audio/
+│     └─ ui/
 ├─ css/
 │  └─ style.css
 ├─ js/
-│  ├─ main.js          # игровая логика
-│  ├─ assets.js        # загрузка JPG/PNG
-│  └─ materials.js     # PBR-материалы Three.js
-├─ assets/
-│  ├─ textures/        # реальные файловые текстуры и карты
-│  ├─ models/          # место под GLB/GLTF
-│  ├─ audio/           # место под WAV/OGG
-│  └─ ui/              # место под отдельные UI-изображения
-├─ scripts/
+│  ├─ main.js
+│  ├─ assets.js
+│  ├─ materials.js
+│  └─ xanthippe.js
+├─ index.html
+├─ package.json
+├─ vite.config.js
+├─ start_dev.bat
+├─ start_dev.sh
 └─ LICENSES.md
 ```
 
-## Как заменить текстуру
+## Ксантиппа
 
-Например, чтобы поставить свою текстуру стены, замени файлы:
+В игре используется присланная модель `public/assets/models/xanthippe/xanthippe.glb` и её отдельные карты тела, головы, глаз, волос, одежды и обуви.
 
-```text
-assets/textures/wall_stone_diffuse.jpg
-assets/textures/wall_stone_normal.jpg
-assets/textures/wall_stone_roughness.jpg
-```
+Исходный GLB не содержит собственного skeleton/animation clips, поэтому `js/xanthippe.js` строит auto-rig во время загрузки и использует процедурные состояния:
 
-Имена файлов менять не нужно — игра автоматически возьмёт новые изображения.
+- idle;
+- walk;
+- run;
+- nervous;
+- panic / flee;
+- trip / fall;
+- flip / trick.
 
-То же самое для пола:
+Старая low-poly Ксантиппа остаётся fallback-моделью, если GLB не загрузился.
+
+## Текстуры
+
+Основные наборы находятся в `public/assets/textures/`:
 
 ```text
 floor_stone_diffuse.jpg
 floor_stone_normal.jpg
 floor_stone_roughness.jpg
-```
 
-и мрамора:
+wall_stone_diffuse.jpg
+wall_stone_normal.jpg
+wall_stone_roughness.jpg
 
-```text
 marble_diffuse.jpg
 marble_normal.jpg
 marble_roughness.jpg
+
+ruin_stone_diffuse.jpg
+ruin_stone_normal.jpg
+ruin_stone_roughness.jpg
 ```
 
-## Материалы
+Чтобы заменить материал своим, достаточно заменить соответствующий файл с тем же именем и сделать новый commit.
 
-Three.js использует:
-- `map` — цвет поверхности;
-- `normalMap` — микрорельеф;
-- `roughnessMap` — степень матовости/блеска;
-- `metalness` — отдельно для золота и бронзы.
+## Сетевая игра
 
-Все коэффициенты собраны в `js/materials.js`, поэтому их можно крутить независимо от геймплея.
+Сам JavaScript PeerJS теперь входит в build и не загружается с CDN. Но сетевой режим по определению использует интернет: PeerJS Cloud для сигналинга и STUN-серверы для WebRTC. Одиночная игра после загрузки build-ассетов от этих сетевых сервисов не зависит.
 
-## Вода бассейна
+## Важное про GitHub Pages
 
-`assets/textures/water_normal.jpg` используется как normal map. UV медленно сдвигаются в `main.js`, поэтому вода движется, но сама картинка является обычным файлом.
-
-## Что логично делать дальше
-
-Следующий технический этап — вынести из `main.js` системы врагов, оружия, UI и сети в отдельные модули и заменить примитивные модели на GLB/GLTF. Папки для моделей и звуков уже добавлены.
-
-## Ксантиппа — полноценная 3D-модель
-В `assets/models/xanthippe/` находится модель `xanthippe.glb` и исходные карты тела, лица, глаз, волос, одежды и обуви. Игра загружает её через `GLTFLoader`; старая примитивная модель используется только как fallback при ошибке загрузки.
-
-Модель экспортирована без skeletal animation (`animations: 0`, `skins: 0`), поэтому текущие движения персонажа выполняются перемещением/поворотом всей модели. Для полноценной ходьбы руками и ногами нужен rigged GLB с костями/анимациями.
-
-## v19 — Xanthippe auto-rig animation
-
-The supplied `xanthippe.glb` contains no embedded skin or animation clips, so v19 builds a lightweight procedural skeleton at load time. The model is flattened from the original MAX export transforms, auto-skinned from its T-pose, and animated in Three.js.
-
-Current procedural states:
-- idle / breathing;
-- walk;
-- run;
-- panic / flee;
-- trip / fall pose;
-- flip / trick pose.
-
-The original primitive companion remains only as a loading/error fallback. The GLB itself and all supplied textures remain unchanged in `assets/models/xanthippe/`.
+Если после push открывается старая версия, сначала проверь вкладку `Actions`: Pages обновляется только после успешной сборки. При ошибке workflow открой красный job — там будет точный лог `npm install` или `npm run build`.

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-const BASE = new URL('../assets/textures/', import.meta.url).href;
+const BASE = new URL('./assets/textures/', document.baseURI).href;
 
 function configure(tex, { repeat = [1,1], srgb = false } = {}, renderer) {
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
@@ -21,7 +21,7 @@ function loadTexture(loader, renderer, file, options) {
   });
 }
 
-export async function loadGameTextures(renderer) {
+export async function loadGameTextures(renderer, onProgress = null) {
   const loader = new THREE.TextureLoader();
   const specs = {
     floorDiffuse: ['floor_stone_diffuse.jpg', { repeat:[14,14], srgb:true }],
@@ -58,8 +58,12 @@ export async function loadGameTextures(renderer) {
     particleGhost: ['particle_ghost.png', { repeat:[1,1], srgb:true }],
   };
 
-  const pairs = await Promise.all(Object.entries(specs).map(async ([key,[file,opts]]) => {
+  const entries = Object.entries(specs);
+  let completed = 0;
+  const pairs = await Promise.all(entries.map(async ([key,[file,opts]]) => {
     const tex = await loadTexture(loader, renderer, file, opts);
+    completed++;
+    if (onProgress) onProgress(completed, entries.length, file);
     return [key, tex];
   }));
   return Object.fromEntries(pairs);

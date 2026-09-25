@@ -4,10 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WRATH OF OLYMPUS</title>
-<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+<meta name="theme-color" content="#0a0705">
 <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+
+<div id="bootScreen" aria-live="polite">
+  <div class="bootSigil">⚡</div>
+  <div class="bootTitle">WRATH OF OLYMPUS</div>
+  <div class="bootSub" id="bootStatus">ПРОБУЖДАЕМ ОЛИМП…</div>
+  <div class="bootBar"><i id="bootBarFill"></i></div>
+  <div class="bootPct" id="bootPct">0%</div>
+  <div class="bootError hidden" id="bootError"></div>
+</div>
 
 <div id="enemyBars"></div>
 <div id="hud">
@@ -79,8 +88,26 @@
 <div class="screen hidden" id="overScreen"><h1 style="color:#e04a2a">ТЫ ПАЛ</h1><h2>ОЛИМП СКОРБИТ</h2><div id="goStats"></div><button class="btn" id="restartBtn">В ГЛАВНОЕ МЕНЮ</button></div>
 <div class="screen hidden" id="victoryScreen"><h1 style="color:#ffd27a;font-size:64px">ПОБЕДА</h1><h2 style="color:#ffb060">ОЛИМП ВОЗРОЖДЁН</h2><p style="max-width:640px;font-size:15px;line-height:2;color:#d0b888">Ты прошёл все круги. Трон занят — <b style="color:#ffd27a">тобой</b>.<br>Ксантиппа рядом. Она улыбается.<br><br>Олимп стоит. Мир жив. Ты — легенда.</p><button class="btn green" id="victoryBtn" style="margin-top:36px">ВОСХОЖДЕНИЕ ПРОДОЛЖАЕТСЯ</button></div>
 
-<script type="importmap">
-{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+<script>
+window.__WOO_MODULE_STARTED__ = false;
+window.__WOO_BOOT_READY__ = false;
+(function(){
+  const fail = (message) => {
+    if (window.__WOO_BOOT_READY__) return;
+    const e = document.getElementById('bootError');
+    const s = document.getElementById('bootStatus');
+    if (s) s.textContent = 'НЕ УДАЛОСЬ ЗАПУСТИТЬ ИГРУ';
+    if (e) {
+      e.classList.remove('hidden');
+      e.textContent = message || 'Проверь консоль браузера и обнови страницу.';
+    }
+  };
+  window.addEventListener('error', (ev) => fail(ev.message || 'Ошибка загрузки JavaScript.'));
+  window.addEventListener('unhandledrejection', (ev) => fail(String(ev.reason?.message || ev.reason || 'Ошибка загрузки ресурсов.')));
+  setTimeout(() => {
+    if (!window.__WOO_MODULE_STARTED__) fail('Модуль игры не загрузился. Если это GitHub Pages — дождись завершения Actions и обнови страницу.');
+  }, 15000);
+})();
 </script>
 <script type="module" src="./js/main.js"></script>
 </body>

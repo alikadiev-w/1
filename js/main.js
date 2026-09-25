@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { Peer } from 'peerjs';
 import { loadGameTextures } from './assets.js';
 import { createWorldMaterials } from './materials.js';
 import { loadXanthippeModel, updateXanthippeAnimation } from './xanthippe.js';
@@ -11,6 +12,28 @@ const lerp = (a,b,t) => a+(b-a)*t;
 const pick = a => a[Math.floor(Math.random()*a.length)];
 const TAU = Math.PI*2;
 const $ = id => document.getElementById(id);
+window.__WOO_MODULE_STARTED__ = true;
+function setBootStatus(text, progress = null) {
+  const status = $('bootStatus');
+  const fill = $('bootBarFill');
+  const pct = $('bootPct');
+  if (status && text) status.textContent = text;
+  if (progress != null) {
+    const p = clamp(progress, 0, 1);
+    if (fill) fill.style.width = `${Math.round(p*100)}%`;
+    if (pct) pct.textContent = `${Math.round(p*100)}%`;
+  }
+}
+function finishBoot() {
+  window.__WOO_BOOT_READY__ = true;
+  setBootStatus('ОЛИМП ГОТОВ', 1);
+  const boot = $('bootScreen');
+  if (!boot) return;
+  requestAnimationFrame(() => {
+    boot.classList.add('done');
+    setTimeout(() => boot.remove(), 550);
+  });
+}
 
 /* HIT-STOP + SHAKE + DMG NUMBERS */
 let timeScale = 1, hitStopT = 0, shakeT = 0, shakeAmp = 0;
@@ -180,7 +203,11 @@ sun.shadow.camera.top=120; sun.shadow.camera.bottom=-120;
 sun.shadow.camera.far=350; sun.shadow.bias=-0.001;
 scene.add(sun);
 
-const textureSet = await loadGameTextures(renderer);
+setBootStatus('ЗАГРУЖАЕМ ТЕКСТУРЫ…', 0.08);
+const textureSet = await loadGameTextures(renderer, (done,total,file) => {
+  setBootStatus(`ТЕКСТУРЫ: ${file}`, 0.08 + (done/total)*0.72);
+});
+setBootStatus('СТРОИМ АРЕНУ…', 0.84);
 
 /* ATMOSPHERE — distant sun, layered clouds, floating motes */
 const sunGlowTex = textureSet.sunGlow;
@@ -2037,7 +2064,7 @@ loadXanthippeModel().then(model => {
   companion.mesh = model;
   updateXanthippeAnimation(companion.mesh, { state:'idle', time:companion.animT, speedNorm:0 });
   if (old) scene.remove(old);
-  console.log('[XANTHIPPE] GLB model loaded + procedural auto-rig active');
+  console.log('[XANTHIPPE] GLB model loaded + v21 motion rig active');
 }).catch(err => console.warn('[XANTHIPPE] GLB load failed; fallback model kept', err));
 let sayBubble = null;
 function ensureBubble() {
@@ -2058,7 +2085,8 @@ function companionSay(text, dur) {
 }
 function updateCompanionBubble() {
   if (!sayBubble || sayBubble.style.opacity === '0') return;
-  const pos = companion.pos.clone(); pos.y += 2.95;
+  const pos = companion.pos.clone();
+  pos.y += (companion.mesh?.userData?.xanthippeHeight || 2.65) + 0.30;
   const v = pos.project(camera);
   if (v.z > 1 || v.z < -1) { sayBubble.style.display = 'none'; return; }
   sayBubble.style.display = 'block';
@@ -3471,5 +3499,7 @@ updateUltHUD();
 applyLevel(0);
 camera.position.copy(player.pos);
 camera.rotation.set(0, player.yaw, 0, 'YXZ');
+setBootStatus('ЗАПУСКАЕМ ИГРОВОЙ ЦИКЛ…', 0.96);
 animate();
-console.log('%c⚔ WRATH OF OLYMPUS v19 — Xanthippe auto-rig', 'color:#ffd27a;font-size:16px;font-weight:bold');
+finishBoot();
+console.log('%c⚔ WRATH OF OLYMPUS v21 — GitHub Pages build', 'color:#ffd27a;font-size:16px;font-weight:bold');

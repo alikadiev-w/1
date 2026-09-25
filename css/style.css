@@ -114,3 +114,17 @@ canvas{display:block}
 .metaRow .lvl{color:#66ccff;font-size:13px;margin-left:14px}
 .metaRow button{padding:8px 16px;font-size:12px;letter-spacing:2px;background:linear-gradient(180deg,#ffd27a,#c9963a);color:#1a1008;border:none;border-radius:4px;cursor:pointer;font-weight:bold;box-shadow:0 3px 0 #7a5c1e;margin-left:14px;font-family:inherit}
 .metaRow button:disabled{opacity:.35;cursor:not-allowed}
+
+/* v21 GitHub Pages boot screen */
+#bootScreen{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 42%,#302012 0%,#120c07 42%,#030201 100%);transition:opacity .45s ease,visibility .45s ease}
+#bootScreen.done{opacity:0;visibility:hidden;pointer-events:none}
+.bootSigil{font-size:56px;filter:drop-shadow(0 0 20px rgba(255,190,80,.65));animation:bootPulse 1.2s ease-in-out infinite}
+.bootTitle{margin-top:10px;font-size:34px;font-weight:800;letter-spacing:9px;color:#ffd27a;text-shadow:0 0 28px rgba(255,155,45,.55);text-align:center}
+.bootSub{margin-top:18px;font-size:12px;letter-spacing:3px;color:#b99b68;max-width:min(720px,85vw);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bootBar{width:min(480px,72vw);height:8px;margin-top:18px;border:1px solid #735422;border-radius:99px;background:#160f08;overflow:hidden;box-shadow:inset 0 0 9px rgba(0,0,0,.8)}
+.bootBar i{display:block;width:0;height:100%;background:linear-gradient(90deg,#8b4c18,#ffd27a,#fff1bc);box-shadow:0 0 16px rgba(255,194,78,.7);transition:width .16s ease}
+.bootPct{margin-top:8px;font-size:11px;color:#816d4a;letter-spacing:2px}
+.bootError{margin-top:22px;max-width:min(680px,86vw);padding:12px 16px;border:1px solid #8b3232;background:rgba(70,10,10,.45);color:#ffb0a0;border-radius:6px;font-size:13px;line-height:1.55;user-select:text}
+.bootError.hidden{display:none}
+@keyframes bootPulse{0%,100%{transform:scale(.96);opacity:.72}50%{transform:scale(1.05);opacity:1}}
+@media(max-width:650px){.bootTitle{font-size:24px;letter-spacing:5px}.bootSigil{font-size:44px}}
