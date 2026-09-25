@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { loadGameTextures } from './assets.js';
 import { createWorldMaterials } from './materials.js';
-import { loadXanthippeModel, updateXanthippeAnimation } from './xanthippe.js';
+import { loadLiaModel, updateLiaAnimation } from './lia.js';
 window.addEventListener('error', e => console.error('[ERR]', e.message, e.filename, e.lineno));
 window.addEventListener('unhandledrejection', e => console.error('[PROMISE]', e.reason));
 
@@ -490,7 +490,7 @@ const STELAE_TEXTS = [
   'Здесь спал Аид. Здесь он видел сны, которые стали кошмарами.',
   'Олимпийцы пировали тут, пока смертные умирали внизу.',
   'Каждый камень этих врат — могила героя.',
-  'Ксантиппа впервые увидела монстра здесь. Он смотрел. Она — на него.',
+  'Лия впервые увидела монстра здесь. Он смотрел. Она — на него.',
   'Тот, кто войдёт сюда с миром — выйдет с проклятием.',
   'Эхо битвы Титанов всё ещё слышно в этих стенах.',
   'Боги не спят. Они делают вид.',
@@ -1996,12 +1996,12 @@ function tryFire(P, cam) {
 
 /* COMPANION */
 const COMPANION_PANIC = ['АААА!','Помоги!','НЕТ-НЕТ-НЕТ!','Убей его!','Спаси меня!','Ой-ой-ой!'];
-const COMPANION_IDLE = ['Скучно...','Красиво тут.','Убей кого-нибудь.','Я тут просто гуляю.','Ноги устали.'];
+const COMPANION_IDLE = ['Скучно...','Красиво тут.','Убей кого-нибудь.','Я рядом.','Ноги устали.'];
 const COMPANION_KILL = ['Молодец!','Убил!','Один готов!','Красиво!','Ещё есть?'];
 const companion = {
-  pos: new THREE.Vector3(8,0,28), vel: new THREE.Vector3(), yaw: 0,
-  state: 'wander', stateT: 2, target: new THREE.Vector3(8,0,28),
-  mesh: null, animT: 0, sayCd: 4, speed: 5.4, radius: 0.4, panic: false,
+  pos: new THREE.Vector3(-1.35,0,42.65), vel: new THREE.Vector3(), yaw: 0,
+  state: 'follow', stateT: 2, target: new THREE.Vector3(-1.35,0,42.65),
+  mesh: null, animT: 0, sayCd: 4, speed: 6.8, radius: 0.4, panic: false,
   tripTimer: 0, tripCd: 10, lieDir: 1,
   trickTimer: 0, trickCd: 6, trickType: 'flip', aidCd: 8
 };
@@ -2071,16 +2071,16 @@ function buildCompanion() {
 companion.mesh = buildCompanion();
 companion.mesh.position.copy(companion.pos);
 scene.add(companion.mesh);
-loadXanthippeModel().then(model => {
+loadLiaModel().then(model => {
   const old = companion.mesh;
   model.position.copy(companion.pos);
   model.rotation.y = companion.yaw;
   scene.add(model);
   companion.mesh = model;
-  updateXanthippeAnimation(companion.mesh, { state:'idle', time:companion.animT, speedNorm:0 });
+  updateLiaAnimation(companion.mesh, { state:'idle', time:companion.animT, speedNorm:0 });
   if (old) scene.remove(old);
-  console.log('[XANTHIPPE] GLB model loaded + v21 motion rig active');
-}).catch(err => console.warn('[XANTHIPPE] GLB load failed; fallback model kept', err));
+  console.log('[LIA] GLB model loaded + follow rig active');
+}).catch(err => console.warn('[LIA] GLB load failed; fallback model kept', err));
 let sayBubble = null;
 function ensureBubble() {
   if (sayBubble) return;
@@ -2096,49 +2096,55 @@ function companionSay(text, dur) {
   sayBubble.style.opacity = '1';
   clearTimeout(sayTimer);
   sayTimer = setTimeout(() => sayBubble.style.opacity = '0', dur);
-  addFeed(`<span style="color:#ff99cc">💃 Ксантиппа:</span> <span style="color:#ffe6f0">${text}</span>`);
+  addFeed(`<span style="color:#ff99cc">💃 Лия:</span> <span style="color:#ffe6f0">${text}</span>`);
 }
 function updateCompanionBubble() {
   if (!sayBubble || sayBubble.style.opacity === '0') return;
   const pos = companion.pos.clone();
-  pos.y += (companion.mesh?.userData?.xanthippeHeight || 2.65) + 0.30;
+  pos.y += (companion.mesh?.userData?.liaHeight || 2.65) + 0.30;
   const v = pos.project(camera);
   if (v.z > 1 || v.z < -1) { sayBubble.style.display = 'none'; return; }
   sayBubble.style.display = 'block';
   sayBubble.style.left = ((v.x*0.5+0.5)*innerWidth)+'px';
   sayBubble.style.top = ((-v.y*0.5+0.5)*innerHeight)+'px';
 }
-function pickCompTarget() {
-  let tries = 0;
-  while (tries++ < 15) {
-    const a = Math.random()*TAU, r = rand(15, ARENA-15);
-    const x = Math.cos(a)*r, z = Math.sin(a)*r;
-    let ok = true;
-    for (const cc of circleColliders) if (Math.hypot(x-cc.x, z-cc.z) < cc.r+1.5) { ok = false; break; }
-    if (!ok) continue;
-    for (const b of boxColliders) if (x > b.minX-1 && x < b.maxX+1 && z > b.minZ-1 && z < b.maxZ+1) { ok = false; break; }
-    if (!ok) continue;
-    companion.target.set(x, 0, z); return;
+function getCompanionFollowTarget(out = companion.target, danger = null) {
+  // Лия держится немного позади и сбоку от игрока. При опасности она
+  // переходит на противоположную от врага сторону, но остаётся рядом.
+  const fwd = new THREE.Vector3(-Math.sin(player.yaw), 0, -Math.cos(player.yaw));
+  const right = new THREE.Vector3(Math.cos(player.yaw), 0, -Math.sin(player.yaw));
+  out.copy(player.pos); out.y = 0;
+  if (danger) {
+    const safe = new THREE.Vector3(player.pos.x - danger.mesh.position.x, 0, player.pos.z - danger.mesh.position.z);
+    if (safe.lengthSq() < 0.01) safe.copy(fwd).multiplyScalar(-1);
+    safe.normalize();
+    out.addScaledVector(safe, 2.7).addScaledVector(right, 0.65);
+  } else {
+    out.addScaledVector(fwd, -2.35).addScaledVector(right, 1.35);
   }
-  companion.target.set(rand(-30,30), 0, rand(-30,30));
+  const p = { x:out.x, z:out.z };
+  collide(p, companion.radius);
+  out.x = p.x; out.z = p.z;
+  return out;
 }
+
 function updateCompanion(dt) {
   const c = companion;
   if (!c.mesh) return;
   c.animT += dt; c.stateT -= dt; c.sayCd -= dt; c.tripCd -= dt; c.trickCd -= dt; c.aidCd -= dt;
-  if (c.state === 'wander' && c.tripCd <= 0 && c.trickCd > 2 && Math.random() < 0.012) {
+  if ((c.state === 'follow' || c.state === 'idle') && c.pos.distanceTo(player.pos) < 4.5 && c.tripCd <= 0 && c.trickCd > 2 && Math.random() < 0.004) {
     c.state = 'trip'; c.tripTimer = 1.7; c.tripCd = rand(9,20); c.lieDir = Math.random() < 0.5 ? 1 : -1;
     SFX.squeal();
     if (Math.random() < 0.65) companionSay(pick(['Ой! Камень!','Ай! Споткнулась!','Кто тут ящик поставил?!','Я в порядке!','Мои колени...','Это всё пол виноват!']), 1700);
   }
-  if (c.state === 'wander' && c.trickCd <= 0 && c.tripCd > 2 && Math.random() < 0.008) {
+  if ((c.state === 'follow' || c.state === 'idle') && c.pos.distanceTo(player.pos) < 4.5 && c.trickCd <= 0 && c.tripCd > 2 && Math.random() < 0.002) {
     c.state = 'trick'; c.trickTimer = 1.2; c.trickType = Math.random() < 0.5 ? 'flip' : 'cartwheel';
     c.trickCd = rand(10,25);
     if (Math.random() < 0.4) companionSay(pick(['Смотри как я умею!','Оп!','Разминка!','Это я просто так.']), 1500);
   }
   if (c.state === 'trip') {
     c.tripTimer -= dt;
-    if (c.tripTimer <= 0) { c.state = 'wander'; c.stateT = 1; }
+    if (c.tripTimer <= 0) { c.state = 'follow'; c.stateT = 1; }
     const t = c.tripTimer;
     let lie = 1;
     if (t > 1.3) lie = (1.7-t)/0.4;
@@ -2150,7 +2156,7 @@ function updateCompanion(dt) {
     c.mesh.rotation.y = c.yaw;
     c.mesh.rotation.x = -1.5*lie;
     c.mesh.rotation.z = Math.sin(c.animT*18)*0.06*lie;
-    updateXanthippeAnimation(c.mesh, { state:'trip', time:c.animT, amount:lie, panic:c.panic });
+    updateLiaAnimation(c.mesh, { state:'trip', time:c.animT, amount:lie, panic:c.panic });
     const L = c.mesh.userData.limbs;
     if (L) { L.legs[0].rotation.x = -0.9*lie; L.legs[1].rotation.x = -1.15*lie; L.arms[0].rotation.x = -1.7*lie; L.arms[1].rotation.x = -1.5*lie; for (let i = 0; i < L.strands.length; i++) L.strands[i].rotation.z = Math.sin(c.animT*12+i)*0.35*lie; }
     updateCompanionBubble();
@@ -2158,11 +2164,11 @@ function updateCompanion(dt) {
   }
   if (c.state === 'trick') {
     c.trickTimer -= dt;
-    if (c.trickTimer <= 0) { c.state = 'wander'; c.stateT = 1; }
+    if (c.trickTimer <= 0) { c.state = 'follow'; c.stateT = 1; }
     const t = 1 - c.trickTimer/1.2;
     c.mesh.position.copy(c.pos);
     c.mesh.rotation.y = c.yaw;
-    updateXanthippeAnimation(c.mesh, { state:'trick', time:c.animT, speedNorm:0 });
+    updateLiaAnimation(c.mesh, { state:'trick', time:c.animT, speedNorm:0 });
     if (c.trickType === 'flip') {
       c.mesh.rotation.x = -t * TAU;
       c.mesh.rotation.z = 0;
@@ -2179,7 +2185,7 @@ function updateCompanion(dt) {
     updateCompanionBubble();
     return;
   }
-  if (c.state === 'wander' && c.aidCd <= 0 && player.alive && net.mode !== 'client') {
+  if ((c.state === 'follow' || c.state === 'idle' || c.state === 'nervous') && c.aidCd <= 0 && player.alive && net.mode !== 'client') {
     if (player.hp < player.maxHp * 0.5 && Math.random() < 0.5) {
       player.hp = Math.min(player.maxHp, player.hp + 20);
       flashHeal();
@@ -2211,16 +2217,39 @@ function updateCompanion(dt) {
     const d = e.mesh.position.distanceTo(c.pos);
     if (d < nearDist) { nearDist = d; nearEnemy = e; }
   }
-  if (nearEnemy && nearDist < 8) {
-    if (c.state !== 'flee') { c.state = 'flee'; c.panic = true; SFX.squeal(); if (c.sayCd <= 0) { c.sayCd = rand(2.5,5); companionSay(pick(COMPANION_PANIC), 1800); } }
-    c.stateT = 0.4;
-  } else if (nearEnemy && nearDist < 14) { c.state = 'nervous'; c.panic = true; c.stateT = 0.8; }
-  else if (c.stateT <= 0) { c.state = 'wander'; c.panic = false; pickCompTarget(); c.stateT = rand(2.5,5); }
+  const playerDist = Math.hypot(c.pos.x-player.pos.x, c.pos.z-player.pos.z);
+  if (nearEnemy && nearDist < 7.5) {
+    if (c.state !== 'flee' && c.sayCd <= 0) { c.sayCd = rand(3.5,6); SFX.squeal(); companionSay(pick(COMPANION_PANIC), 1800); }
+    c.state = 'flee'; c.panic = true; c.stateT = 0.5;
+    getCompanionFollowTarget(c.target, nearEnemy);
+  } else if (nearEnemy && nearDist < 13) {
+    c.state = 'nervous'; c.panic = true; c.stateT = 0.7;
+    getCompanionFollowTarget(c.target, nearEnemy);
+  } else {
+    c.panic = false;
+    getCompanionFollowTarget(c.target);
+  }
+
+  // If collision/pathing ever leaves her far behind, catch up quickly instead
+  // of wandering across the arena. Only extreme desync uses a soft teleport.
+  if (playerDist > 18) {
+    getCompanionFollowTarget(c.target);
+    c.pos.lerp(c.target, 0.92);
+  }
+
   const move = new THREE.Vector3();
+  const to = new THREE.Vector3().subVectors(c.target, c.pos); to.y = 0;
+  const d = to.length();
   let spd = 0;
-  if (c.state === 'flee' && nearEnemy) { const away = new THREE.Vector3().subVectors(c.pos, nearEnemy.mesh.position); away.y = 0; away.normalize(); move.copy(away); spd = c.speed*1.95; }
-  else if (c.state === 'nervous' && nearEnemy) { const away = new THREE.Vector3().subVectors(c.pos, nearEnemy.mesh.position); away.y = 0; away.normalize(); move.copy(away); spd = c.speed*1.2; }
-  else { const to = new THREE.Vector3().subVectors(c.target, c.pos); to.y = 0; const d = to.length(); if (d < 1.2) pickCompTarget(); else { move.copy(to).divideScalar(d); spd = c.speed; } }
+  if (d > 0.75) {
+    move.copy(to).divideScalar(d);
+    if (c.state === 'flee') spd = c.speed*1.60;
+    else if (c.state === 'nervous') spd = c.speed*1.30;
+    else if (d > 9) spd = c.speed*3.00;
+    else if (d > 4.2) spd = c.speed*1.65;
+    else spd = c.speed*0.72;
+  }
+  if (!c.panic) c.state = d < 1.15 ? 'idle' : (d > 4.2 ? 'run' : 'follow');
   c.pos.x += move.x*spd*dt;
   c.pos.z += move.z*spd*dt;
   const p2 = { x: c.pos.x, z: c.pos.z };
@@ -2238,7 +2267,7 @@ function updateCompanion(dt) {
   c.mesh.rotation.x = 0;
   c.mesh.rotation.z = 0;
   const sn = clamp(spd/c.speed, 0, 2.2);
-  updateXanthippeAnimation(c.mesh, { state:c.state, time:c.animT, speedNorm:sn, panic:c.panic });
+  updateLiaAnimation(c.mesh, { state:c.state, time:c.animT, speedNorm:sn, panic:c.panic });
   const L = c.mesh.userData.limbs;
   const sw = Math.sin(c.animT*(4.5+spd*0.85))*(0.32+sn*0.55);
   if (L) { L.legs[0].rotation.x = sw; L.legs[1].rotation.x = -sw; const pu = (c.panic && c.state === 'flee') ? 1.15 : 0; L.arms[0].rotation.x = -sw*0.9 - pu; L.arms[1].rotation.x = sw*0.9 - pu; for (let i = 0; i < L.strands.length; i++) L.strands[i].rotation.z = Math.sin(c.animT*4.5+i)*0.15; }
@@ -3195,8 +3224,8 @@ function resetGame() {
   currentLevel = 0; ngPlus = 0;
   dailyMode = false;
   applyLevel(0);
-  companion.pos.set(8, 0, 28); companion.vel.set(0,0,0);
-  companion.state = 'wander'; companion.stateT = 2; companion.panic = false;
+  companion.pos.set(-1.35, 0, 42.65); companion.vel.set(0,0,0);
+  companion.state = 'follow'; companion.stateT = 2; companion.panic = false;
   companion.tripTimer = 0; companion.tripCd = 10;
   companion.trickTimer = 0; companion.trickCd = 6; companion.aidCd = 8;
   companion.mesh.position.copy(companion.pos);
@@ -3519,4 +3548,4 @@ camera.rotation.set(0, player.yaw, 0, 'YXZ');
 setBootStatus('ЗАПУСКАЕМ ИГРОВОЙ ЦИКЛ…', 0.96);
 animate();
 finishBoot();
-console.log('%c⚔ WRATH OF OLYMPUS v21 — GitHub Pages build', 'color:#ffd27a;font-size:16px;font-weight:bold');
+console.log('%c⚔ WRATH OF OLYMPUS v24 — LIA FOLLOW build', 'color:#ffd27a;font-size:16px;font-weight:bold');
